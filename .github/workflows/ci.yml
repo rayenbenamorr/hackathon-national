@@ -1,0 +1,79 @@
+# Ce que la machine verifie a la place de l'etudiant.
+#
+# Personne n'a a lancer la plateforme sur son poste pour savoir si son travail
+# tient : on pousse, et cette chaine repond. `pnpm verify` est deja la porte
+# d'entree du depot — format, types, 314 tests, les 13 regles d'architecture, et
+# un smoke qui demarre reellement les 24 ministeres et fait circuler des
+# evenements entre eux. Si elle passe, le service marche.
+#
+# Elle tourne sur `push` ET sur `pull_request` : une equipe voit son verdict
+# avant la fusion, pas apres.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  # Une equipe qui pousse trois fois en deux minutes n'occupe pas trois runners.
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Verifier la plateforme
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.22.0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Installer
+        run: pnpm install --frozen-lockfile
+
+      # Les cinq controles separement plutot qu'un seul `pnpm verify` : quand ca
+      # casse, le nom de l'etape dit deja quoi, sans ouvrir le journal.
+      - name: Format
+        run: pnpm lint
+
+      - name: Types
+        run: pnpm typecheck
+
+      - name: Tests
+        run: pnpm test
+
+      - name: Architecture — les 13 regles
+        run: pnpm architecture:check
+
+      - name: Smoke — les 24 ministeres demarrent et se parlent
+        run: pnpm smoke
+
+      # Le bilan que lit l'etudiant : il apparait sur la page du run, sans
+      # derouler quoi que ce soit.
+      - name: Bilan
+        if: always()
+        run: |
+          {
+            echo "## ${{ job.status == 'success' && 'Tout passe' || 'Quelque chose ne passe pas' }}"
+            echo ""
+            echo "| Controle | |"
+            echo "|---|---|"
+            echo "| Format | prettier |"
+            echo "| Types | tsc --noEmit |"
+            echo "| Tests | vitest |"
+            echo "| Architecture | 13 regles |"
+            echo "| Smoke | 24 ministeres |"
+            echo ""
+            echo "Rien de tout cela n'a tourne sur un poste d'etudiant."
+          } >> "$GITHUB_STEP_SUMMARY"
