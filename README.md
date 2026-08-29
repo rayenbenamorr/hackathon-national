@@ -2,6 +2,12 @@
 
 **24 ministry services. One country. One command.**
 
+> **A pedagogical exercise.** This platform is a hackathon playground. It is not
+> affiliated with, endorsed by, or operated on behalf of any Tunisian public
+> administration. Every ministry here is a fictional service holding synthetic
+> data: nothing in this repository describes a real institution, and nothing it
+> produces engages one.
+
 A protected development playground for a six-day AI/IoT hackathon with
 ~1 200–1 500 students who have little or no programming experience. They describe
 what they want to build; **Claude Code** handles service boundaries, contracts,
