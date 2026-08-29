@@ -1,0 +1,12 @@
+node_modules
+.data
+dist
+coverage
+pnpm-lock.yaml
+architecture/services.yaml
+architecture/relations.yaml
+packages/contracts/generated
+services/*/RELATIONS.md
+services/*/API.md
+services/*/EVENTS.md
+services/*/service.manifest.yaml

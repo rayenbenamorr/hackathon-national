@@ -1,0 +1,187 @@
+id: social-mobility
+name: Social Mobility OS
+ministry: Social Affairs
+description: Household vulnerability and benefits that arrive without a form.
+mission: Detect need from signals other ministries already produce, instead of
+  waiting for a household to prove it at a counter.
+capabilities:
+  - Vulnerability per household cohort, continuously updated.
+  - Eligibility computed from existing signals.
+  - What actually moves a cohort upward, by governorate.
+modules:
+  - id: social-digital-twin
+    name: Social Digital Twin
+    purpose: Vulnerability per household cohort, continuously updated.
+  - id: zero-form-social-services
+    name: Zero-Form Social Services
+    purpose: Eligibility computed from existing signals.
+  - id: social-mobility-ai
+    name: Social Mobility AI
+    purpose: What actually moves a cohort upward, by governorate.
+owns:
+  - HouseholdCohortRef
+  - SocialBenefitRef
+apis:
+  - method: GET
+    path: /api/social-mobility/cohorts
+    summary: health Household cohort
+    module: platform
+  - method: GET
+    path: /api/social-mobility/cohorts
+    summary: list Household cohort
+    module: social-digital-twin
+  - method: GET
+    path: /api/social-mobility/cohorts/:id
+    summary: get Household cohort
+    module: social-digital-twin
+  - method: POST
+    path: /api/social-mobility/eligibility
+    summary: Decide eligibility from signals already held, and explain the decision.
+    module: zero-form-social-services
+  - method: GET
+    path: /api/social-mobility/vulnerability
+    summary: Vulnerability by governorate.
+    module: social-mobility-ai
+  - method: GET
+    path: /api/social-mobility/cohorts
+    summary: signals Household cohort
+    module: platform
+  - method: GET
+    path: /api/social-mobility/cohorts
+    summary: twins Household cohort
+    module: platform
+  - method: GET
+    path: /api/social-mobility/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/social-mobility/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/social-mobility/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: social.vulnerability.updated.v1
+    summary: A cohort vulnerability index moved.
+  - event: social.benefit.granted.v1
+    summary: A benefit was granted to a cohort.
+  - event: social.household-need.detected.v1
+    summary: A need was detected from cross-ministry signals before anyone asked.
+consumes:
+  - event: health.capacity.updated.v1
+    from: health
+    criticality: normal
+    reason: Health access is a component of the vulnerability index.
+  - event: health.epidemic-signal.detected.v1
+    from: health
+    criticality: normal
+    reason: An epidemic signal changes which cohorts are exposed and how.
+  - event: education.learning-progress.updated.v1
+    from: education
+    criticality: critical
+    reason: Schooling outcomes are a core axis of social mobility.
+  - event: education.school-condition.updated.v1
+    from: education
+    criticality: normal
+    reason: A degraded school is a mobility constraint on the cohort around it.
+  - event: agriculture.water-shortage.predicted.v1
+    from: food-water
+    criticality: critical
+    reason: Water shortage translates directly into household need in rural cohorts.
+  - event: energy.outage-risk.flagged.v1
+    from: industrial-energy
+    criticality: normal
+    reason: Energy insecurity is one of the fastest drivers of household vulnerability.
+  - event: treasury.aid.disbursed.v1
+    from: treasury
+    criticality: critical
+    reason: Vulnerability must fall when aid actually lands; that loop must be closed.
+  - event: skills.gap.detected.v1
+    from: skills-opportunity
+    criticality: normal
+    reason: A gap next to a cohort is an opportunity, not only a shortage.
+  - event: transport.mobility-demand.updated.v1
+    from: mobility-logistics
+    criticality: normal
+    reason: Transport access is one of the strongest predictors of employment access.
+  - event: care.support-need.detected.v1
+    from: life-care
+    criticality: critical
+    reason: Care needs and social needs are the same household seen from two
+      ministries.
+  - event: emergency.incident.created.v1
+    from: safety-emergency
+    criticality: normal
+    reason: Repeated incidents in a zone are a vulnerability signal.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: critical
+    reason: Crisis response must be ordered by vulnerability, which means seeing the
+      declaration.
+  - event: infrastructure.asset-health.updated.v1
+    from: infrastructure
+    criticality: normal
+    reason: Water and power network health is lived as household quality.
+  - event: justice.case.filed.v1
+    from: justice
+    criticality: normal
+    reason: Case volume in family and labour matters is a social distress indicator.
+depends_on:
+  - education
+  - food-water
+  - health
+  - industrial-energy
+  - infrastructure
+  - justice
+  - life-care
+  - mobility-logistics
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - treasury
+consumed_by:
+  - education
+  - global-tunisia
+  - health
+  - justice
+  - life-care
+  - national-digital-twin
+  - religious-heritage
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - talent
+  - treasury
+related_services:
+  - education
+  - food-water
+  - global-tunisia
+  - health
+  - industrial-energy
+  - infrastructure
+  - justice
+  - life-care
+  - mobility-logistics
+  - national-digital-twin
+  - religious-heritage
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - talent
+  - treasury
+ai_capabilities:
+  - need detection from weak signals
+  - eligibility explanation
+  - mobility driver ranking
+iot_capabilities:
+  - housing conditions
+  - water and energy access
+digital_twin_capabilities:
+  - household cohort twin
+  - governorate social twin
+data:
+  synthetic_only: true
+  owns_collection: cohorts
+  seeded_rows: 36

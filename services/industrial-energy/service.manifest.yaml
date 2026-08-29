@@ -1,0 +1,206 @@
+id: industrial-energy
+name: Industrial & Energy Intelligence Grid
+ministry: Industry & Energy
+description: Production, grid load and the waste of one plant becoming the input of another.
+mission: "Run industry and energy as one system: the grid knows what industry is
+  about to do, and industry knows what the grid can afford."
+capabilities:
+  - "Twin per industrial asset: output, consumption, condition."
+  - Node-level load, generation and renewable share.
+  - Matches one plant output stream to another plant input.
+modules:
+  - id: industrial-digital-twin-network
+    name: Industrial Digital Twin Network
+    purpose: "Twin per industrial asset: output, consumption, condition."
+  - id: energy-internet
+    name: Energy Internet
+    purpose: Node-level load, generation and renewable share.
+  - id: ai-industrial-symbiosis
+    name: AI Industrial Symbiosis
+    purpose: Matches one plant output stream to another plant input.
+owns:
+  - IndustrialAssetRef
+  - EnergyNodeRef
+  - SymbiosisMatchRef
+apis:
+  - method: GET
+    path: /api/industrial-energy/assets
+    summary: health Industrial asset
+    module: platform
+  - method: GET
+    path: /api/industrial-energy/assets
+    summary: list Industrial asset
+    module: industrial-digital-twin-network
+  - method: GET
+    path: /api/industrial-energy/assets/:id
+    summary: get Industrial asset
+    module: industrial-digital-twin-network
+  - method: POST
+    path: /api/industrial-energy/assets
+    summary: create Industrial asset
+    module: industrial-digital-twin-network
+  - method: POST
+    path: /api/industrial-energy/symbiosis/match
+    summary: Find a use for a waste stream in another plant.
+    module: ai-industrial-symbiosis
+  - method: GET
+    path: /api/industrial-energy/grid/load
+    summary: Load and renewable share by governorate.
+    module: energy-internet
+  - method: GET
+    path: /api/industrial-energy/assets
+    summary: signals Industrial asset
+    module: platform
+  - method: GET
+    path: /api/industrial-energy/assets
+    summary: twins Industrial asset
+    module: platform
+  - method: GET
+    path: /api/industrial-energy/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/industrial-energy/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/industrial-energy/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: energy.grid-load.updated.v1
+    summary: Load, generation and renewable share at a grid node.
+  - event: energy.outage-risk.flagged.v1
+    summary: A node is at risk of failing to serve its load.
+  - event: industry.production.updated.v1
+    summary: Production changed at an industrial asset.
+  - event: industry.symbiosis.matched.v1
+    summary: One plant waste stream was matched to another plant input.
+consumes:
+  - event: environment.air-quality.updated.v1
+    from: environment
+    criticality: critical
+    reason: Emissions constrain production; the plant twin must see its own
+      consequence.
+  - event: environment.waste-stream.updated.v1
+    from: environment
+    criticality: critical
+    reason: Waste streams are the raw material of the symbiosis engine.
+  - event: environment.climate-risk.updated.v1
+    from: environment
+    criticality: normal
+    reason: Heat risk changes both demand and generation capacity.
+  - event: iot.sensor.observation.v1
+    from: digital-nervous-system
+    criticality: critical
+    reason: Energy load and vibration observations are the grid and asset twins.
+  - event: agriculture.water-demand.predicted.v1
+    from: food-water
+    criticality: critical
+    reason: Industry and agriculture compete for the same water and the same pumping
+      energy.
+  - event: infrastructure.failure.predicted.v1
+    from: infrastructure
+    criticality: critical
+    reason: A predicted power-line failure is an outage risk before it is a
+      maintenance order.
+  - event: logistics.freight.updated.v1
+    from: mobility-logistics
+    criticality: normal
+    reason: Freight movement is the physical trace of industrial output.
+  - event: trade.supply-risk.flagged.v1
+    from: smart-trade
+    criticality: critical
+    reason: An input dependency at risk stops a production line.
+  - event: treasury.funding.approved.v1
+    from: treasury
+    criticality: normal
+    reason: Industrial and renewable programmes move with approved funding.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: critical
+    reason: Crisis load-shedding priorities are set from the declaration.
+  - event: research.finding.released.v1
+    from: research
+    criticality: normal
+    reason: Process and materials results are adopted first by industry.
+  - event: skills.gap.detected.v1
+    from: skills-opportunity
+    criticality: normal
+    reason: Operator and maintenance shortages cap what the grid can safely run.
+  - event: land.site-suitability.scored.v1
+    from: land
+    criticality: normal
+    reason: Renewable siting is a land question before it is an energy question.
+  - event: twin.scenario.completed.v1
+    from: national-digital-twin
+    criticality: normal
+    reason: Scenario outcomes set the demand assumptions the grid plans against.
+depends_on:
+  - digital-nervous-system
+  - environment
+  - food-water
+  - infrastructure
+  - land
+  - mobility-logistics
+  - national-digital-twin
+  - research
+  - resilience
+  - skills-opportunity
+  - smart-trade
+  - treasury
+consumed_by:
+  - digital-nervous-system
+  - education
+  - environment
+  - food-water
+  - global-tunisia
+  - health
+  - infrastructure
+  - land
+  - national-digital-twin
+  - religious-heritage
+  - research
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - smart-trade
+  - social-mobility
+  - talent
+  - treasury
+related_services:
+  - digital-nervous-system
+  - education
+  - environment
+  - food-water
+  - global-tunisia
+  - health
+  - infrastructure
+  - land
+  - mobility-logistics
+  - national-digital-twin
+  - religious-heritage
+  - research
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - smart-trade
+  - social-mobility
+  - talent
+  - treasury
+ai_capabilities:
+  - load forecasting
+  - symbiosis matching
+  - equipment anomaly detection
+iot_capabilities:
+  - energy load
+  - vibration
+  - temperature
+  - air quality
+digital_twin_capabilities:
+  - industrial asset twin
+  - grid node twin
+data:
+  synthetic_only: true
+  owns_collection: assets
+  seeded_rows: 34

@@ -1,0 +1,202 @@
+id: education
+name: Adaptive Education OS
+ministry: Education
+description: A learning twin per learner cohort, schools that report their own
+  condition, one knowledge graph.
+mission: Adapt what is taught to what the country is measurably about to need,
+  and notice a failing school building before it is a headline.
+capabilities:
+  - Cohort-level mastery and progression, never a named pupil.
+  - Air quality, occupancy and building condition per school.
+  - Concepts, prerequisites and programme coverage.
+modules:
+  - id: student-learning-twin
+    name: Student Learning Twin
+    purpose: Cohort-level mastery and progression, never a named pupil.
+  - id: smart-school-iot
+    name: Smart School IoT
+    purpose: Air quality, occupancy and building condition per school.
+  - id: national-knowledge-graph
+    name: National Knowledge Graph
+    purpose: Concepts, prerequisites and programme coverage.
+owns:
+  - SchoolRef
+  - EducationProgramRef
+  - LearnerCohortRef
+apis:
+  - method: GET
+    path: /api/education/schools
+    summary: health School
+    module: platform
+  - method: GET
+    path: /api/education/schools
+    summary: list School
+    module: smart-school-iot
+  - method: GET
+    path: /api/education/schools/:id
+    summary: get School
+    module: smart-school-iot
+  - method: POST
+    path: /api/education/schools
+    summary: create School
+    module: smart-school-iot
+  - method: POST
+    path: /api/education/programs/adapt
+    summary: Propose a programme adaptation against a national need.
+    module: national-knowledge-graph
+  - method: GET
+    path: /api/education/schools/condition
+    summary: School condition by governorate.
+    module: smart-school-iot
+  - method: GET
+    path: /api/education/schools
+    summary: signals School
+    module: platform
+  - method: GET
+    path: /api/education/schools
+    summary: twins School
+    module: platform
+  - method: GET
+    path: /api/education/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/education/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/education/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: education.learning-progress.updated.v1
+    summary: Cohort mastery moved for a domain.
+  - event: education.program.updated.v1
+    summary: A programme was created or adapted, usually against a detected skill gap.
+  - event: education.school-condition.updated.v1
+    summary: Building or environmental condition at a school changed.
+consumes:
+  - event: skills.gap.detected.v1
+    from: skills-opportunity
+    criticality: critical
+    reason: A detected gap is the reason a programme is adapted; this is the core loop.
+  - event: iot.sensor.observation.v1
+    from: digital-nervous-system
+    criticality: critical
+    reason: School air quality, occupancy and temperature are the school twin.
+  - event: environment.air-quality.updated.v1
+    from: environment
+    criticality: critical
+    reason: Poor air in a school is a decision to take today, not a statistic.
+  - event: infrastructure.asset-health.updated.v1
+    from: infrastructure
+    criticality: critical
+    reason: A school building is an infrastructure asset with a health index.
+  - event: infrastructure.failure.predicted.v1
+    from: infrastructure
+    criticality: normal
+    reason: A predicted building failure means relocating pupils, with notice.
+  - event: social.vulnerability.updated.v1
+    from: social-mobility
+    criticality: critical
+    reason: Dropout risk is a social signal before it is an academic one.
+  - event: research.finding.released.v1
+    from: research
+    criticality: normal
+    reason: Pedagogy and curriculum results enter the knowledge graph.
+  - event: treasury.budget-line.updated.v1
+    from: treasury
+    criticality: normal
+    reason: Class sizes and equipment follow the education budget line.
+  - event: health.epidemic-signal.detected.v1
+    from: health
+    criticality: critical
+    reason: School closure and reopening decisions follow the health signal.
+  - event: transport.mobility-demand.updated.v1
+    from: mobility-logistics
+    criticality: normal
+    reason: School transport is a large, predictable share of morning demand.
+  - event: culture.event.scheduled.v1
+    from: culture
+    criticality: normal
+    reason: Cultural programming is part of the school calendar.
+  - event: industry.production.updated.v1
+    from: industrial-energy
+    criticality: normal
+    reason: Local industry defines which vocational tracks have a local outlet.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: critical
+    reason: Schools become shelters; the education system must know first.
+  - event: talent.facility-usage.updated.v1
+    from: talent
+    criticality: normal
+    reason: Sports facilities are shared with schools and scheduled against them.
+depends_on:
+  - culture
+  - digital-nervous-system
+  - environment
+  - health
+  - industrial-energy
+  - infrastructure
+  - mobility-logistics
+  - research
+  - resilience
+  - skills-opportunity
+  - social-mobility
+  - talent
+  - treasury
+consumed_by:
+  - culture
+  - digital-nervous-system
+  - global-tunisia
+  - health
+  - infrastructure
+  - land
+  - life-care
+  - mobility-logistics
+  - national-digital-twin
+  - religious-heritage
+  - research
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - social-mobility
+  - talent
+  - treasury
+related_services:
+  - culture
+  - digital-nervous-system
+  - environment
+  - global-tunisia
+  - health
+  - industrial-energy
+  - infrastructure
+  - land
+  - life-care
+  - mobility-logistics
+  - national-digital-twin
+  - religious-heritage
+  - research
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - social-mobility
+  - talent
+  - treasury
+ai_capabilities:
+  - learning path adaptation
+  - dropout risk detection
+  - knowledge graph querying
+iot_capabilities:
+  - air quality
+  - occupancy
+  - temperature
+  - structural strain
+digital_twin_capabilities:
+  - school twin
+  - learner cohort twin
+data:
+  synthetic_only: true
+  owns_collection: schools
+  seeded_rows: 42

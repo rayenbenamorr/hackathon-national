@@ -1,0 +1,211 @@
+id: infrastructure
+name: Smart Infrastructure OS
+ministry: Equipment & Housing
+description: Asset health, maintenance before failure, and housing that runs itself.
+mission: "Replace inspection cycles with condition: every bridge, network and
+  building carries a health score other ministries can plan against."
+capabilities:
+  - Health per asset, continuously.
+  - Failure prediction and work orders.
+  - Public housing comfort, energy and water.
+modules:
+  - id: national-infrastructure-digital-twin
+    name: National Infrastructure Digital Twin
+    purpose: Health per asset, continuously.
+  - id: predictive-infrastructure-maintenance
+    name: Predictive Infrastructure Maintenance
+    purpose: Failure prediction and work orders.
+  - id: autonomous-smart-housing
+    name: Autonomous Smart Housing
+    purpose: Public housing comfort, energy and water.
+owns:
+  - InfrastructureAssetRef
+  - MaintenanceOrderRef
+  - HousingUnitRef
+apis:
+  - method: GET
+    path: /api/infrastructure/assets
+    summary: health Infrastructure asset
+    module: platform
+  - method: GET
+    path: /api/infrastructure/assets
+    summary: list Infrastructure asset
+    module: national-infrastructure-digital-twin
+  - method: GET
+    path: /api/infrastructure/assets/:id
+    summary: get Infrastructure asset
+    module: national-infrastructure-digital-twin
+  - method: POST
+    path: /api/infrastructure/assets
+    summary: create Infrastructure asset
+    module: national-infrastructure-digital-twin
+  - method: POST
+    path: /api/infrastructure/maintenance/predict
+    summary: Predict failure for an asset and warn everyone downstream of it.
+    module: predictive-infrastructure-maintenance
+  - method: GET
+    path: /api/infrastructure/assets/health
+    summary: Asset health by governorate.
+    module: national-infrastructure-digital-twin
+  - method: GET
+    path: /api/infrastructure/assets
+    summary: signals Infrastructure asset
+    module: platform
+  - method: GET
+    path: /api/infrastructure/assets
+    summary: twins Infrastructure asset
+    module: platform
+  - method: GET
+    path: /api/infrastructure/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/infrastructure/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/infrastructure/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: infrastructure.asset-health.updated.v1
+    summary: Health index of an asset changed.
+  - event: infrastructure.failure.predicted.v1
+    summary: An asset is predicted to fail within a horizon.
+  - event: infrastructure.maintenance.scheduled.v1
+    summary: A work order was scheduled.
+consumes:
+  - event: iot.sensor.observation.v1
+    from: digital-nervous-system
+    criticality: critical
+    reason: Vibration, strain and water-level observations are the asset health index.
+  - event: environment.climate-risk.updated.v1
+    from: environment
+    criticality: critical
+    reason: Flood and heat risk are the dominant accelerators of asset degradation.
+  - event: environment.water-quality.updated.v1
+    from: environment
+    criticality: normal
+    reason: Water chemistry drives corrosion in networks and structures.
+  - event: transport.mobility-demand.updated.v1
+    from: mobility-logistics
+    criticality: critical
+    reason: Load is what wears a road; demand is the load.
+  - event: transport.congestion.detected.v1
+    from: mobility-logistics
+    criticality: normal
+    reason: Chronic congestion marks the segments that fail first.
+  - event: emergency.incident.created.v1
+    from: safety-emergency
+    criticality: critical
+    reason: Incidents on an asset are the strongest evidence its health index is wrong.
+  - event: energy.grid-load.updated.v1
+    from: industrial-energy
+    criticality: critical
+    reason: Power lines and substations are infrastructure assets under electrical
+      load.
+  - event: agriculture.water-demand.predicted.v1
+    from: food-water
+    criticality: critical
+    reason: Water networks are sized and stressed by demand.
+  - event: treasury.funding.approved.v1
+    from: treasury
+    criticality: critical
+    reason: A maintenance order without funding is a wish.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: critical
+    reason: Crisis reprioritises maintenance towards what the response depends on.
+  - event: land.zoning.changed.v1
+    from: land
+    criticality: normal
+    reason: New zoning creates infrastructure obligations before it creates buildings.
+  - event: education.school-condition.updated.v1
+    from: education
+    criticality: normal
+    reason: School buildings are part of the public asset base.
+  - event: health.capacity.updated.v1
+    from: health
+    criticality: normal
+    reason: Hospitals are critical assets; their continuity sets maintenance priority.
+  - event: heritage.site-condition.updated.v1
+    from: religious-heritage
+    criticality: normal
+    reason: Historic structures need maintenance rules of their own, from the same
+      system.
+  - event: tourism.site-pressure.detected.v1
+    from: tourism
+    criticality: normal
+    reason: Visitor load is structural load on stairs, walkways and quays.
+depends_on:
+  - digital-nervous-system
+  - education
+  - environment
+  - food-water
+  - health
+  - industrial-energy
+  - land
+  - mobility-logistics
+  - religious-heritage
+  - resilience
+  - safety-emergency
+  - tourism
+  - treasury
+consumed_by:
+  - culture
+  - digital-nervous-system
+  - education
+  - environment
+  - food-water
+  - industrial-energy
+  - land
+  - mobility-logistics
+  - national-digital-twin
+  - religious-heritage
+  - research
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - smart-trade
+  - social-mobility
+  - talent
+  - tourism
+  - treasury
+related_services:
+  - culture
+  - digital-nervous-system
+  - education
+  - environment
+  - food-water
+  - health
+  - industrial-energy
+  - land
+  - mobility-logistics
+  - national-digital-twin
+  - religious-heritage
+  - research
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - smart-trade
+  - social-mobility
+  - talent
+  - tourism
+  - treasury
+ai_capabilities:
+  - failure prediction
+  - maintenance prioritisation
+  - strain anomaly detection
+iot_capabilities:
+  - vibration
+  - structural strain
+  - water level
+  - energy load
+  - temperature
+digital_twin_capabilities:
+  - asset twin
+  - network twin
+data:
+  synthetic_only: true
+  owns_collection: assets
+  seeded_rows: 46

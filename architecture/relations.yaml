@@ -1,0 +1,3875 @@
+version: 1
+generated_from: tools/spec/relations.mjs
+note: source PROVIDES, target CONSUMES.
+total: 382
+relations:
+  - source: safety-emergency
+    target: justice
+    relationship_type: event-producer-to-consumer
+    reason: A serious incident becomes a case file; opening it from the incident
+      removes a manual re-entry step.
+    contract: packages/contracts/src/events/safety-emergency.ts
+    events:
+      - emergency.incident.created.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/justice/src/consumers.ts
+  - source: land
+    target: justice
+    relationship_type: event-producer-to-consumer
+    reason: Zoning changes are the single largest generator of land disputes; the
+      court twin anticipates the load.
+    contract: packages/contracts/src/events/land.ts
+    events:
+      - land.zoning.changed.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/justice/src/consumers.ts
+  - source: land
+    target: justice
+    relationship_type: event-producer-to-consumer
+    reason: Parcel records are evidence in property cases and must be current when a
+      case is heard.
+    contract: packages/contracts/src/events/land.ts
+    events:
+      - land.parcel.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/justice/src/consumers.ts
+  - source: social-mobility
+    target: justice
+    relationship_type: event-producer-to-consumer
+    reason: Legal aid is targeted at the cohorts that cannot otherwise reach a court.
+    contract: packages/contracts/src/events/social-mobility.ts
+    events:
+      - social.vulnerability.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/justice/src/consumers.ts
+  - source: treasury
+    target: justice
+    relationship_type: event-producer-to-consumer
+    reason: Court staffing and digitisation move with the justice budget line.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.budget-line.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/justice/src/consumers.ts
+  - source: smart-trade
+    target: justice
+    relationship_type: event-producer-to-consumer
+    reason: Commercial disputes rise with supply failures; the workflow
+      pre-positions commercial chambers.
+    contract: packages/contracts/src/events/smart-trade.ts
+    events:
+      - trade.supply-risk.flagged.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/justice/src/consumers.ts
+  - source: resilience
+    target: justice
+    relationship_type: event-producer-to-consumer
+    reason: A declared crisis suspends deadlines and moves hearings — the workflow
+      must know immediately.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/justice/src/consumers.ts
+  - source: health
+    target: justice
+    relationship_type: event-producer-to-consumer
+    reason: Hearing continuity plans depend on health restrictions in the governorate.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.epidemic-signal.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/justice/src/consumers.ts
+  - source: mobility-logistics
+    target: justice
+    relationship_type: event-producer-to-consumer
+    reason: Non-appearance correlates with corridor congestion on hearing days.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.congestion.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/justice/src/consumers.ts
+  - source: environment
+    target: justice
+    relationship_type: event-producer-to-consumer
+    reason: Environmental degradation records are evidence in environmental
+      proceedings.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.water-quality.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/justice/src/consumers.ts
+  - source: research
+    target: justice
+    relationship_type: event-producer-to-consumer
+    reason: Forensic and legal-informatics results are adopted by the navigator when
+      released.
+    contract: packages/contracts/src/events/research.ts
+    events:
+      - research.finding.released.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/justice/src/consumers.ts
+  - source: national-digital-twin
+    target: justice
+    relationship_type: event-producer-to-consumer
+    reason: A regional anomaly usually precedes a case surge in the same governorate.
+    contract: packages/contracts/src/events/national-digital-twin.ts
+    events:
+      - twin.anomaly.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/justice/src/consumers.ts
+  - source: digital-nervous-system
+    target: justice
+    relationship_type: event-producer-to-consumer
+    reason: Courthouse occupancy sensors feed the court twin, so saturation is
+      measured rather than asserted.
+    contract: packages/contracts/src/events/digital-nervous-system.ts
+    events:
+      - iot.sensor.observation.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/justice/src/consumers.ts
+  - source: national-digital-twin
+    target: justice
+    relationship_type: api-provider-to-consumer
+    reason: Regional stress explains case surges the court twin cannot see on its own.
+    contract: /api/national-digital-twin (OpenAPI at
+      /api/national-digital-twin/openapi.json)
+    events: []
+    apis:
+      - /api/national-digital-twin/regions/stress
+    criticality: normal
+    implemented_in: services/justice/src/adapters.ts
+  - source: safety-emergency
+    target: resilience
+    relationship_type: event-producer-to-consumer
+    reason: Clustered incidents are how a crisis is first detected, before anyone
+      declares one.
+    contract: packages/contracts/src/events/safety-emergency.ts
+    events:
+      - emergency.incident.created.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/resilience/src/consumers.ts
+  - source: environment
+    target: resilience
+    relationship_type: event-producer-to-consumer
+    reason: Drought, heat and flood risk are the leading indicators the command
+      system watches.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.climate-risk.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/resilience/src/consumers.ts
+  - source: food-water
+    target: resilience
+    relationship_type: event-producer-to-consumer
+    reason: A predicted water shortage is a slow-onset crisis; declaring early is
+      the whole point.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - agriculture.water-shortage.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/resilience/src/consumers.ts
+  - source: health
+    target: resilience
+    relationship_type: event-producer-to-consumer
+    reason: A relief plan that ignores hospital saturation sends people where they
+      cannot be treated.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.capacity.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/resilience/src/consumers.ts
+  - source: infrastructure
+    target: resilience
+    relationship_type: event-producer-to-consumer
+    reason: A predicted bridge or network failure changes every evacuation route.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.failure.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/resilience/src/consumers.ts
+  - source: industrial-energy
+    target: resilience
+    relationship_type: event-producer-to-consumer
+    reason: Power shortfall determines which shelters and hospitals need generators.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - energy.outage-risk.flagged.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/resilience/src/consumers.ts
+  - source: mobility-logistics
+    target: resilience
+    relationship_type: event-producer-to-consumer
+    reason: The relief plan tracks coverage only if it sees what was actually
+      dispatched.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.resource.dispatched.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/resilience/src/consumers.ts
+  - source: social-mobility
+    target: resilience
+    relationship_type: event-producer-to-consumer
+    reason: Evacuation and aid priority follow vulnerability, not geography alone.
+    contract: packages/contracts/src/events/social-mobility.ts
+    events:
+      - social.vulnerability.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/resilience/src/consumers.ts
+  - source: digital-nervous-system
+    target: resilience
+    relationship_type: event-producer-to-consumer
+    reason: Water level, rainfall and wind observations drive early crisis detection.
+    contract: packages/contracts/src/events/digital-nervous-system.ts
+    events:
+      - iot.sensor.observation.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/resilience/src/consumers.ts
+  - source: treasury
+    target: resilience
+    relationship_type: event-producer-to-consumer
+    reason: A relief plan is only real once its funding is approved.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.funding.approved.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/resilience/src/consumers.ts
+  - source: land
+    target: resilience
+    relationship_type: event-producer-to-consumer
+    reason: Shelter and staging sites come from land suitability, scored in advance.
+    contract: packages/contracts/src/events/land.ts
+    events:
+      - land.site-suitability.scored.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/resilience/src/consumers.ts
+  - source: education
+    target: resilience
+    relationship_type: event-producer-to-consumer
+    reason: Schools are the default shelter network; their condition decides which
+      can be used.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.school-condition.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/resilience/src/consumers.ts
+  - source: tourism
+    target: resilience
+    relationship_type: event-producer-to-consumer
+    reason: Visitor concentration changes the population actually present in a zone.
+    contract: packages/contracts/src/events/tourism.ts
+    events:
+      - tourism.site-pressure.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/resilience/src/consumers.ts
+  - source: national-digital-twin
+    target: resilience
+    relationship_type: event-producer-to-consumer
+    reason: Multi-sector anomalies are early crisis signatures.
+    contract: packages/contracts/src/events/national-digital-twin.ts
+    events:
+      - twin.anomaly.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/resilience/src/consumers.ts
+  - source: mobility-logistics
+    target: resilience
+    relationship_type: api-provider-to-consumer
+    reason: Relief logistics has no vehicles of its own; every convoy is dispatched
+      through Transport.
+    contract: /api/mobility-logistics (OpenAPI at /api/mobility-logistics/openapi.json)
+    events: []
+    apis:
+      - /api/mobility-logistics/dispatch
+    criticality: critical
+    implemented_in: services/resilience/src/adapters.ts
+  - source: health
+    target: resilience
+    relationship_type: api-provider-to-consumer
+    reason: Casualty routing needs live bed and ICU availability at plan time, not
+      at event time.
+    contract: /api/health (OpenAPI at /api/health/openapi.json)
+    events: []
+    apis:
+      - /api/health/capacity
+    criticality: critical
+    implemented_in: services/resilience/src/adapters.ts
+  - source: health
+    target: safety-emergency
+    relationship_type: event-producer-to-consumer
+    reason: Dispatch sends casualties to the nearest facility that can actually
+      receive them.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.capacity.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/safety-emergency/src/consumers.ts
+  - source: health
+    target: safety-emergency
+    relationship_type: event-producer-to-consumer
+    reason: A health emergency needs civil protection resources Health does not own.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.emergency.declared.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/safety-emergency/src/consumers.ts
+  - source: mobility-logistics
+    target: safety-emergency
+    relationship_type: event-producer-to-consumer
+    reason: Congestion changes response time more than distance does.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.congestion.detected.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/safety-emergency/src/consumers.ts
+  - source: environment
+    target: safety-emergency
+    relationship_type: event-producer-to-consumer
+    reason: Air quality drives both road risk and the protection level responders need.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.air-quality.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/safety-emergency/src/consumers.ts
+  - source: digital-nervous-system
+    target: safety-emergency
+    relationship_type: event-producer-to-consumer
+    reason: Traffic, rainfall and vibration observations feed continuous road-risk
+      scoring.
+    contract: packages/contracts/src/events/digital-nervous-system.ts
+    events:
+      - iot.sensor.observation.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/safety-emergency/src/consumers.ts
+  - source: infrastructure
+    target: safety-emergency
+    relationship_type: event-producer-to-consumer
+    reason: A failing bridge is a road-risk input and a route exclusion at the same
+      time.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.failure.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/safety-emergency/src/consumers.ts
+  - source: food-water
+    target: safety-emergency
+    relationship_type: event-producer-to-consumer
+    reason: Reservoir state is a flood precursor for downstream zones.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - water.reservoir-level.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/safety-emergency/src/consumers.ts
+  - source: industrial-energy
+    target: safety-emergency
+    relationship_type: event-producer-to-consumer
+    reason: Industrial activity localises the risk of industrial incidents.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - industry.production.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/safety-emergency/src/consumers.ts
+  - source: resilience
+    target: safety-emergency
+    relationship_type: event-producer-to-consumer
+    reason: Under a declared crisis the grid switches to crisis dispatch rules.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/safety-emergency/src/consumers.ts
+  - source: culture
+    target: safety-emergency
+    relationship_type: event-producer-to-consumer
+    reason: A scheduled gathering changes both crowd risk and the resources to
+      pre-position.
+    contract: packages/contracts/src/events/culture.ts
+    events:
+      - culture.event.scheduled.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/safety-emergency/src/consumers.ts
+  - source: tourism
+    target: safety-emergency
+    relationship_type: event-producer-to-consumer
+    reason: Visitor volume changes how many people are in a zone at a given hour.
+    contract: packages/contracts/src/events/tourism.ts
+    events:
+      - tourism.visitor-flow.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/safety-emergency/src/consumers.ts
+  - source: talent
+    target: safety-emergency
+    relationship_type: event-producer-to-consumer
+    reason: Stadium and gymnasium usage is crowd exposure.
+    contract: packages/contracts/src/events/talent.ts
+    events:
+      - talent.facility-usage.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/safety-emergency/src/consumers.ts
+  - source: education
+    target: safety-emergency
+    relationship_type: event-producer-to-consumer
+    reason: School condition and occupancy shape the response to a building incident.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.school-condition.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/safety-emergency/src/consumers.ts
+  - source: social-mobility
+    target: safety-emergency
+    relationship_type: event-producer-to-consumer
+    reason: Vulnerable cohorts need a different response, not the same one faster.
+    contract: packages/contracts/src/events/social-mobility.ts
+    events:
+      - social.vulnerability.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/safety-emergency/src/consumers.ts
+  - source: mobility-logistics
+    target: safety-emergency
+    relationship_type: api-provider-to-consumer
+    reason: Every ambulance, truck and boat belongs to Transport; dispatch is a
+      call, not a database write.
+    contract: /api/mobility-logistics (OpenAPI at /api/mobility-logistics/openapi.json)
+    events: []
+    apis:
+      - /api/mobility-logistics/dispatch
+    criticality: critical
+    implemented_in: services/safety-emergency/src/adapters.ts
+  - source: health
+    target: safety-emergency
+    relationship_type: api-provider-to-consumer
+    reason: Triage decides a destination facility, which requires live capacity.
+    contract: /api/health (OpenAPI at /api/health/openapi.json)
+    events: []
+    apis:
+      - /api/health/capacity
+    criticality: critical
+    implemented_in: services/safety-emergency/src/adapters.ts
+  - source: skills-opportunity
+    target: global-tunisia
+    relationship_type: event-producer-to-consumer
+    reason: A national skill gap is exactly what the diaspora is asked to fill.
+    contract: packages/contracts/src/events/skills-opportunity.ts
+    events:
+      - skills.gap.detected.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/global-tunisia/src/consumers.ts
+  - source: skills-opportunity
+    target: global-tunisia
+    relationship_type: event-producer-to-consumer
+    reason: Remote missions are the lowest-friction way to mobilise expertise abroad.
+    contract: packages/contracts/src/events/skills-opportunity.ts
+    events:
+      - skills.micro-mission.published.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/global-tunisia/src/consumers.ts
+  - source: research
+    target: global-tunisia
+    relationship_type: event-producer-to-consumer
+    reason: Research projects abroad and at home are matched through the diaspora
+      graph.
+    contract: packages/contracts/src/events/research.ts
+    events:
+      - research.project.published.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/global-tunisia/src/consumers.ts
+  - source: smart-trade
+    target: global-tunisia
+    relationship_type: event-producer-to-consumer
+    reason: Export openings are relayed to diaspora networks in the target market.
+    contract: packages/contracts/src/events/smart-trade.ts
+    events:
+      - trade.export-opportunity.detected.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/global-tunisia/src/consumers.ts
+  - source: treasury
+    target: global-tunisia
+    relationship_type: event-producer-to-consumer
+    reason: Funded programmes are the opportunities worth publishing abroad.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.funding.approved.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/global-tunisia/src/consumers.ts
+  - source: culture
+    target: global-tunisia
+    relationship_type: event-producer-to-consumer
+    reason: Cultural programming is the main reason diaspora travel is planned.
+    contract: packages/contracts/src/events/culture.ts
+    events:
+      - culture.event.scheduled.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/global-tunisia/src/consumers.ts
+  - source: tourism
+    target: global-tunisia
+    relationship_type: event-producer-to-consumer
+    reason: Diaspora visits are a distinct, high-value tourism segment.
+    contract: packages/contracts/src/events/tourism.ts
+    events:
+      - tourism.experience.published.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/global-tunisia/src/consumers.ts
+  - source: justice
+    target: global-tunisia
+    relationship_type: event-producer-to-consumer
+    reason: Consular guidance is only correct if it tracks the applicable text.
+    contract: packages/contracts/src/events/justice.ts
+    events:
+      - justice.legal-text.published.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/global-tunisia/src/consumers.ts
+  - source: health
+    target: global-tunisia
+    relationship_type: event-producer-to-consumer
+    reason: Travel advice to citizens abroad depends on the health situation at home.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.epidemic-signal.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/global-tunisia/src/consumers.ts
+  - source: resilience
+    target: global-tunisia
+    relationship_type: event-producer-to-consumer
+    reason: A crisis at home triggers consular contact procedures for affected
+      families.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/global-tunisia/src/consumers.ts
+  - source: education
+    target: global-tunisia
+    relationship_type: event-producer-to-consumer
+    reason: Recognition and equivalence questions follow programme changes.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.program.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/global-tunisia/src/consumers.ts
+  - source: national-digital-twin
+    target: global-tunisia
+    relationship_type: event-producer-to-consumer
+    reason: Regional state is what the diaspora asks about before investing.
+    contract: packages/contracts/src/events/national-digital-twin.ts
+    events:
+      - twin.state.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/global-tunisia/src/consumers.ts
+  - source: land
+    target: global-tunisia
+    relationship_type: event-producer-to-consumer
+    reason: Diaspora investment is overwhelmingly land- and site-driven.
+    contract: packages/contracts/src/events/land.ts
+    events:
+      - land.site-suitability.scored.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/global-tunisia/src/consumers.ts
+  - source: life-care
+    target: global-tunisia
+    relationship_type: event-producer-to-consumer
+    reason: Civil-status life events abroad and at home must reconcile.
+    contract: packages/contracts/src/events/life-care.ts
+    events:
+      - care.life-event.recorded.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/global-tunisia/src/consumers.ts
+  - source: social-mobility
+    target: global-tunisia
+    relationship_type: event-producer-to-consumer
+    reason: Portability of social rights is one of the most common consular questions.
+    contract: packages/contracts/src/events/social-mobility.ts
+    events:
+      - social.benefit.granted.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/global-tunisia/src/consumers.ts
+  - source: industrial-energy
+    target: global-tunisia
+    relationship_type: event-producer-to-consumer
+    reason: Diaspora investment targets specific industrial sectors, not the country
+      in the abstract.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - industry.production.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/global-tunisia/src/consumers.ts
+  - source: skills-opportunity
+    target: global-tunisia
+    relationship_type: api-provider-to-consumer
+    reason: The opportunity engine ranks diaspora outreach against live regional gaps.
+    contract: /api/skills-opportunity (OpenAPI at /api/skills-opportunity/openapi.json)
+    events: []
+    apis:
+      - /api/skills-opportunity/gaps
+    criticality: normal
+    implemented_in: services/global-tunisia/src/adapters.ts
+  - source: resilience
+    target: treasury
+    relationship_type: event-producer-to-consumer
+    reason: A relief plan is a spending commitment; the treasury twin must see it as
+      it forms.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.relief-plan.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/treasury/src/consumers.ts
+  - source: resilience
+    target: treasury
+    relationship_type: event-producer-to-consumer
+    reason: Resource requests are funding requests wearing another name.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.resource-request.created.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/treasury/src/consumers.ts
+  - source: health
+    target: treasury
+    relationship_type: event-producer-to-consumer
+    reason: Saturation is the earliest signal of an unbudgeted health cost.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.capacity.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/treasury/src/consumers.ts
+  - source: food-water
+    target: treasury
+    relationship_type: event-producer-to-consumer
+    reason: "Water shortage has a known fiscal shape: compensation, tankering, import."
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - agriculture.water-shortage.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/treasury/src/consumers.ts
+  - source: infrastructure
+    target: treasury
+    relationship_type: event-producer-to-consumer
+    reason: Predicted failure lets maintenance be budgeted instead of emergency-funded.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.failure.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/treasury/src/consumers.ts
+  - source: infrastructure
+    target: treasury
+    relationship_type: event-producer-to-consumer
+    reason: Scheduled work orders are the committed half of the infrastructure budget.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.maintenance.scheduled.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/treasury/src/consumers.ts
+  - source: social-mobility
+    target: treasury
+    relationship_type: event-producer-to-consumer
+    reason: Detected need is what the aid wallet exists to answer.
+    contract: packages/contracts/src/events/social-mobility.ts
+    events:
+      - social.household-need.detected.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/treasury/src/consumers.ts
+  - source: industrial-energy
+    target: treasury
+    relationship_type: event-producer-to-consumer
+    reason: Outage risk carries a subsidy and compensation exposure.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - energy.outage-risk.flagged.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/treasury/src/consumers.ts
+  - source: smart-trade
+    target: treasury
+    relationship_type: event-producer-to-consumer
+    reason: Supply risk moves customs revenue and import cost together.
+    contract: packages/contracts/src/events/smart-trade.ts
+    events:
+      - trade.supply-risk.flagged.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/treasury/src/consumers.ts
+  - source: education
+    target: treasury
+    relationship_type: event-producer-to-consumer
+    reason: A new programme is a recurring cost that must enter the fiscal year.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.program.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/treasury/src/consumers.ts
+  - source: justice
+    target: treasury
+    relationship_type: event-producer-to-consumer
+    reason: Court saturation is the justification for justice budget reallocation.
+    contract: packages/contracts/src/events/justice.ts
+    events:
+      - justice.court-load.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/treasury/src/consumers.ts
+  - source: national-digital-twin
+    target: treasury
+    relationship_type: event-producer-to-consumer
+    reason: Scenario outcomes are costed before they are decided.
+    contract: packages/contracts/src/events/national-digital-twin.ts
+    events:
+      - twin.scenario.completed.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/treasury/src/consumers.ts
+  - source: safety-emergency
+    target: treasury
+    relationship_type: event-producer-to-consumer
+    reason: Resolved incidents give the actual cost of response, not the estimate.
+    contract: packages/contracts/src/events/safety-emergency.ts
+    events:
+      - emergency.incident.resolved.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/treasury/src/consumers.ts
+  - source: land
+    target: treasury
+    relationship_type: event-producer-to-consumer
+    reason: Public asset valuation and investment siting share the same scores.
+    contract: packages/contracts/src/events/land.ts
+    events:
+      - land.site-suitability.scored.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/treasury/src/consumers.ts
+  - source: research
+    target: treasury
+    relationship_type: event-producer-to-consumer
+    reason: A matched transfer is a funding decision waiting to be made.
+    contract: packages/contracts/src/events/research.ts
+    events:
+      - research.transfer.matched.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/treasury/src/consumers.ts
+  - source: national-digital-twin
+    target: treasury
+    relationship_type: api-provider-to-consumer
+    reason: Regional stress is the allocation key the optimiser argues from.
+    contract: /api/national-digital-twin (OpenAPI at
+      /api/national-digital-twin/openapi.json)
+    events: []
+    apis:
+      - /api/national-digital-twin/regions/stress
+    criticality: normal
+    implemented_in: services/treasury/src/adapters.ts
+  - source: environment
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: Air quality is one of the six axes of the regional state vector.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.air-quality.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: environment
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: Climate risk is the slow variable every scenario is run against.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.climate-risk.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: food-water
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: Water demand versus supply is the axis that moves every other one.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - agriculture.water-demand.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: food-water
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: A shortage prediction propagates into health, economy and mobility in
+      the model.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - agriculture.water-shortage.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: health
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: Health load is a direct component of the regional stress index.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.capacity.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: mobility-logistics
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: Mobility pressure is a component of the regional stress index.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.mobility-demand.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: industrial-energy
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: Energy load is a component of regional economic activity.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - energy.grid-load.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: infrastructure
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: Asset health bounds what any scenario can assume about capacity.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.asset-health.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: social-mobility
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: Vulnerability is what makes the same shock a different event in two
+      governorates.
+    contract: packages/contracts/src/events/social-mobility.ts
+    events:
+      - social.vulnerability.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: safety-emergency
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: Incident density is a fast indicator against a slow model.
+    contract: packages/contracts/src/events/safety-emergency.ts
+    events:
+      - emergency.incident.created.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: resilience
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: A declared crisis switches the twin into crisis mode for that zone.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: education
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: School condition is a durable component of regional capability.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.school-condition.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: land
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: Zoning is the lever most scenarios end up recommending.
+    contract: packages/contracts/src/events/land.ts
+    events:
+      - land.zoning.changed.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: tourism
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: Seasonal population is not resident population; the model needs both.
+    contract: packages/contracts/src/events/tourism.ts
+    events:
+      - tourism.visitor-flow.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: treasury
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: A fiscal constraint bounds which scenario outcomes are reachable.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.fiscal-risk.flagged.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: digital-nervous-system
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: Raw observations keep regional twins current between ministry publications.
+    contract: packages/contracts/src/events/digital-nervous-system.ts
+    events:
+      - iot.sensor.observation.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: smart-trade
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: Trade flows are the economic exchange term between regions.
+    contract: packages/contracts/src/events/smart-trade.ts
+    events:
+      - trade.shipment.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: skills-opportunity
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: Skill availability limits what a regional plan can actually execute.
+    contract: packages/contracts/src/events/skills-opportunity.ts
+    events:
+      - skills.gap.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: culture
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: Creative activity is a measurable part of regional economic activity.
+    contract: packages/contracts/src/events/culture.ts
+    events:
+      - culture.creative-economy.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: life-care
+    target: national-digital-twin
+    relationship_type: event-producer-to-consumer
+    reason: Care coverage is part of the social axis of the region state.
+    contract: packages/contracts/src/events/life-care.ts
+    events:
+      - care.facility-capacity.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/national-digital-twin/src/consumers.ts
+  - source: health
+    target: national-digital-twin
+    relationship_type: api-provider-to-consumer
+    reason: Direct read when the twin needs current capacity rather than the last
+      event.
+    contract: /api/health (OpenAPI at /api/health/openapi.json)
+    events: []
+    apis:
+      - /api/health/capacity
+    criticality: normal
+    implemented_in: services/national-digital-twin/src/adapters.ts
+  - source: environment
+    target: national-digital-twin
+    relationship_type: api-provider-to-consumer
+    reason: Direct read for on-demand recomputation of a region state.
+    contract: /api/environment (OpenAPI at /api/environment/openapi.json)
+    events: []
+    apis:
+      - /api/environment/air-quality
+    criticality: normal
+    implemented_in: services/national-digital-twin/src/adapters.ts
+  - source: mobility-logistics
+    target: national-digital-twin
+    relationship_type: api-provider-to-consumer
+    reason: Direct read of mobility pressure when a scenario is run interactively.
+    contract: /api/mobility-logistics (OpenAPI at /api/mobility-logistics/openapi.json)
+    events: []
+    apis:
+      - /api/mobility-logistics/flows
+    criticality: normal
+    implemented_in: services/national-digital-twin/src/adapters.ts
+  - source: health
+    target: social-mobility
+    relationship_type: event-producer-to-consumer
+    reason: Health access is a component of the vulnerability index.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.capacity.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/social-mobility/src/consumers.ts
+  - source: health
+    target: social-mobility
+    relationship_type: event-producer-to-consumer
+    reason: An epidemic signal changes which cohorts are exposed and how.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.epidemic-signal.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/social-mobility/src/consumers.ts
+  - source: education
+    target: social-mobility
+    relationship_type: event-producer-to-consumer
+    reason: Schooling outcomes are a core axis of social mobility.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.learning-progress.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/social-mobility/src/consumers.ts
+  - source: education
+    target: social-mobility
+    relationship_type: event-producer-to-consumer
+    reason: A degraded school is a mobility constraint on the cohort around it.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.school-condition.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/social-mobility/src/consumers.ts
+  - source: food-water
+    target: social-mobility
+    relationship_type: event-producer-to-consumer
+    reason: Water shortage translates directly into household need in rural cohorts.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - agriculture.water-shortage.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/social-mobility/src/consumers.ts
+  - source: industrial-energy
+    target: social-mobility
+    relationship_type: event-producer-to-consumer
+    reason: Energy insecurity is one of the fastest drivers of household vulnerability.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - energy.outage-risk.flagged.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/social-mobility/src/consumers.ts
+  - source: treasury
+    target: social-mobility
+    relationship_type: event-producer-to-consumer
+    reason: Vulnerability must fall when aid actually lands; that loop must be closed.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.aid.disbursed.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/social-mobility/src/consumers.ts
+  - source: skills-opportunity
+    target: social-mobility
+    relationship_type: event-producer-to-consumer
+    reason: A gap next to a cohort is an opportunity, not only a shortage.
+    contract: packages/contracts/src/events/skills-opportunity.ts
+    events:
+      - skills.gap.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/social-mobility/src/consumers.ts
+  - source: mobility-logistics
+    target: social-mobility
+    relationship_type: event-producer-to-consumer
+    reason: Transport access is one of the strongest predictors of employment access.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.mobility-demand.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/social-mobility/src/consumers.ts
+  - source: life-care
+    target: social-mobility
+    relationship_type: event-producer-to-consumer
+    reason: Care needs and social needs are the same household seen from two
+      ministries.
+    contract: packages/contracts/src/events/life-care.ts
+    events:
+      - care.support-need.detected.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/social-mobility/src/consumers.ts
+  - source: safety-emergency
+    target: social-mobility
+    relationship_type: event-producer-to-consumer
+    reason: Repeated incidents in a zone are a vulnerability signal.
+    contract: packages/contracts/src/events/safety-emergency.ts
+    events:
+      - emergency.incident.created.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/social-mobility/src/consumers.ts
+  - source: resilience
+    target: social-mobility
+    relationship_type: event-producer-to-consumer
+    reason: Crisis response must be ordered by vulnerability, which means seeing the
+      declaration.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/social-mobility/src/consumers.ts
+  - source: infrastructure
+    target: social-mobility
+    relationship_type: event-producer-to-consumer
+    reason: Water and power network health is lived as household quality.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.asset-health.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/social-mobility/src/consumers.ts
+  - source: justice
+    target: social-mobility
+    relationship_type: event-producer-to-consumer
+    reason: Case volume in family and labour matters is a social distress indicator.
+    contract: packages/contracts/src/events/justice.ts
+    events:
+      - justice.case.filed.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/social-mobility/src/consumers.ts
+  - source: health
+    target: social-mobility
+    relationship_type: api-provider-to-consumer
+    reason: Eligibility for health-linked support checks live regional capacity.
+    contract: /api/health (OpenAPI at /api/health/openapi.json)
+    events: []
+    apis:
+      - /api/health/capacity
+    criticality: normal
+    implemented_in: services/social-mobility/src/adapters.ts
+  - source: environment
+    target: industrial-energy
+    relationship_type: event-producer-to-consumer
+    reason: Emissions constrain production; the plant twin must see its own
+      consequence.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.air-quality.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/industrial-energy/src/consumers.ts
+  - source: environment
+    target: industrial-energy
+    relationship_type: event-producer-to-consumer
+    reason: Waste streams are the raw material of the symbiosis engine.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.waste-stream.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/industrial-energy/src/consumers.ts
+  - source: environment
+    target: industrial-energy
+    relationship_type: event-producer-to-consumer
+    reason: Heat risk changes both demand and generation capacity.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.climate-risk.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/industrial-energy/src/consumers.ts
+  - source: digital-nervous-system
+    target: industrial-energy
+    relationship_type: event-producer-to-consumer
+    reason: Energy load and vibration observations are the grid and asset twins.
+    contract: packages/contracts/src/events/digital-nervous-system.ts
+    events:
+      - iot.sensor.observation.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/industrial-energy/src/consumers.ts
+  - source: food-water
+    target: industrial-energy
+    relationship_type: event-producer-to-consumer
+    reason: Industry and agriculture compete for the same water and the same pumping
+      energy.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - agriculture.water-demand.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/industrial-energy/src/consumers.ts
+  - source: infrastructure
+    target: industrial-energy
+    relationship_type: event-producer-to-consumer
+    reason: A predicted power-line failure is an outage risk before it is a
+      maintenance order.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.failure.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/industrial-energy/src/consumers.ts
+  - source: mobility-logistics
+    target: industrial-energy
+    relationship_type: event-producer-to-consumer
+    reason: Freight movement is the physical trace of industrial output.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - logistics.freight.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/industrial-energy/src/consumers.ts
+  - source: smart-trade
+    target: industrial-energy
+    relationship_type: event-producer-to-consumer
+    reason: An input dependency at risk stops a production line.
+    contract: packages/contracts/src/events/smart-trade.ts
+    events:
+      - trade.supply-risk.flagged.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/industrial-energy/src/consumers.ts
+  - source: treasury
+    target: industrial-energy
+    relationship_type: event-producer-to-consumer
+    reason: Industrial and renewable programmes move with approved funding.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.funding.approved.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/industrial-energy/src/consumers.ts
+  - source: resilience
+    target: industrial-energy
+    relationship_type: event-producer-to-consumer
+    reason: Crisis load-shedding priorities are set from the declaration.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/industrial-energy/src/consumers.ts
+  - source: research
+    target: industrial-energy
+    relationship_type: event-producer-to-consumer
+    reason: Process and materials results are adopted first by industry.
+    contract: packages/contracts/src/events/research.ts
+    events:
+      - research.finding.released.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/industrial-energy/src/consumers.ts
+  - source: skills-opportunity
+    target: industrial-energy
+    relationship_type: event-producer-to-consumer
+    reason: Operator and maintenance shortages cap what the grid can safely run.
+    contract: packages/contracts/src/events/skills-opportunity.ts
+    events:
+      - skills.gap.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/industrial-energy/src/consumers.ts
+  - source: land
+    target: industrial-energy
+    relationship_type: event-producer-to-consumer
+    reason: Renewable siting is a land question before it is an energy question.
+    contract: packages/contracts/src/events/land.ts
+    events:
+      - land.site-suitability.scored.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/industrial-energy/src/consumers.ts
+  - source: national-digital-twin
+    target: industrial-energy
+    relationship_type: event-producer-to-consumer
+    reason: Scenario outcomes set the demand assumptions the grid plans against.
+    contract: packages/contracts/src/events/national-digital-twin.ts
+    events:
+      - twin.scenario.completed.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/industrial-energy/src/consumers.ts
+  - source: food-water
+    target: smart-trade
+    relationship_type: event-producer-to-consumer
+    reason: Exportable volume of olive oil, dates and cereals is a yield forecast
+      first.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - agriculture.yield.forecast.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/smart-trade/src/consumers.ts
+  - source: food-water
+    target: smart-trade
+    relationship_type: event-producer-to-consumer
+    reason: Seafood export capacity follows stock and effort.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - fisheries.stock.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/smart-trade/src/consumers.ts
+  - source: industrial-energy
+    target: smart-trade
+    relationship_type: event-producer-to-consumer
+    reason: The supply graph is built from what plants actually produce.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - industry.production.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/smart-trade/src/consumers.ts
+  - source: mobility-logistics
+    target: smart-trade
+    relationship_type: event-producer-to-consumer
+    reason: A shipment without a freight movement is a plan, not a shipment.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - logistics.freight.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/smart-trade/src/consumers.ts
+  - source: mobility-logistics
+    target: smart-trade
+    relationship_type: event-producer-to-consumer
+    reason: Corridor congestion is the most common cause of a missed export window.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.congestion.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/smart-trade/src/consumers.ts
+  - source: environment
+    target: smart-trade
+    relationship_type: event-producer-to-consumer
+    reason: Carbon and emission context feeds the product passport footprint.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.air-quality.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/smart-trade/src/consumers.ts
+  - source: infrastructure
+    target: smart-trade
+    relationship_type: event-producer-to-consumer
+    reason: Port and rail health is a hard constraint on export capacity.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.asset-health.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/smart-trade/src/consumers.ts
+  - source: treasury
+    target: smart-trade
+    relationship_type: event-producer-to-consumer
+    reason: Customs revenue exposure and trade risk are read together.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.fiscal-risk.flagged.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/smart-trade/src/consumers.ts
+  - source: global-tunisia
+    target: smart-trade
+    relationship_type: event-producer-to-consumer
+    reason: Diaspora demand is a real and under-used export channel.
+    contract: packages/contracts/src/events/global-tunisia.ts
+    events:
+      - global.diaspora-signal.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/smart-trade/src/consumers.ts
+  - source: justice
+    target: smart-trade
+    relationship_type: event-producer-to-consumer
+    reason: Export requirements change when the applicable text changes.
+    contract: packages/contracts/src/events/justice.ts
+    events:
+      - justice.legal-text.published.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/smart-trade/src/consumers.ts
+  - source: research
+    target: smart-trade
+    relationship_type: event-producer-to-consumer
+    reason: Certification and process results unlock markets that were closed.
+    contract: packages/contracts/src/events/research.ts
+    events:
+      - research.finding.released.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/smart-trade/src/consumers.ts
+  - source: resilience
+    target: smart-trade
+    relationship_type: event-producer-to-consumer
+    reason: A crisis reroutes or blocks corridors and shipments.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/smart-trade/src/consumers.ts
+  - source: land
+    target: smart-trade
+    relationship_type: event-producer-to-consumer
+    reason: Industrial zoning determines where production can expand.
+    contract: packages/contracts/src/events/land.ts
+    events:
+      - land.zoning.changed.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/smart-trade/src/consumers.ts
+  - source: skills-opportunity
+    target: smart-trade
+    relationship_type: event-producer-to-consumer
+    reason: Certification and quality-control skills gate export readiness.
+    contract: packages/contracts/src/events/skills-opportunity.ts
+    events:
+      - skills.gap.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/smart-trade/src/consumers.ts
+  - source: digital-nervous-system
+    target: smart-trade
+    relationship_type: event-producer-to-consumer
+    reason: Cold-chain temperature and container GPS observations are the shipment
+      twin.
+    contract: packages/contracts/src/events/digital-nervous-system.ts
+    events:
+      - iot.sensor.observation.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/smart-trade/src/consumers.ts
+  - source: health
+    target: smart-trade
+    relationship_type: event-producer-to-consumer
+    reason: Food and pharmaceutical export controls follow health signals at the
+      border.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.epidemic-signal.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/smart-trade/src/consumers.ts
+  - source: mobility-logistics
+    target: smart-trade
+    relationship_type: api-provider-to-consumer
+    reason: Corridor state at the moment an export plan is produced.
+    contract: /api/mobility-logistics (OpenAPI at /api/mobility-logistics/openapi.json)
+    events: []
+    apis:
+      - /api/mobility-logistics/flows
+    criticality: normal
+    implemented_in: services/smart-trade/src/adapters.ts
+  - source: environment
+    target: food-water
+    relationship_type: event-producer-to-consumer
+    reason: Drought index is the dominant term in every water demand forecast.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.climate-risk.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/food-water/src/consumers.ts
+  - source: environment
+    target: food-water
+    relationship_type: event-producer-to-consumer
+    reason: Unusable water is not supply; quality belongs in the balance.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.water-quality.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/food-water/src/consumers.ts
+  - source: environment
+    target: food-water
+    relationship_type: event-producer-to-consumer
+    reason: Heat and particulate load affect evapotranspiration and crop stress.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.air-quality.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/food-water/src/consumers.ts
+  - source: digital-nervous-system
+    target: food-water
+    relationship_type: event-producer-to-consumer
+    reason: Soil moisture, rainfall and reservoir level are the farm and water twins.
+    contract: packages/contracts/src/events/digital-nervous-system.ts
+    events:
+      - iot.sensor.observation.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/food-water/src/consumers.ts
+  - source: infrastructure
+    target: food-water
+    relationship_type: event-producer-to-consumer
+    reason: A failing water network turns available water into unavailable water.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.failure.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/food-water/src/consumers.ts
+  - source: industrial-energy
+    target: food-water
+    relationship_type: event-producer-to-consumer
+    reason: Irrigation is pumping; no power is no irrigation.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - energy.outage-risk.flagged.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/food-water/src/consumers.ts
+  - source: land
+    target: food-water
+    relationship_type: event-producer-to-consumer
+    reason: Farm boundaries and areas come from the land register.
+    contract: packages/contracts/src/events/land.ts
+    events:
+      - land.parcel.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/food-water/src/consumers.ts
+  - source: land
+    target: food-water
+    relationship_type: event-producer-to-consumer
+    reason: Agricultural land converted to another use leaves the water demand model.
+    contract: packages/contracts/src/events/land.ts
+    events:
+      - land.zoning.changed.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/food-water/src/consumers.ts
+  - source: treasury
+    target: food-water
+    relationship_type: event-producer-to-consumer
+    reason: Irrigation programmes and compensation move with approved funding.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.funding.approved.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/food-water/src/consumers.ts
+  - source: resilience
+    target: food-water
+    relationship_type: event-producer-to-consumer
+    reason: Under drought crisis the grid switches to allocation rather than
+      demand-following.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/food-water/src/consumers.ts
+  - source: smart-trade
+    target: food-water
+    relationship_type: event-producer-to-consumer
+    reason: Export demand changes which crops are worth the water.
+    contract: packages/contracts/src/events/smart-trade.ts
+    events:
+      - trade.export-opportunity.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/food-water/src/consumers.ts
+  - source: research
+    target: food-water
+    relationship_type: event-producer-to-consumer
+    reason: Agronomy and water results are adopted directly by the farm twin.
+    contract: packages/contracts/src/events/research.ts
+    events:
+      - research.finding.released.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/food-water/src/consumers.ts
+  - source: health
+    target: food-water
+    relationship_type: event-producer-to-consumer
+    reason: Water-borne health signals point back at a water asset.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.epidemic-signal.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/food-water/src/consumers.ts
+  - source: national-digital-twin
+    target: food-water
+    relationship_type: event-producer-to-consumer
+    reason: Regional state gives the demand context a single farm cannot see.
+    contract: packages/contracts/src/events/national-digital-twin.ts
+    events:
+      - twin.state.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/food-water/src/consumers.ts
+  - source: education
+    target: skills-opportunity
+    relationship_type: event-producer-to-consumer
+    reason: Programmes are the supply side of the skills graph.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.program.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/skills-opportunity/src/consumers.ts
+  - source: education
+    target: skills-opportunity
+    relationship_type: event-producer-to-consumer
+    reason: Cohort mastery is how supply becomes real rather than enrolled.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.learning-progress.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/skills-opportunity/src/consumers.ts
+  - source: research
+    target: skills-opportunity
+    relationship_type: event-producer-to-consumer
+    reason: Research activity is an advanced-skill demand signal.
+    contract: packages/contracts/src/events/research.ts
+    events:
+      - research.project.published.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/skills-opportunity/src/consumers.ts
+  - source: research
+    target: skills-opportunity
+    relationship_type: event-producer-to-consumer
+    reason: A technology transfer creates a specific, datable skill need.
+    contract: packages/contracts/src/events/research.ts
+    events:
+      - research.transfer.matched.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/skills-opportunity/src/consumers.ts
+  - source: industrial-energy
+    target: skills-opportunity
+    relationship_type: event-producer-to-consumer
+    reason: Industrial activity is the largest single source of skill demand.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - industry.production.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/skills-opportunity/src/consumers.ts
+  - source: food-water
+    target: skills-opportunity
+    relationship_type: event-producer-to-consumer
+    reason: Agricultural seasons drive predictable seasonal skill demand.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - agriculture.yield.forecast.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/skills-opportunity/src/consumers.ts
+  - source: smart-trade
+    target: skills-opportunity
+    relationship_type: event-producer-to-consumer
+    reason: An export opening is a skill requirement with a deadline.
+    contract: packages/contracts/src/events/smart-trade.ts
+    events:
+      - trade.export-opportunity.detected.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/skills-opportunity/src/consumers.ts
+  - source: infrastructure
+    target: skills-opportunity
+    relationship_type: event-producer-to-consumer
+    reason: Scheduled works are dated demand for named trades.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.maintenance.scheduled.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/skills-opportunity/src/consumers.ts
+  - source: health
+    target: skills-opportunity
+    relationship_type: event-producer-to-consumer
+    reason: Chronic saturation is a health workforce gap, not only a bed gap.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.capacity.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/skills-opportunity/src/consumers.ts
+  - source: treasury
+    target: skills-opportunity
+    relationship_type: event-producer-to-consumer
+    reason: A funded programme is a hiring plan.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.funding.approved.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/skills-opportunity/src/consumers.ts
+  - source: tourism
+    target: skills-opportunity
+    relationship_type: event-producer-to-consumer
+    reason: Seasonal tourism demand is seasonal skill demand.
+    contract: packages/contracts/src/events/tourism.ts
+    events:
+      - tourism.visitor-flow.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/skills-opportunity/src/consumers.ts
+  - source: global-tunisia
+    target: skills-opportunity
+    relationship_type: event-producer-to-consumer
+    reason: Skills concentrated abroad are supply the national graph should count.
+    contract: packages/contracts/src/events/global-tunisia.ts
+    events:
+      - global.diaspora-signal.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/skills-opportunity/src/consumers.ts
+  - source: talent
+    target: skills-opportunity
+    relationship_type: event-producer-to-consumer
+    reason: Youth pipelines feed both sport and the wider opportunity network.
+    contract: packages/contracts/src/events/talent.ts
+    events:
+      - talent.performance.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/skills-opportunity/src/consumers.ts
+  - source: social-mobility
+    target: skills-opportunity
+    relationship_type: event-producer-to-consumer
+    reason: Micro-missions are placed where mobility is blocked, not where it is easy.
+    contract: packages/contracts/src/events/social-mobility.ts
+    events:
+      - social.vulnerability.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/skills-opportunity/src/consumers.ts
+  - source: research
+    target: skills-opportunity
+    relationship_type: api-provider-to-consumer
+    reason: Research capability is read when a career path targets an advanced domain.
+    contract: /api/research (OpenAPI at /api/research/openapi.json)
+    events: []
+    apis:
+      - /api/research/capability
+    criticality: normal
+    implemented_in: services/skills-opportunity/src/adapters.ts
+  - source: environment
+    target: health
+    relationship_type: event-producer-to-consumer
+    reason: Respiratory admissions follow particulate load with a short, known lag.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.air-quality.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/health/src/consumers.ts
+  - source: environment
+    target: health
+    relationship_type: event-producer-to-consumer
+    reason: Water-borne disease surveillance starts at the water station, not at the
+      ward.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.water-quality.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/health/src/consumers.ts
+  - source: environment
+    target: health
+    relationship_type: event-producer-to-consumer
+    reason: Heat risk is a direct predictor of emergency load in vulnerable cohorts.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.climate-risk.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/health/src/consumers.ts
+  - source: digital-nervous-system
+    target: health
+    relationship_type: event-producer-to-consumer
+    reason: Wearable and facility observations feed the cohort and hospital twins.
+    contract: packages/contracts/src/events/digital-nervous-system.ts
+    events:
+      - iot.sensor.observation.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/health/src/consumers.ts
+  - source: safety-emergency
+    target: health
+    relationship_type: event-producer-to-consumer
+    reason: Incoming casualties are known from the incident, before they arrive.
+    contract: packages/contracts/src/events/safety-emergency.ts
+    events:
+      - emergency.incident.created.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/health/src/consumers.ts
+  - source: mobility-logistics
+    target: health
+    relationship_type: event-producer-to-consumer
+    reason: The hospital needs the ETA of what is coming to it.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.resource.dispatched.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/health/src/consumers.ts
+  - source: social-mobility
+    target: health
+    relationship_type: event-producer-to-consumer
+    reason: Vulnerable cohorts need outreach, not availability.
+    contract: packages/contracts/src/events/social-mobility.ts
+    events:
+      - social.vulnerability.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/health/src/consumers.ts
+  - source: food-water
+    target: health
+    relationship_type: event-producer-to-consumer
+    reason: Water shortage has a documented health consequence within weeks.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - agriculture.water-shortage.predicted.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/health/src/consumers.ts
+  - source: education
+    target: health
+    relationship_type: event-producer-to-consumer
+    reason: School air quality and crowding are paediatric health signals.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.school-condition.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/health/src/consumers.ts
+  - source: resilience
+    target: health
+    relationship_type: event-producer-to-consumer
+    reason: Crisis mode changes triage rules and capacity reporting frequency.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/health/src/consumers.ts
+  - source: life-care
+    target: health
+    relationship_type: event-producer-to-consumer
+    reason: Discharge to a care facility is what frees a hospital bed.
+    contract: packages/contracts/src/events/life-care.ts
+    events:
+      - care.facility-capacity.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/health/src/consumers.ts
+  - source: industrial-energy
+    target: health
+    relationship_type: event-producer-to-consumer
+    reason: An ICU without power is an evacuation, planned in advance or not at all.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - energy.outage-risk.flagged.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/health/src/consumers.ts
+  - source: tourism
+    target: health
+    relationship_type: event-producer-to-consumer
+    reason: Seasonal population changes the denominator of every capacity ratio.
+    contract: packages/contracts/src/events/tourism.ts
+    events:
+      - tourism.visitor-flow.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/health/src/consumers.ts
+  - source: talent
+    target: health
+    relationship_type: event-producer-to-consumer
+    reason: Sports injury load is predictable and lands in the same emergency rooms.
+    contract: packages/contracts/src/events/talent.ts
+    events:
+      - talent.injury-risk.flagged.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/health/src/consumers.ts
+  - source: mobility-logistics
+    target: health
+    relationship_type: api-provider-to-consumer
+    reason: Inter-hospital transfer starts by finding the closest available ambulance.
+    contract: /api/mobility-logistics (OpenAPI at /api/mobility-logistics/openapi.json)
+    events: []
+    apis:
+      - /api/mobility-logistics/resources/nearest
+    criticality: critical
+    implemented_in: services/health/src/adapters.ts
+  - source: environment
+    target: health
+    relationship_type: api-provider-to-consumer
+    reason: Live air quality when an epidemic scan is run on demand.
+    contract: /api/environment (OpenAPI at /api/environment/openapi.json)
+    events: []
+    apis:
+      - /api/environment/air-quality
+    criticality: normal
+    implemented_in: services/health/src/adapters.ts
+  - source: skills-opportunity
+    target: education
+    relationship_type: event-producer-to-consumer
+    reason: A detected gap is the reason a programme is adapted; this is the core loop.
+    contract: packages/contracts/src/events/skills-opportunity.ts
+    events:
+      - skills.gap.detected.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/education/src/consumers.ts
+  - source: digital-nervous-system
+    target: education
+    relationship_type: event-producer-to-consumer
+    reason: School air quality, occupancy and temperature are the school twin.
+    contract: packages/contracts/src/events/digital-nervous-system.ts
+    events:
+      - iot.sensor.observation.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/education/src/consumers.ts
+  - source: environment
+    target: education
+    relationship_type: event-producer-to-consumer
+    reason: Poor air in a school is a decision to take today, not a statistic.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.air-quality.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/education/src/consumers.ts
+  - source: infrastructure
+    target: education
+    relationship_type: event-producer-to-consumer
+    reason: A school building is an infrastructure asset with a health index.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.asset-health.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/education/src/consumers.ts
+  - source: infrastructure
+    target: education
+    relationship_type: event-producer-to-consumer
+    reason: A predicted building failure means relocating pupils, with notice.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.failure.predicted.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/education/src/consumers.ts
+  - source: social-mobility
+    target: education
+    relationship_type: event-producer-to-consumer
+    reason: Dropout risk is a social signal before it is an academic one.
+    contract: packages/contracts/src/events/social-mobility.ts
+    events:
+      - social.vulnerability.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/education/src/consumers.ts
+  - source: research
+    target: education
+    relationship_type: event-producer-to-consumer
+    reason: Pedagogy and curriculum results enter the knowledge graph.
+    contract: packages/contracts/src/events/research.ts
+    events:
+      - research.finding.released.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/education/src/consumers.ts
+  - source: treasury
+    target: education
+    relationship_type: event-producer-to-consumer
+    reason: Class sizes and equipment follow the education budget line.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.budget-line.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/education/src/consumers.ts
+  - source: health
+    target: education
+    relationship_type: event-producer-to-consumer
+    reason: School closure and reopening decisions follow the health signal.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.epidemic-signal.detected.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/education/src/consumers.ts
+  - source: mobility-logistics
+    target: education
+    relationship_type: event-producer-to-consumer
+    reason: School transport is a large, predictable share of morning demand.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.mobility-demand.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/education/src/consumers.ts
+  - source: culture
+    target: education
+    relationship_type: event-producer-to-consumer
+    reason: Cultural programming is part of the school calendar.
+    contract: packages/contracts/src/events/culture.ts
+    events:
+      - culture.event.scheduled.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/education/src/consumers.ts
+  - source: industrial-energy
+    target: education
+    relationship_type: event-producer-to-consumer
+    reason: Local industry defines which vocational tracks have a local outlet.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - industry.production.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/education/src/consumers.ts
+  - source: resilience
+    target: education
+    relationship_type: event-producer-to-consumer
+    reason: Schools become shelters; the education system must know first.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/education/src/consumers.ts
+  - source: talent
+    target: education
+    relationship_type: event-producer-to-consumer
+    reason: Sports facilities are shared with schools and scheduled against them.
+    contract: packages/contracts/src/events/talent.ts
+    events:
+      - talent.facility-usage.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/education/src/consumers.ts
+  - source: skills-opportunity
+    target: education
+    relationship_type: api-provider-to-consumer
+    reason: Programme adaptation reads live regional gaps rather than the last event.
+    contract: /api/skills-opportunity (OpenAPI at /api/skills-opportunity/openapi.json)
+    events: []
+    apis:
+      - /api/skills-opportunity/gaps
+    criticality: critical
+    implemented_in: services/education/src/adapters.ts
+  - source: skills-opportunity
+    target: research
+    relationship_type: event-producer-to-consumer
+    reason: A persistent national gap is a research and training agenda.
+    contract: packages/contracts/src/events/skills-opportunity.ts
+    events:
+      - skills.gap.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/research/src/consumers.ts
+  - source: food-water
+    target: research
+    relationship_type: event-producer-to-consumer
+    reason: Water scarcity is the most funded applied research question in the country.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - agriculture.water-shortage.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/research/src/consumers.ts
+  - source: environment
+    target: research
+    relationship_type: event-producer-to-consumer
+    reason: Climate projections set the agenda of the living labs.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.climate-risk.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/research/src/consumers.ts
+  - source: health
+    target: research
+    relationship_type: event-producer-to-consumer
+    reason: An epidemic signal is a research trigger with a deadline.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.epidemic-signal.detected.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/research/src/consumers.ts
+  - source: industrial-energy
+    target: research
+    relationship_type: event-producer-to-consumer
+    reason: Symbiosis matches are process research made concrete.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - industry.symbiosis.matched.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/research/src/consumers.ts
+  - source: infrastructure
+    target: research
+    relationship_type: event-producer-to-consumer
+    reason: Materials and structural research follows real failure modes.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.failure.predicted.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/research/src/consumers.ts
+  - source: education
+    target: research
+    relationship_type: event-producer-to-consumer
+    reason: Programmes and research capability must stay in the same graph.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.program.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/research/src/consumers.ts
+  - source: treasury
+    target: research
+    relationship_type: event-producer-to-consumer
+    reason: A research project without approved funding is a proposal.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.funding.approved.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/research/src/consumers.ts
+  - source: national-digital-twin
+    target: research
+    relationship_type: event-producer-to-consumer
+    reason: Scenario gaps are exactly where research is missing.
+    contract: packages/contracts/src/events/national-digital-twin.ts
+    events:
+      - twin.scenario.completed.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/research/src/consumers.ts
+  - source: land
+    target: research
+    relationship_type: event-producer-to-consumer
+    reason: Living lab sites are chosen by land suitability.
+    contract: packages/contracts/src/events/land.ts
+    events:
+      - land.site-suitability.scored.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/research/src/consumers.ts
+  - source: smart-trade
+    target: research
+    relationship_type: event-producer-to-consumer
+    reason: A supply dependency at risk is a substitution research problem.
+    contract: packages/contracts/src/events/smart-trade.ts
+    events:
+      - trade.supply-risk.flagged.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/research/src/consumers.ts
+  - source: global-tunisia
+    target: research
+    relationship_type: event-producer-to-consumer
+    reason: Diaspora researchers are a large part of national research capability.
+    contract: packages/contracts/src/events/global-tunisia.ts
+    events:
+      - global.diaspora-signal.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/research/src/consumers.ts
+  - source: culture
+    target: research
+    relationship_type: event-producer-to-consumer
+    reason: Conservation science is driven by measured asset degradation.
+    contract: packages/contracts/src/events/culture.ts
+    events:
+      - culture.asset-condition.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/research/src/consumers.ts
+  - source: talent
+    target: research
+    relationship_type: event-producer-to-consumer
+    reason: Sports science is applied physiology research with a live dataset.
+    contract: packages/contracts/src/events/talent.ts
+    events:
+      - talent.injury-risk.flagged.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/research/src/consumers.ts
+  - source: digital-nervous-system
+    target: talent
+    relationship_type: event-producer-to-consumer
+    reason: Wearable and occupancy observations are the athlete and facility twins.
+    contract: packages/contracts/src/events/digital-nervous-system.ts
+    events:
+      - iot.sensor.observation.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/talent/src/consumers.ts
+  - source: health
+    target: talent
+    relationship_type: event-producer-to-consumer
+    reason: Sports medicine capacity gates both competition and training volume.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.capacity.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/talent/src/consumers.ts
+  - source: education
+    target: talent
+    relationship_type: event-producer-to-consumer
+    reason: School sport is where the pipeline actually starts.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.learning-progress.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/talent/src/consumers.ts
+  - source: education
+    target: talent
+    relationship_type: event-producer-to-consumer
+    reason: School facilities are the majority of accessible sports infrastructure.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.school-condition.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/talent/src/consumers.ts
+  - source: environment
+    target: talent
+    relationship_type: event-producer-to-consumer
+    reason: Outdoor training on a high-particulate day is a measurable injury and
+      health risk.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.air-quality.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/talent/src/consumers.ts
+  - source: environment
+    target: talent
+    relationship_type: event-producer-to-consumer
+    reason: Heat risk decides whether a session is held at all.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.climate-risk.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/talent/src/consumers.ts
+  - source: infrastructure
+    target: talent
+    relationship_type: event-producer-to-consumer
+    reason: A stadium is an infrastructure asset before it is a venue.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.asset-health.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/talent/src/consumers.ts
+  - source: industrial-energy
+    target: talent
+    relationship_type: event-producer-to-consumer
+    reason: Facility energy use is measured against the grid it sits on.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - energy.grid-load.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/talent/src/consumers.ts
+  - source: social-mobility
+    target: talent
+    relationship_type: event-producer-to-consumer
+    reason: Youth opportunity is targeted where mobility is blocked.
+    contract: packages/contracts/src/events/social-mobility.ts
+    events:
+      - social.vulnerability.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/talent/src/consumers.ts
+  - source: skills-opportunity
+    target: talent
+    relationship_type: event-producer-to-consumer
+    reason: Youth missions and sports pipelines share the same participants.
+    contract: packages/contracts/src/events/skills-opportunity.ts
+    events:
+      - skills.micro-mission.published.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/talent/src/consumers.ts
+  - source: culture
+    target: talent
+    relationship_type: event-producer-to-consumer
+    reason: Venues and calendars are shared with cultural programming.
+    contract: packages/contracts/src/events/culture.ts
+    events:
+      - culture.event.scheduled.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/talent/src/consumers.ts
+  - source: mobility-logistics
+    target: talent
+    relationship_type: event-producer-to-consumer
+    reason: Match-day mobility is planned, not absorbed.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.mobility-demand.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/talent/src/consumers.ts
+  - source: safety-emergency
+    target: talent
+    relationship_type: event-producer-to-consumer
+    reason: Crowd incidents at venues change facility operating rules.
+    contract: packages/contracts/src/events/safety-emergency.ts
+    events:
+      - emergency.incident.created.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/talent/src/consumers.ts
+  - source: treasury
+    target: talent
+    relationship_type: event-producer-to-consumer
+    reason: Facility maintenance and youth programmes follow the budget line.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.budget-line.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/talent/src/consumers.ts
+  - source: health
+    target: talent
+    relationship_type: api-provider-to-consumer
+    reason: Live medical capacity is checked before a large event is confirmed.
+    contract: /api/health (OpenAPI at /api/health/openapi.json)
+    events: []
+    apis:
+      - /api/health/capacity
+    criticality: normal
+    implemented_in: services/talent/src/adapters.ts
+  - source: digital-nervous-system
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: Humidity, vibration and strain observations are the site condition twin.
+    contract: packages/contracts/src/events/digital-nervous-system.ts
+    events:
+      - iot.sensor.observation.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: environment
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: Particulates and pollutants are the main slow destroyer of historic fabric.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.air-quality.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: environment
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: Humidity and flood risk decide conservation priority.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.climate-risk.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: infrastructure
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: Historic buildings are infrastructure assets with irreplaceable value.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.failure.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: infrastructure
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: Conservation work is scheduled through the same maintenance system.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.maintenance.scheduled.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: industrial-energy
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: Site energy systems are optimised against the local grid.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - energy.grid-load.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: culture
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: Many sites are both religious and cultural assets; conditions must agree.
+    contract: packages/contracts/src/events/culture.ts
+    events:
+      - culture.asset-condition.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: tourism
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: Visitor pressure is the fastest controllable driver of degradation.
+    contract: packages/contracts/src/events/tourism.ts
+    events:
+      - tourism.visitor-flow.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: tourism
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: Over-capacity is the signal that access must be regulated.
+    contract: packages/contracts/src/events/tourism.ts
+    events:
+      - tourism.site-pressure.detected.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: mobility-logistics
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: Access flows around historic quarters are a conservation variable.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.mobility-demand.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: research
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: Conservation science results are adopted directly by the sensor network.
+    contract: packages/contracts/src/events/research.ts
+    events:
+      - research.finding.released.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: safety-emergency
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: Fire and structural incidents at sites need an immediate, specific
+      response.
+    contract: packages/contracts/src/events/safety-emergency.ts
+    events:
+      - emergency.incident.created.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: treasury
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: Restoration programmes exist only once funded.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.funding.approved.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: education
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: Heritage education programmes are built on the knowledge graph.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.program.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: resilience
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: Historic sites are protection and evacuation priorities the moment a
+      crisis is declared.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: land
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: What may be built next to a protected site is decided by zoning around it.
+    contract: packages/contracts/src/events/land.ts
+    events:
+      - land.zoning.changed.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: social-mobility
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: Zaouias and madrasas remain community services in the most fragile
+      neighbourhoods.
+    contract: packages/contracts/src/events/social-mobility.ts
+    events:
+      - social.vulnerability.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: national-digital-twin
+    target: religious-heritage
+    relationship_type: event-producer-to-consumer
+    reason: Regional state orders the conservation queue between governorates.
+    contract: packages/contracts/src/events/national-digital-twin.ts
+    events:
+      - twin.state.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/religious-heritage/src/consumers.ts
+  - source: culture
+    target: religious-heritage
+    relationship_type: api-provider-to-consumer
+    reason: Shared assets are reconciled against Culture own condition record.
+    contract: /api/culture (OpenAPI at /api/culture/openapi.json)
+    events: []
+    apis:
+      - /api/culture/assets/condition
+    criticality: normal
+    implemented_in: services/religious-heritage/src/adapters.ts
+  - source: environment
+    target: digital-nervous-system
+    relationship_type: event-producer-to-consumer
+    reason: Station readings validate the fabric against an independent publication.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.air-quality.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/digital-nervous-system/src/consumers.ts
+  - source: safety-emergency
+    target: digital-nervous-system
+    relationship_type: event-producer-to-consumer
+    reason: Incidents localise where edge capacity must be reinforced.
+    contract: packages/contracts/src/events/safety-emergency.ts
+    events:
+      - emergency.incident.created.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/digital-nervous-system/src/consumers.ts
+  - source: resilience
+    target: digital-nervous-system
+    relationship_type: event-producer-to-consumer
+    reason: Crisis mode changes edge routing to store-and-forward.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/digital-nervous-system/src/consumers.ts
+  - source: resilience
+    target: digital-nervous-system
+    relationship_type: event-producer-to-consumer
+    reason: Mesh nodes are edge nodes seen by the ministry that deploys them.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.mesh-node.status.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/digital-nervous-system/src/consumers.ts
+  - source: infrastructure
+    target: digital-nervous-system
+    relationship_type: event-producer-to-consumer
+    reason: Telecom sites are infrastructure assets; their health is fabric health.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.asset-health.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/digital-nervous-system/src/consumers.ts
+  - source: industrial-energy
+    target: digital-nervous-system
+    relationship_type: event-producer-to-consumer
+    reason: An edge node without power is an edge node that is gone.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - energy.grid-load.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/digital-nervous-system/src/consumers.ts
+  - source: mobility-logistics
+    target: digital-nervous-system
+    relationship_type: event-producer-to-consumer
+    reason: Moving resources carry sensors that join and leave the fabric.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.resource.dispatched.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/digital-nervous-system/src/consumers.ts
+  - source: food-water
+    target: digital-nervous-system
+    relationship_type: event-producer-to-consumer
+    reason: Confirms that water sensors registered here are producing usable values.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - water.reservoir-level.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/digital-nervous-system/src/consumers.ts
+  - source: health
+    target: digital-nervous-system
+    relationship_type: event-producer-to-consumer
+    reason: Facility connectivity is prioritised by criticality of the facility.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.capacity.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/digital-nervous-system/src/consumers.ts
+  - source: education
+    target: digital-nervous-system
+    relationship_type: event-producer-to-consumer
+    reason: School connectivity is a fabric coverage question.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.school-condition.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/digital-nervous-system/src/consumers.ts
+  - source: land
+    target: digital-nervous-system
+    relationship_type: event-producer-to-consumer
+    reason: Sensor and node siting is a land question.
+    contract: packages/contracts/src/events/land.ts
+    events:
+      - land.parcel.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/digital-nervous-system/src/consumers.ts
+  - source: research
+    target: digital-nervous-system
+    relationship_type: event-producer-to-consumer
+    reason: Edge inference and networking results are deployed on the fabric.
+    contract: packages/contracts/src/events/research.ts
+    events:
+      - research.finding.released.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/digital-nervous-system/src/consumers.ts
+  - source: national-digital-twin
+    target: digital-nervous-system
+    relationship_type: event-producer-to-consumer
+    reason: An anomaly across sensors is often a fabric fault, not a real event.
+    contract: packages/contracts/src/events/national-digital-twin.ts
+    events:
+      - twin.anomaly.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/digital-nervous-system/src/consumers.ts
+  - source: treasury
+    target: digital-nervous-system
+    relationship_type: event-producer-to-consumer
+    reason: Coverage extension programmes follow approved funding.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.funding.approved.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/digital-nervous-system/src/consumers.ts
+  - source: tourism
+    target: digital-nervous-system
+    relationship_type: event-producer-to-consumer
+    reason: Crowded sites are where public connectivity is most contested.
+    contract: packages/contracts/src/events/tourism.ts
+    events:
+      - tourism.site-pressure.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/digital-nervous-system/src/consumers.ts
+  - source: safety-emergency
+    target: mobility-logistics
+    relationship_type: event-producer-to-consumer
+    reason: An incident closes lanes and pulls resources; both are mobility facts.
+    contract: packages/contracts/src/events/safety-emergency.ts
+    events:
+      - emergency.incident.created.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/mobility-logistics/src/consumers.ts
+  - source: safety-emergency
+    target: mobility-logistics
+    relationship_type: event-producer-to-consumer
+    reason: Emergency resource requests are dispatch orders for Transport.
+    contract: packages/contracts/src/events/safety-emergency.ts
+    events:
+      - emergency.resource.requested.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/mobility-logistics/src/consumers.ts
+  - source: health
+    target: mobility-logistics
+    relationship_type: event-producer-to-consumer
+    reason: A health emergency is a transport mission with a clock.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.emergency.declared.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/mobility-logistics/src/consumers.ts
+  - source: health
+    target: mobility-logistics
+    relationship_type: event-producer-to-consumer
+    reason: A resource is only correctly routed if the destination can receive it.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.capacity.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/mobility-logistics/src/consumers.ts
+  - source: resilience
+    target: mobility-logistics
+    relationship_type: event-producer-to-consumer
+    reason: Relief convoys are planned from crisis resource requests.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.resource-request.created.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/mobility-logistics/src/consumers.ts
+  - source: resilience
+    target: mobility-logistics
+    relationship_type: event-producer-to-consumer
+    reason: Crisis mode reprioritises the entire fleet.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/mobility-logistics/src/consumers.ts
+  - source: environment
+    target: mobility-logistics
+    relationship_type: event-producer-to-consumer
+    reason: Traffic is both a cause and a victim of poor air; both feed the corridor
+      twin.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.air-quality.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/mobility-logistics/src/consumers.ts
+  - source: environment
+    target: mobility-logistics
+    relationship_type: event-producer-to-consumer
+    reason: Flood and heat risk close corridors before any incident is reported.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.climate-risk.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/mobility-logistics/src/consumers.ts
+  - source: digital-nervous-system
+    target: mobility-logistics
+    relationship_type: event-producer-to-consumer
+    reason: Traffic flow and GPS observations are the mobility twin.
+    contract: packages/contracts/src/events/digital-nervous-system.ts
+    events:
+      - iot.sensor.observation.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/mobility-logistics/src/consumers.ts
+  - source: infrastructure
+    target: mobility-logistics
+    relationship_type: event-producer-to-consumer
+    reason: A predicted bridge failure removes a corridor from every route.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.failure.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/mobility-logistics/src/consumers.ts
+  - source: infrastructure
+    target: mobility-logistics
+    relationship_type: event-producer-to-consumer
+    reason: Planned works are planned congestion.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.maintenance.scheduled.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/mobility-logistics/src/consumers.ts
+  - source: smart-trade
+    target: mobility-logistics
+    relationship_type: event-producer-to-consumer
+    reason: Freight planning starts from the shipments that exist.
+    contract: packages/contracts/src/events/smart-trade.ts
+    events:
+      - trade.shipment.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/mobility-logistics/src/consumers.ts
+  - source: culture
+    target: mobility-logistics
+    relationship_type: event-producer-to-consumer
+    reason: A scheduled gathering is a demand spike with a known location and hour.
+    contract: packages/contracts/src/events/culture.ts
+    events:
+      - culture.event.scheduled.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/mobility-logistics/src/consumers.ts
+  - source: tourism
+    target: mobility-logistics
+    relationship_type: event-producer-to-consumer
+    reason: Seasonal visitor flows reshape corridor demand.
+    contract: packages/contracts/src/events/tourism.ts
+    events:
+      - tourism.visitor-flow.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/mobility-logistics/src/consumers.ts
+  - source: education
+    target: mobility-logistics
+    relationship_type: event-producer-to-consumer
+    reason: School location and status drive school transport planning.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.school-condition.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/mobility-logistics/src/consumers.ts
+  - source: food-water
+    target: mobility-logistics
+    relationship_type: event-producer-to-consumer
+    reason: Harvest volumes are freight demand with a season.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - agriculture.yield.forecast.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/mobility-logistics/src/consumers.ts
+  - source: environment
+    target: mobility-logistics
+    relationship_type: api-provider-to-consumer
+    reason: Air quality is read when a corridor plan is produced interactively.
+    contract: /api/environment (OpenAPI at /api/environment/openapi.json)
+    events: []
+    apis:
+      - /api/environment/air-quality
+    criticality: normal
+    implemented_in: services/mobility-logistics/src/adapters.ts
+  - source: digital-nervous-system
+    target: infrastructure
+    relationship_type: event-producer-to-consumer
+    reason: Vibration, strain and water-level observations are the asset health index.
+    contract: packages/contracts/src/events/digital-nervous-system.ts
+    events:
+      - iot.sensor.observation.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/infrastructure/src/consumers.ts
+  - source: environment
+    target: infrastructure
+    relationship_type: event-producer-to-consumer
+    reason: Flood and heat risk are the dominant accelerators of asset degradation.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.climate-risk.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/infrastructure/src/consumers.ts
+  - source: environment
+    target: infrastructure
+    relationship_type: event-producer-to-consumer
+    reason: Water chemistry drives corrosion in networks and structures.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.water-quality.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/infrastructure/src/consumers.ts
+  - source: mobility-logistics
+    target: infrastructure
+    relationship_type: event-producer-to-consumer
+    reason: Load is what wears a road; demand is the load.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.mobility-demand.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/infrastructure/src/consumers.ts
+  - source: mobility-logistics
+    target: infrastructure
+    relationship_type: event-producer-to-consumer
+    reason: Chronic congestion marks the segments that fail first.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.congestion.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/infrastructure/src/consumers.ts
+  - source: safety-emergency
+    target: infrastructure
+    relationship_type: event-producer-to-consumer
+    reason: Incidents on an asset are the strongest evidence its health index is wrong.
+    contract: packages/contracts/src/events/safety-emergency.ts
+    events:
+      - emergency.incident.created.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/infrastructure/src/consumers.ts
+  - source: industrial-energy
+    target: infrastructure
+    relationship_type: event-producer-to-consumer
+    reason: Power lines and substations are infrastructure assets under electrical
+      load.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - energy.grid-load.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/infrastructure/src/consumers.ts
+  - source: food-water
+    target: infrastructure
+    relationship_type: event-producer-to-consumer
+    reason: Water networks are sized and stressed by demand.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - agriculture.water-demand.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/infrastructure/src/consumers.ts
+  - source: treasury
+    target: infrastructure
+    relationship_type: event-producer-to-consumer
+    reason: A maintenance order without funding is a wish.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.funding.approved.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/infrastructure/src/consumers.ts
+  - source: resilience
+    target: infrastructure
+    relationship_type: event-producer-to-consumer
+    reason: Crisis reprioritises maintenance towards what the response depends on.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/infrastructure/src/consumers.ts
+  - source: land
+    target: infrastructure
+    relationship_type: event-producer-to-consumer
+    reason: New zoning creates infrastructure obligations before it creates buildings.
+    contract: packages/contracts/src/events/land.ts
+    events:
+      - land.zoning.changed.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/infrastructure/src/consumers.ts
+  - source: education
+    target: infrastructure
+    relationship_type: event-producer-to-consumer
+    reason: School buildings are part of the public asset base.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.school-condition.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/infrastructure/src/consumers.ts
+  - source: health
+    target: infrastructure
+    relationship_type: event-producer-to-consumer
+    reason: Hospitals are critical assets; their continuity sets maintenance priority.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.capacity.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/infrastructure/src/consumers.ts
+  - source: religious-heritage
+    target: infrastructure
+    relationship_type: event-producer-to-consumer
+    reason: Historic structures need maintenance rules of their own, from the same
+      system.
+    contract: packages/contracts/src/events/religious-heritage.ts
+    events:
+      - heritage.site-condition.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/infrastructure/src/consumers.ts
+  - source: tourism
+    target: infrastructure
+    relationship_type: event-producer-to-consumer
+    reason: Visitor load is structural load on stairs, walkways and quays.
+    contract: packages/contracts/src/events/tourism.ts
+    events:
+      - tourism.site-pressure.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/infrastructure/src/consumers.ts
+  - source: mobility-logistics
+    target: infrastructure
+    relationship_type: api-provider-to-consumer
+    reason: Traffic load is read when an asset health index is recomputed.
+    contract: /api/mobility-logistics (OpenAPI at /api/mobility-logistics/openapi.json)
+    events: []
+    apis:
+      - /api/mobility-logistics/flows
+    criticality: normal
+    implemented_in: services/infrastructure/src/adapters.ts
+  - source: environment
+    target: land
+    relationship_type: event-producer-to-consumer
+    reason: Flood and drought risk are hard constraints on any siting score.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.climate-risk.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/land/src/consumers.ts
+  - source: environment
+    target: land
+    relationship_type: event-producer-to-consumer
+    reason: Air quality is a constraint on residential and school siting.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.air-quality.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/land/src/consumers.ts
+  - source: food-water
+    target: land
+    relationship_type: event-producer-to-consumer
+    reason: Water availability decides whether agricultural zoning is viable.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - agriculture.water-demand.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/land/src/consumers.ts
+  - source: food-water
+    target: land
+    relationship_type: event-producer-to-consumer
+    reason: A shortage forecast should freeze water-intensive siting decisions.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - agriculture.water-shortage.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/land/src/consumers.ts
+  - source: infrastructure
+    target: land
+    relationship_type: event-producer-to-consumer
+    reason: A site is only suitable if the networks reaching it are.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.asset-health.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/land/src/consumers.ts
+  - source: mobility-logistics
+    target: land
+    relationship_type: event-producer-to-consumer
+    reason: Accessibility is one of the strongest terms in a suitability score.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.mobility-demand.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/land/src/consumers.ts
+  - source: industrial-energy
+    target: land
+    relationship_type: event-producer-to-consumer
+    reason: Industrial activity defines the real use of industrial zoning.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - industry.production.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/land/src/consumers.ts
+  - source: safety-emergency
+    target: land
+    relationship_type: event-producer-to-consumer
+    reason: Repeated incidents on a parcel are a siting constraint.
+    contract: packages/contracts/src/events/safety-emergency.ts
+    events:
+      - emergency.incident.created.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/land/src/consumers.ts
+  - source: resilience
+    target: land
+    relationship_type: event-producer-to-consumer
+    reason: Crisis staging areas are drawn from the public asset register.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/land/src/consumers.ts
+  - source: treasury
+    target: land
+    relationship_type: event-producer-to-consumer
+    reason: Public asset valuation and the budget move together.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.budget-line.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/land/src/consumers.ts
+  - source: tourism
+    target: land
+    relationship_type: event-producer-to-consumer
+    reason: Touristic zoning pressure is measured, not assumed.
+    contract: packages/contracts/src/events/tourism.ts
+    events:
+      - tourism.site-pressure.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/land/src/consumers.ts
+  - source: culture
+    target: land
+    relationship_type: event-producer-to-consumer
+    reason: Protected cultural assets constrain neighbouring parcels.
+    contract: packages/contracts/src/events/culture.ts
+    events:
+      - culture.asset-condition.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/land/src/consumers.ts
+  - source: education
+    target: land
+    relationship_type: event-producer-to-consumer
+    reason: School siting is a land decision with a 40-year horizon.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.school-condition.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/land/src/consumers.ts
+  - source: national-digital-twin
+    target: land
+    relationship_type: event-producer-to-consumer
+    reason: Scenario outcomes are usually expressed as land decisions.
+    contract: packages/contracts/src/events/national-digital-twin.ts
+    events:
+      - twin.scenario.completed.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/land/src/consumers.ts
+  - source: food-water
+    target: land
+    relationship_type: api-provider-to-consumer
+    reason: Water plans are read directly when an agricultural site is evaluated.
+    contract: /api/food-water (OpenAPI at /api/food-water/openapi.json)
+    events: []
+    apis:
+      - /api/food-water/irrigation/plan
+    criticality: normal
+    implemented_in: services/land/src/adapters.ts
+  - source: digital-nervous-system
+    target: environment
+    relationship_type: event-producer-to-consumer
+    reason: Air, water, noise and weather observations ARE the environmental network.
+    contract: packages/contracts/src/events/digital-nervous-system.ts
+    events:
+      - iot.sensor.observation.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/environment/src/consumers.ts
+  - source: industrial-energy
+    target: environment
+    relationship_type: event-producer-to-consumer
+    reason: Industrial output is the main attributable source of emissions.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - industry.production.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/environment/src/consumers.ts
+  - source: industrial-energy
+    target: environment
+    relationship_type: event-producer-to-consumer
+    reason: Generation mix decides the emission intensity of every kilowatt-hour.
+    contract: packages/contracts/src/events/industrial-energy.ts
+    events:
+      - energy.grid-load.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/environment/src/consumers.ts
+  - source: mobility-logistics
+    target: environment
+    relationship_type: event-producer-to-consumer
+    reason: Traffic is the second attributable source of urban air pollution.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.mobility-demand.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/environment/src/consumers.ts
+  - source: mobility-logistics
+    target: environment
+    relationship_type: event-producer-to-consumer
+    reason: Congestion multiplies emissions per kilometre travelled.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.congestion.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/environment/src/consumers.ts
+  - source: food-water
+    target: environment
+    relationship_type: event-producer-to-consumer
+    reason: Abstraction is the largest pressure on the water balance.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - agriculture.water-demand.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/environment/src/consumers.ts
+  - source: food-water
+    target: environment
+    relationship_type: event-producer-to-consumer
+    reason: Reservoir levels are the observable half of the drought index.
+    contract: packages/contracts/src/events/food-water.ts
+    events:
+      - water.reservoir-level.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/environment/src/consumers.ts
+  - source: infrastructure
+    target: environment
+    relationship_type: event-producer-to-consumer
+    reason: Sewage and network failures are pollution events waiting to happen.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.failure.predicted.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/environment/src/consumers.ts
+  - source: safety-emergency
+    target: environment
+    relationship_type: event-producer-to-consumer
+    reason: Industrial and fire incidents are acute pollution events.
+    contract: packages/contracts/src/events/safety-emergency.ts
+    events:
+      - emergency.incident.created.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/environment/src/consumers.ts
+  - source: smart-trade
+    target: environment
+    relationship_type: event-producer-to-consumer
+    reason: Product footprints and the national inventory must reconcile.
+    contract: packages/contracts/src/events/smart-trade.ts
+    events:
+      - trade.product-passport.issued.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/environment/src/consumers.ts
+  - source: tourism
+    target: environment
+    relationship_type: event-producer-to-consumer
+    reason: Concentrated visitors are a local environmental pressure.
+    contract: packages/contracts/src/events/tourism.ts
+    events:
+      - tourism.site-pressure.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/environment/src/consumers.ts
+  - source: land
+    target: environment
+    relationship_type: event-producer-to-consumer
+    reason: Land-use change is the slowest and largest environmental driver.
+    contract: packages/contracts/src/events/land.ts
+    events:
+      - land.zoning.changed.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/environment/src/consumers.ts
+  - source: resilience
+    target: environment
+    relationship_type: event-producer-to-consumer
+    reason: Crisis mode raises sampling frequency in the affected zone.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/environment/src/consumers.ts
+  - source: research
+    target: environment
+    relationship_type: event-producer-to-consumer
+    reason: Measurement and modelling results are adopted by the climate twin.
+    contract: packages/contracts/src/events/research.ts
+    events:
+      - research.finding.released.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/environment/src/consumers.ts
+  - source: culture
+    target: environment
+    relationship_type: event-producer-to-consumer
+    reason: Large events produce a measurable, plannable waste stream.
+    contract: packages/contracts/src/events/culture.ts
+    events:
+      - culture.event.scheduled.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/environment/src/consumers.ts
+  - source: industrial-energy
+    target: environment
+    relationship_type: api-provider-to-consumer
+    reason: Live generation mix when a climate projection is computed on demand.
+    contract: /api/industrial-energy (OpenAPI at /api/industrial-energy/openapi.json)
+    events: []
+    apis:
+      - /api/industrial-energy/grid/load
+    criticality: normal
+    implemented_in: services/environment/src/adapters.ts
+  - source: environment
+    target: tourism
+    relationship_type: event-producer-to-consumer
+    reason: A bad air day is a bad visit; itineraries route around it.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.air-quality.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/tourism/src/consumers.ts
+  - source: environment
+    target: tourism
+    relationship_type: event-producer-to-consumer
+    reason: Bathing water quality decides whether a beach can be recommended at all.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.water-quality.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/tourism/src/consumers.ts
+  - source: environment
+    target: tourism
+    relationship_type: event-producer-to-consumer
+    reason: Heat risk reshapes the summer offer towards inland and evening options.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.climate-risk.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/tourism/src/consumers.ts
+  - source: culture
+    target: tourism
+    relationship_type: event-producer-to-consumer
+    reason: Cultural programming is the primary content of any itinerary.
+    contract: packages/contracts/src/events/culture.ts
+    events:
+      - culture.event.scheduled.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/tourism/src/consumers.ts
+  - source: culture
+    target: tourism
+    relationship_type: event-producer-to-consumer
+    reason: A closed or fragile asset must leave the itinerary immediately.
+    contract: packages/contracts/src/events/culture.ts
+    events:
+      - culture.asset-condition.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/tourism/src/consumers.ts
+  - source: religious-heritage
+    target: tourism
+    relationship_type: event-producer-to-consumer
+    reason: Access limits at heritage sites are conservation decisions tourism must
+      honour.
+    contract: packages/contracts/src/events/religious-heritage.ts
+    events:
+      - heritage.site-condition.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/tourism/src/consumers.ts
+  - source: mobility-logistics
+    target: tourism
+    relationship_type: event-producer-to-consumer
+    reason: Access time is the constraint that actually breaks an itinerary.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.congestion.detected.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/tourism/src/consumers.ts
+  - source: mobility-logistics
+    target: tourism
+    relationship_type: event-producer-to-consumer
+    reason: Visitor flows and general mobility share the same corridors.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.mobility-demand.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/tourism/src/consumers.ts
+  - source: health
+    target: tourism
+    relationship_type: event-producer-to-consumer
+    reason: Medical coverage is part of a responsible destination recommendation.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.capacity.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/tourism/src/consumers.ts
+  - source: safety-emergency
+    target: tourism
+    relationship_type: event-producer-to-consumer
+    reason: An incident at or near a site suspends recommendations for it.
+    contract: packages/contracts/src/events/safety-emergency.ts
+    events:
+      - emergency.incident.created.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/tourism/src/consumers.ts
+  - source: digital-nervous-system
+    target: tourism
+    relationship_type: event-producer-to-consumer
+    reason: Occupancy and noise observations are the site pressure index.
+    contract: packages/contracts/src/events/digital-nervous-system.ts
+    events:
+      - iot.sensor.observation.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/tourism/src/consumers.ts
+  - source: global-tunisia
+    target: tourism
+    relationship_type: event-producer-to-consumer
+    reason: Diaspora travel is a distinct, forecastable segment.
+    contract: packages/contracts/src/events/global-tunisia.ts
+    events:
+      - global.diaspora-signal.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/tourism/src/consumers.ts
+  - source: infrastructure
+    target: tourism
+    relationship_type: event-producer-to-consumer
+    reason: Access roads, quays and walkways gate site capacity.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.asset-health.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/tourism/src/consumers.ts
+  - source: resilience
+    target: tourism
+    relationship_type: event-producer-to-consumer
+    reason: A crisis withdraws affected zones from every published itinerary.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/tourism/src/consumers.ts
+  - source: talent
+    target: tourism
+    relationship_type: event-producer-to-consumer
+    reason: Sporting events are a major and plannable driver of visitor flows.
+    contract: packages/contracts/src/events/talent.ts
+    events:
+      - talent.facility-usage.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/tourism/src/consumers.ts
+  - source: treasury
+    target: tourism
+    relationship_type: event-producer-to-consumer
+    reason: Destination promotion and site upgrades exist once funded.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.funding.approved.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/tourism/src/consumers.ts
+  - source: environment
+    target: tourism
+    relationship_type: api-provider-to-consumer
+    reason: Air quality is read at itinerary build time, not from the last event.
+    contract: /api/environment (OpenAPI at /api/environment/openapi.json)
+    events: []
+    apis:
+      - /api/environment/air-quality
+    criticality: critical
+    implemented_in: services/tourism/src/adapters.ts
+  - source: social-mobility
+    target: life-care
+    relationship_type: event-producer-to-consumer
+    reason: Vulnerability and care need are the same household from two angles.
+    contract: packages/contracts/src/events/social-mobility.ts
+    events:
+      - social.vulnerability.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/life-care/src/consumers.ts
+  - source: social-mobility
+    target: life-care
+    relationship_type: event-producer-to-consumer
+    reason: A detected household need usually resolves into a care placement.
+    contract: packages/contracts/src/events/social-mobility.ts
+    events:
+      - social.household-need.detected.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/life-care/src/consumers.ts
+  - source: health
+    target: life-care
+    relationship_type: event-producer-to-consumer
+    reason: Discharge planning is only possible if hospital pressure is visible.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.capacity.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/life-care/src/consumers.ts
+  - source: health
+    target: life-care
+    relationship_type: event-producer-to-consumer
+    reason: A care episode ending is where the care network takes over.
+    contract: packages/contracts/src/events/health.ts
+    events:
+      - health.care-episode.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/life-care/src/consumers.ts
+  - source: education
+    target: life-care
+    relationship_type: event-producer-to-consumer
+    reason: Schooling is the main childhood life transition the journey tracks.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.learning-progress.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/life-care/src/consumers.ts
+  - source: skills-opportunity
+    target: life-care
+    relationship_type: event-producer-to-consumer
+    reason: Economic independence is built out of real, paid missions.
+    contract: packages/contracts/src/events/skills-opportunity.ts
+    events:
+      - skills.micro-mission.published.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/life-care/src/consumers.ts
+  - source: treasury
+    target: life-care
+    relationship_type: event-producer-to-consumer
+    reason: Aid arrival is the event that changes an independence trajectory.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.aid.disbursed.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/life-care/src/consumers.ts
+  - source: justice
+    target: life-care
+    relationship_type: event-producer-to-consumer
+    reason: Family and guardianship cases are life events with legal weight.
+    contract: packages/contracts/src/events/justice.ts
+    events:
+      - justice.case.filed.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/life-care/src/consumers.ts
+  - source: safety-emergency
+    target: life-care
+    relationship_type: event-producer-to-consumer
+    reason: An incident affecting a household is a care trigger.
+    contract: packages/contracts/src/events/safety-emergency.ts
+    events:
+      - emergency.incident.created.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/life-care/src/consumers.ts
+  - source: resilience
+    target: life-care
+    relationship_type: event-producer-to-consumer
+    reason: Care facilities are evacuation-priority sites with dependent occupants.
+    contract: packages/contracts/src/events/resilience.ts
+    events:
+      - resilience.crisis.declared.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/life-care/src/consumers.ts
+  - source: environment
+    target: life-care
+    relationship_type: event-producer-to-consumer
+    reason: Heat waves are a documented mortality risk for elderly cohorts.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.climate-risk.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/life-care/src/consumers.ts
+  - source: mobility-logistics
+    target: life-care
+    relationship_type: event-producer-to-consumer
+    reason: Access to a care facility is a transport question for its users.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.mobility-demand.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/life-care/src/consumers.ts
+  - source: culture
+    target: life-care
+    relationship_type: event-producer-to-consumer
+    reason: Cultural participation is part of elderly and youth care programming.
+    contract: packages/contracts/src/events/culture.ts
+    events:
+      - culture.event.scheduled.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/life-care/src/consumers.ts
+  - source: talent
+    target: life-care
+    relationship_type: event-producer-to-consumer
+    reason: Youth clubs are shared between sport and care programming.
+    contract: packages/contracts/src/events/talent.ts
+    events:
+      - talent.facility-usage.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/life-care/src/consumers.ts
+  - source: social-mobility
+    target: life-care
+    relationship_type: api-provider-to-consumer
+    reason: Coverage planning reads live vulnerability rather than the last event.
+    contract: /api/social-mobility (OpenAPI at /api/social-mobility/openapi.json)
+    events: []
+    apis:
+      - /api/social-mobility/vulnerability
+    criticality: critical
+    implemented_in: services/life-care/src/adapters.ts
+  - source: digital-nervous-system
+    target: culture
+    relationship_type: event-producer-to-consumer
+    reason: Humidity, temperature and vibration observations are the asset condition
+      twin.
+    contract: packages/contracts/src/events/digital-nervous-system.ts
+    events:
+      - iot.sensor.observation.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/culture/src/consumers.ts
+  - source: environment
+    target: culture
+    relationship_type: event-producer-to-consumer
+    reason: Pollution is the slow destroyer of monuments and open-air sites.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.air-quality.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/culture/src/consumers.ts
+  - source: environment
+    target: culture
+    relationship_type: event-producer-to-consumer
+    reason: Flood and humidity risk set the conservation queue.
+    contract: packages/contracts/src/events/environment.ts
+    events:
+      - environment.climate-risk.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/culture/src/consumers.ts
+  - source: tourism
+    target: culture
+    relationship_type: event-producer-to-consumer
+    reason: Visitor load is the main controllable pressure on cultural assets.
+    contract: packages/contracts/src/events/tourism.ts
+    events:
+      - tourism.visitor-flow.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/culture/src/consumers.ts
+  - source: tourism
+    target: culture
+    relationship_type: event-producer-to-consumer
+    reason: Over-capacity means restricting access, which Culture decides.
+    contract: packages/contracts/src/events/tourism.ts
+    events:
+      - tourism.site-pressure.detected.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/culture/src/consumers.ts
+  - source: religious-heritage
+    target: culture
+    relationship_type: event-producer-to-consumer
+    reason: Shared assets must not carry two contradictory condition records.
+    contract: packages/contracts/src/events/religious-heritage.ts
+    events:
+      - heritage.site-condition.updated.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/culture/src/consumers.ts
+  - source: infrastructure
+    target: culture
+    relationship_type: event-producer-to-consumer
+    reason: Museums and monuments are buildings with predictable failure modes.
+    contract: packages/contracts/src/events/infrastructure.ts
+    events:
+      - infrastructure.failure.predicted.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/culture/src/consumers.ts
+  - source: mobility-logistics
+    target: culture
+    relationship_type: event-producer-to-consumer
+    reason: Event planning needs the corridor picture before the date is fixed.
+    contract: packages/contracts/src/events/mobility-logistics.ts
+    events:
+      - transport.mobility-demand.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/culture/src/consumers.ts
+  - source: education
+    target: culture
+    relationship_type: event-producer-to-consumer
+    reason: Cultural education programmes and the asset register are planned together.
+    contract: packages/contracts/src/events/education.ts
+    events:
+      - education.program.updated.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/culture/src/consumers.ts
+  - source: skills-opportunity
+    target: culture
+    relationship_type: event-producer-to-consumer
+    reason: Conservation and creative trades are a measurable national skill gap.
+    contract: packages/contracts/src/events/skills-opportunity.ts
+    events:
+      - skills.gap.detected.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/culture/src/consumers.ts
+  - source: treasury
+    target: culture
+    relationship_type: event-producer-to-consumer
+    reason: Restoration and creative programmes exist once funded.
+    contract: packages/contracts/src/events/treasury.ts
+    events:
+      - treasury.funding.approved.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/culture/src/consumers.ts
+  - source: safety-emergency
+    target: culture
+    relationship_type: event-producer-to-consumer
+    reason: Fire or flood at a cultural asset is irreversible; response must be
+      immediate.
+    contract: packages/contracts/src/events/safety-emergency.ts
+    events:
+      - emergency.incident.created.v1
+    apis: []
+    criticality: critical
+    implemented_in: services/culture/src/consumers.ts
+  - source: research
+    target: culture
+    relationship_type: event-producer-to-consumer
+    reason: Conservation science results change how assets are treated.
+    contract: packages/contracts/src/events/research.ts
+    events:
+      - research.finding.released.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/culture/src/consumers.ts
+  - source: global-tunisia
+    target: culture
+    relationship_type: event-producer-to-consumer
+    reason: Diaspora audiences and funding are part of the creative economy.
+    contract: packages/contracts/src/events/global-tunisia.ts
+    events:
+      - global.opportunity.published.v1
+    apis: []
+    criticality: normal
+    implemented_in: services/culture/src/consumers.ts
+  - source: tourism
+    target: culture
+    relationship_type: api-provider-to-consumer
+    reason: Visitor pressure is read when a cultural event is planned.
+    contract: /api/tourism (OpenAPI at /api/tourism/openapi.json)
+    events: []
+    apis:
+      - /api/tourism/flows
+    criticality: normal
+    implemented_in: services/culture/src/adapters.ts

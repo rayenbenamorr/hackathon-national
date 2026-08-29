@@ -1,0 +1,214 @@
+id: mobility-logistics
+name: Autonomous Mobility & Logistics Grid
+ministry: Transport
+description: Where people and goods are moving, and the nearest vehicle that can be sent.
+mission: "Answer one question faster than anyone else in the country: what is
+  the closest available resource, and how long until it arrives."
+capabilities:
+  - Flows, congestion and demand by corridor.
+  - Road-side signals and vehicle-to-infrastructure messages.
+  - Freight planning and resource dispatch.
+modules:
+  - id: national-mobility-digital-twin
+    name: National Mobility Digital Twin
+    purpose: Flows, congestion and demand by corridor.
+  - id: v2x-smart-road-grid
+    name: V2X Smart Road Grid
+    purpose: Road-side signals and vehicle-to-infrastructure messages.
+  - id: autonomous-logistics-brain
+    name: Autonomous Logistics Brain
+    purpose: Freight planning and resource dispatch.
+owns:
+  - TransportResourceRef
+  - RouteRef
+  - FreightOrderRef
+  - MobilityFlow
+apis:
+  - method: GET
+    path: /api/mobility-logistics/resources
+    summary: health Transport resource
+    module: platform
+  - method: GET
+    path: /api/mobility-logistics/resources
+    summary: list Transport resource
+    module: national-mobility-digital-twin
+  - method: GET
+    path: /api/mobility-logistics/resources/:id
+    summary: get Transport resource
+    module: national-mobility-digital-twin
+  - method: GET
+    path: /api/mobility-logistics/resources/nearest
+    summary: The closest available resource to a point. Health, Emergency and
+      Resilience all depend on this.
+    module: autonomous-logistics-brain
+  - method: POST
+    path: /api/mobility-logistics/dispatch
+    summary: Assign the closest available resource to a request and broadcast the
+      assignment.
+    module: autonomous-logistics-brain
+  - method: GET
+    path: /api/mobility-logistics/flows
+    summary: Mobility demand by governorate.
+    module: national-mobility-digital-twin
+  - method: GET
+    path: /api/mobility-logistics/resources
+    summary: signals Transport resource
+    module: platform
+  - method: GET
+    path: /api/mobility-logistics/resources
+    summary: twins Transport resource
+    module: platform
+  - method: GET
+    path: /api/mobility-logistics/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/mobility-logistics/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/mobility-logistics/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: transport.mobility-demand.updated.v1
+    summary: Demand and congestion on a corridor.
+  - event: transport.resource.dispatched.v1
+    summary: A resource was assigned to a request from another ministry.
+  - event: transport.congestion.detected.v1
+    summary: Congestion crossed a threshold on a corridor.
+  - event: logistics.freight.updated.v1
+    summary: A freight movement changed state.
+consumes:
+  - event: emergency.incident.created.v1
+    from: safety-emergency
+    criticality: critical
+    reason: An incident closes lanes and pulls resources; both are mobility facts.
+  - event: emergency.resource.requested.v1
+    from: safety-emergency
+    criticality: critical
+    reason: Emergency resource requests are dispatch orders for Transport.
+  - event: health.emergency.declared.v1
+    from: health
+    criticality: critical
+    reason: A health emergency is a transport mission with a clock.
+  - event: health.capacity.updated.v1
+    from: health
+    criticality: critical
+    reason: A resource is only correctly routed if the destination can receive it.
+  - event: resilience.resource-request.created.v1
+    from: resilience
+    criticality: critical
+    reason: Relief convoys are planned from crisis resource requests.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: critical
+    reason: Crisis mode reprioritises the entire fleet.
+  - event: environment.air-quality.updated.v1
+    from: environment
+    criticality: normal
+    reason: Traffic is both a cause and a victim of poor air; both feed the corridor
+      twin.
+  - event: environment.climate-risk.updated.v1
+    from: environment
+    criticality: normal
+    reason: Flood and heat risk close corridors before any incident is reported.
+  - event: iot.sensor.observation.v1
+    from: digital-nervous-system
+    criticality: critical
+    reason: Traffic flow and GPS observations are the mobility twin.
+  - event: infrastructure.failure.predicted.v1
+    from: infrastructure
+    criticality: critical
+    reason: A predicted bridge failure removes a corridor from every route.
+  - event: infrastructure.maintenance.scheduled.v1
+    from: infrastructure
+    criticality: critical
+    reason: Planned works are planned congestion.
+  - event: trade.shipment.updated.v1
+    from: smart-trade
+    criticality: critical
+    reason: Freight planning starts from the shipments that exist.
+  - event: culture.event.scheduled.v1
+    from: culture
+    criticality: normal
+    reason: A scheduled gathering is a demand spike with a known location and hour.
+  - event: tourism.visitor-flow.updated.v1
+    from: tourism
+    criticality: normal
+    reason: Seasonal visitor flows reshape corridor demand.
+  - event: education.school-condition.updated.v1
+    from: education
+    criticality: normal
+    reason: School location and status drive school transport planning.
+  - event: agriculture.yield.forecast.v1
+    from: food-water
+    criticality: normal
+    reason: Harvest volumes are freight demand with a season.
+depends_on:
+  - culture
+  - digital-nervous-system
+  - education
+  - environment
+  - food-water
+  - health
+  - infrastructure
+  - resilience
+  - safety-emergency
+  - smart-trade
+  - tourism
+consumed_by:
+  - culture
+  - digital-nervous-system
+  - education
+  - environment
+  - health
+  - industrial-energy
+  - infrastructure
+  - justice
+  - land
+  - life-care
+  - national-digital-twin
+  - religious-heritage
+  - resilience
+  - safety-emergency
+  - smart-trade
+  - social-mobility
+  - talent
+  - tourism
+related_services:
+  - culture
+  - digital-nervous-system
+  - education
+  - environment
+  - food-water
+  - health
+  - industrial-energy
+  - infrastructure
+  - justice
+  - land
+  - life-care
+  - national-digital-twin
+  - religious-heritage
+  - resilience
+  - safety-emergency
+  - smart-trade
+  - social-mobility
+  - talent
+  - tourism
+ai_capabilities:
+  - demand forecasting
+  - dispatch optimisation
+  - congestion cause attribution
+iot_capabilities:
+  - traffic flow
+  - GPS position
+  - air quality
+  - noise
+digital_twin_capabilities:
+  - corridor twin
+  - vehicle twin
+data:
+  synthetic_only: true
+  owns_collection: resources
+  seeded_rows: 60

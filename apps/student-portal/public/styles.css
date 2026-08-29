@@ -1,0 +1,559 @@
+/* ---------------------------------------------------------------------------
+   Student portal.
+   Hand-written CSS, no framework, no build. The whole point of this page is
+   that a beginner can read it, and that it loads instantly on a laptop in a
+   room with 1 500 other laptops.
+   --------------------------------------------------------------------------- */
+
+:root {
+  --bg: #0d1117;
+  --bg-soft: #141b24;
+  --panel: #161d27;
+  --line: #232c39;
+  --ink: #e6edf3;
+  --muted: #8b98a8;
+  --accent: #5eead4;
+  --accent-dim: #17564d;
+  --warn: #f5a524;
+  --bad: #f2555a;
+  --good: #4ade80;
+  --api: #a78bfa;
+  --radius: 10px;
+  --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Menlo, Consolas, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font: 15px/1.55 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ------------------------------------------------------------------ header */
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 12px 22px;
+  border-bottom: 1px solid var(--line);
+  background: var(--bg-soft);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.brand strong {
+  display: block;
+  font-size: 15px;
+  letter-spacing: 0.2px;
+}
+.brand small {
+  display: block;
+  color: var(--muted);
+  font-size: 12.5px;
+}
+
+.hostline {
+  display: inline-block;
+  margin-top: 3px;
+  padding: 1px 8px;
+  border-radius: 999px;
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-family: var(--mono);
+  font-size: 11.5px;
+}
+
+.dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--muted);
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.04);
+}
+.dot.ok {
+  background: var(--good);
+}
+.dot.degraded {
+  background: var(--warn);
+}
+.dot.down {
+  background: var(--bad);
+}
+
+nav {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+nav button,
+nav a {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--muted);
+  padding: 7px 13px;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  text-decoration: none;
+}
+nav button:hover,
+nav a:hover {
+  color: var(--ink);
+  background: rgba(255, 255, 255, 0.04);
+}
+nav button.active {
+  color: var(--bg);
+  background: var(--accent);
+  font-weight: 600;
+}
+
+/* -------------------------------------------------------------------- main */
+
+main {
+  flex: 1;
+  overflow: auto;
+  padding: 20px 22px 60px;
+}
+
+.view {
+  display: none;
+}
+.view.active {
+  display: block;
+}
+
+.split {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 18px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+}
+.panel.wide {
+  width: 100%;
+}
+.panel > header {
+  margin-bottom: 14px;
+}
+.panel h2 {
+  margin: 0 0 4px;
+  font-size: 17px;
+}
+
+h1 {
+  font-size: 22px;
+  margin: 0 0 8px;
+}
+h3 {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.7px;
+  color: var(--muted);
+  margin: 22px 0 10px;
+  font-weight: 600;
+}
+p {
+  margin: 0 0 10px;
+}
+.muted {
+  color: var(--muted);
+  font-size: 13.5px;
+}
+
+code,
+.mono {
+  font-family: var(--mono);
+  font-size: 12.5px;
+}
+code {
+  background: rgba(255, 255, 255, 0.06);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+/* ----------------------------------------------------------- ministry list */
+
+.list {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 8px;
+  max-height: calc(100vh - 130px);
+  overflow: auto;
+}
+
+.ministry {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: var(--ink);
+  padding: 9px 10px;
+  cursor: pointer;
+  font: inherit;
+}
+.ministry:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+.ministry.selected {
+  background: var(--accent-dim);
+  outline: 1px solid var(--accent);
+}
+.ministry b {
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+.ministry span {
+  display: block;
+  color: var(--muted);
+  font-size: 11.5px;
+  font-family: var(--mono);
+}
+.ministry i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-top: 6px;
+  flex: none;
+  background: var(--good);
+}
+.ministry i.off {
+  background: var(--bad);
+}
+
+/* --------------------------------------------------------------- detail */
+
+.detail {
+  min-height: 300px;
+}
+.empty {
+  background: var(--panel);
+  border: 1px dashed var(--line);
+  border-radius: var(--radius);
+  padding: 40px;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin: 14px 0;
+}
+.stat {
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+.stat b {
+  display: block;
+  font-size: 20px;
+  line-height: 1.2;
+}
+.stat span {
+  color: var(--muted);
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+th,
+td {
+  text-align: left;
+  padding: 7px 8px;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+th {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+tr:last-child td {
+  border-bottom: 0;
+}
+
+.pill {
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-family: var(--mono);
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+.pill.critical {
+  border-color: var(--warn);
+  color: var(--warn);
+}
+.pill.ok {
+  border-color: var(--accent-dim);
+  color: var(--accent);
+}
+.pill.bad {
+  border-color: var(--bad);
+  color: var(--bad);
+}
+.pill.api {
+  border-color: #4c3f78;
+  color: var(--api);
+}
+
+button.try {
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  color: var(--accent);
+  border-radius: 6px;
+  padding: 3px 9px;
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+button.try:hover {
+  border-color: var(--accent);
+}
+
+pre.out {
+  background: #0a0f16;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  overflow: auto;
+  max-height: 320px;
+  font-family: var(--mono);
+  font-size: 12px;
+  margin: 8px 0 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.callout {
+  border-left: 3px solid var(--accent);
+  background: rgba(94, 234, 212, 0.06);
+  padding: 10px 14px;
+  border-radius: 0 8px 8px 0;
+  margin: 12px 0;
+  font-size: 13.5px;
+}
+.callout.bad {
+  border-color: var(--bad);
+  background: rgba(242, 85, 90, 0.08);
+}
+
+/* ---------------------------------------------------------------- graph */
+
+.graph-wrap {
+  position: relative;
+}
+#graph {
+  width: 100%;
+  height: auto;
+  max-height: 78vh;
+  display: block;
+}
+#graph .edge {
+  fill: none;
+  stroke: #2b3644;
+  stroke-width: 1;
+  opacity: 0.55;
+}
+#graph .edge.api {
+  stroke: var(--api);
+}
+#graph .edge.critical {
+  stroke-width: 1.6;
+}
+#graph .edge.broken {
+  stroke: var(--bad);
+  opacity: 0.9;
+}
+#graph .edge.dim {
+  opacity: 0.05;
+}
+#graph .edge.lit {
+  stroke: var(--accent);
+  opacity: 1;
+  stroke-width: 1.8;
+}
+#graph circle.node {
+  fill: var(--bg-soft);
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  cursor: pointer;
+}
+#graph circle.node.off {
+  stroke: var(--bad);
+}
+#graph text.label {
+  fill: var(--muted);
+  font-size: 11px;
+  font-family: var(--mono);
+  cursor: pointer;
+}
+#graph text.label.lit {
+  fill: var(--ink);
+  font-weight: 700;
+}
+
+.graph-legend {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.graph-legend i {
+  display: inline-block;
+  width: 18px;
+  height: 2px;
+  vertical-align: middle;
+  margin-right: 6px;
+  background: #2b3644;
+}
+.graph-legend i.k-api {
+  background: var(--api);
+}
+.graph-legend i.k-broken {
+  background: var(--bad);
+}
+.graph-legend i.k-critical {
+  background: #2b3644;
+  height: 4px;
+}
+
+.graph-focus {
+  margin-top: 12px;
+  min-height: 30px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ----------------------------------------------------------------- feed */
+
+.feed {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 66vh;
+  overflow: auto;
+}
+.feed li {
+  border-bottom: 1px solid var(--line);
+  padding: 8px 2px;
+  font-size: 13px;
+  animation: fade 0.5s ease;
+}
+@keyframes fade {
+  from {
+    background: rgba(94, 234, 212, 0.12);
+  }
+}
+.feed .t {
+  font-family: var(--mono);
+  color: var(--accent);
+  font-size: 12.5px;
+}
+.feed .r {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+input {
+  width: 100%;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  border-radius: 8px;
+  padding: 8px 11px;
+  font: inherit;
+  font-size: 13px;
+  margin-bottom: 10px;
+}
+
+.catalog {
+  max-height: 60vh;
+  overflow: auto;
+}
+.catalog details {
+  border-bottom: 1px solid var(--line);
+  padding: 7px 0;
+}
+.catalog summary {
+  cursor: pointer;
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--accent);
+}
+.catalog p {
+  font-size: 13px;
+  color: var(--muted);
+  margin: 6px 0 4px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.card {
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.card b {
+  display: block;
+  font-size: 14px;
+}
+.card small {
+  color: var(--muted);
+  display: block;
+  margin: 4px 0 8px;
+  font-size: 12.5px;
+}

@@ -1,0 +1,45 @@
+{
+  "name": "tunisia-national-hackathon-platform",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Development playground for the 24-ministry national AI/IoT hackathon. 24 interdependent services, one digital ecosystem.",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "packageManager": "pnpm@11.22.0",
+  "scripts": {
+    "dev": "tsx apps/api-gateway/src/main.ts",
+    "start": "tsx apps/api-gateway/src/main.ts",
+    "dev:service": "tsx tools/dev-service.ts",
+    "doctor": "tsx packages/student-tools/src/cli/doctor.ts",
+    "simulate:sensor": "tsx packages/iot/src/cli/simulate.ts",
+    "seed": "tsx tools/seed.ts",
+    "reset": "tsx tools/reset.ts",
+    "generate": "node tools/scaffold.mjs && prettier --write \"services/**/*.ts\" \"packages/contracts/src/**/*.ts\" --log-level warn",
+    "architecture:check": "tsx tools/architecture-check.ts",
+    "architecture:graph": "tsx tools/architecture-graph.ts",
+    "smoke": "tsx tools/smoke.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "prettier --check \"**/*.{ts,mjs,json,md,yaml,yml}\"",
+    "format": "prettier --write \"**/*.{ts,mjs,json,md,yaml,yml}\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "verify": "pnpm lint && pnpm typecheck && pnpm test && pnpm architecture:check && pnpm smoke",
+    "domains": "tsx tools/domains.ts",
+    "dns:plan": "tsx tools/dns-cloudflare.ts",
+    "dns:apply": "tsx tools/dns-cloudflare.ts",
+    "export:interne": "tsx tools/export-interne.ts"
+  },
+  "dependencies": {
+    "yaml": "^2.6.1",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "prettier": "^3.4.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vitest": "^2.1.8"
+  }
+}

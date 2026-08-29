@@ -1,0 +1,17 @@
+# The repository is a monorepo by structure, but deliberately a SINGLE npm package.
+#
+# Why: 1 200-1 500 beginners run `pnpm install` once, on laptops, sometimes on a
+# conference Wi-Fi. Per-package manifests would multiply install time, add workspace
+# linking failures ("why does my import say module not found?") and teach nothing.
+# Cross-package imports use TypeScript path aliases (`@platform/*`, `@services/*`)
+# declared in tsconfig.base.json instead. See docs/adr/0002-single-package-monorepo.md
+#
+# These globs are declared so that a future package CAN be promoted to a real
+# workspace member simply by adding its own package.json.
+packages:
+  - 'packages/*'
+  - 'apps/*'
+  - 'services/*'
+# esbuild ships the native binary used by tsx; its install script must run.
+allowBuilds:
+  esbuild: true

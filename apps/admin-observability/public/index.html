@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Platform observability</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <style>
+      .tree {
+        font-family: var(--mono);
+        font-size: 12.5px;
+        line-height: 1.7;
+      }
+      .tree .svc {
+        color: var(--accent);
+      }
+      .tree .via {
+        color: var(--muted);
+      }
+      .tree .fail {
+        color: var(--bad);
+      }
+      .grid2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        align-items: start;
+      }
+      @media (max-width: 1000px) {
+        .grid2 {
+          grid-template-columns: 1fr;
+        }
+      }
+      .log {
+        font-family: var(--mono);
+        font-size: 12px;
+        max-height: 55vh;
+        overflow: auto;
+      }
+      .log div {
+        border-bottom: 1px solid var(--line);
+        padding: 4px 0;
+      }
+      .lvl-error {
+        color: var(--bad);
+      }
+      .lvl-warn {
+        color: var(--warn);
+      }
+      .lvl-info {
+        color: var(--muted);
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="brand">
+        <span class="dot ok"></span>
+        <div>
+          <strong>Platform observability</strong>
+          <small id="sub">traces, event chains, dead letters, spend</small>
+        </div>
+      </div>
+      <nav><a href="/" class="ghost">← Student portal</a></nav>
+    </header>
+
+    <main>
+      <div class="grid2">
+        <section class="panel">
+          <header>
+            <h2>Event chains</h2>
+            <p class="muted">
+              One trace = one story. This is the picture a student needs, not a container log.
+            </p>
+          </header>
+          <div id="traces" class="tree">loading…</div>
+        </section>
+
+        <section class="panel">
+          <header>
+            <h2>Broken integrations</h2>
+            <p class="muted">Declared relations that failed at runtime.</p>
+          </header>
+          <div id="failures">loading…</div>
+
+          <h3>Dead letters</h3>
+          <p class="muted">Events refused by their own contract — the producer has a bug.</p>
+          <div id="deadletter">loading…</div>
+
+          <h3>AI spend</h3>
+          <div id="ai">loading…</div>
+        </section>
+      </div>
+
+      <section class="panel" style="margin-top: 18px">
+        <header>
+          <h2>Platform log</h2>
+          <p class="muted">Structured, redacted, newest first.</p>
+        </header>
+        <input id="log-filter" placeholder="filter by service or message…" />
+        <div id="logs" class="log">loading…</div>
+      </section>
+    </main>
+
+    <script type="module" src="/admin/app.js"></script>
+  </body>
+</html>

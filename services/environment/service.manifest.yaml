@@ -1,0 +1,214 @@
+id: environment
+name: Environmental Nervous System
+ministry: Environment
+description: "The country senses itself: air, water, climate and the circular
+  use of what is thrown away."
+mission: Publish environmental truth continuously and early enough that other
+  ministries can act on it rather than report it.
+capabilities:
+  - Air, water and noise observations everywhere.
+  - Projections and climate risk per zone.
+  - Waste streams and their possible reuse.
+modules:
+  - id: national-environmental-sensor-network
+    name: National Environmental Sensor Network
+    purpose: Air, water and noise observations everywhere.
+  - id: climate-digital-twin
+    name: Climate Digital Twin
+    purpose: Projections and climate risk per zone.
+  - id: circular-resource-ai
+    name: Circular Resource AI
+    purpose: Waste streams and their possible reuse.
+owns:
+  - EnvironmentalObservation
+  - ClimateProjectionRef
+  - WasteStreamRef
+apis:
+  - method: GET
+    path: /api/environment/stations
+    summary: health Environmental station
+    module: platform
+  - method: GET
+    path: /api/environment/stations
+    summary: list Environmental station
+    module: national-environmental-sensor-network
+  - method: GET
+    path: /api/environment/stations/:id
+    summary: get Environmental station
+    module: national-environmental-sensor-network
+  - method: POST
+    path: /api/environment/stations
+    summary: create Environmental station
+    module: national-environmental-sensor-network
+  - method: GET
+    path: /api/environment/air-quality
+    summary: Air quality by governorate.
+    module: national-environmental-sensor-network
+  - method: POST
+    path: /api/environment/climate/projection
+    summary: Project climate risk for a governorate and warn the ministries it
+      constrains.
+    module: climate-digital-twin
+  - method: GET
+    path: /api/environment/stations
+    summary: signals Environmental station
+    module: platform
+  - method: GET
+    path: /api/environment/stations
+    summary: twins Environmental station
+    module: platform
+  - method: GET
+    path: /api/environment/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/environment/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/environment/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: environment.air-quality.updated.v1
+    summary: Air quality at a station. Health, Education, Mobility and Tourism all
+      react to it.
+  - event: environment.water-quality.updated.v1
+    summary: Water quality at a station.
+  - event: environment.climate-risk.updated.v1
+    summary: "Climate risk for a zone: drought, heat, flood."
+  - event: environment.waste-stream.updated.v1
+    summary: A waste stream volume or composition changed.
+consumes:
+  - event: iot.sensor.observation.v1
+    from: digital-nervous-system
+    criticality: critical
+    reason: Air, water, noise and weather observations ARE the environmental network.
+  - event: industry.production.updated.v1
+    from: industrial-energy
+    criticality: critical
+    reason: Industrial output is the main attributable source of emissions.
+  - event: energy.grid-load.updated.v1
+    from: industrial-energy
+    criticality: normal
+    reason: Generation mix decides the emission intensity of every kilowatt-hour.
+  - event: transport.mobility-demand.updated.v1
+    from: mobility-logistics
+    criticality: critical
+    reason: Traffic is the second attributable source of urban air pollution.
+  - event: transport.congestion.detected.v1
+    from: mobility-logistics
+    criticality: normal
+    reason: Congestion multiplies emissions per kilometre travelled.
+  - event: agriculture.water-demand.predicted.v1
+    from: food-water
+    criticality: critical
+    reason: Abstraction is the largest pressure on the water balance.
+  - event: water.reservoir-level.updated.v1
+    from: food-water
+    criticality: critical
+    reason: Reservoir levels are the observable half of the drought index.
+  - event: infrastructure.failure.predicted.v1
+    from: infrastructure
+    criticality: normal
+    reason: Sewage and network failures are pollution events waiting to happen.
+  - event: emergency.incident.created.v1
+    from: safety-emergency
+    criticality: critical
+    reason: Industrial and fire incidents are acute pollution events.
+  - event: trade.product-passport.issued.v1
+    from: smart-trade
+    criticality: normal
+    reason: Product footprints and the national inventory must reconcile.
+  - event: tourism.site-pressure.detected.v1
+    from: tourism
+    criticality: normal
+    reason: Concentrated visitors are a local environmental pressure.
+  - event: land.zoning.changed.v1
+    from: land
+    criticality: normal
+    reason: Land-use change is the slowest and largest environmental driver.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: normal
+    reason: Crisis mode raises sampling frequency in the affected zone.
+  - event: research.finding.released.v1
+    from: research
+    criticality: normal
+    reason: Measurement and modelling results are adopted by the climate twin.
+  - event: culture.event.scheduled.v1
+    from: culture
+    criticality: normal
+    reason: Large events produce a measurable, plannable waste stream.
+depends_on:
+  - culture
+  - digital-nervous-system
+  - food-water
+  - industrial-energy
+  - infrastructure
+  - land
+  - mobility-logistics
+  - research
+  - resilience
+  - safety-emergency
+  - smart-trade
+  - tourism
+consumed_by:
+  - culture
+  - digital-nervous-system
+  - education
+  - food-water
+  - health
+  - industrial-energy
+  - infrastructure
+  - justice
+  - land
+  - life-care
+  - mobility-logistics
+  - national-digital-twin
+  - religious-heritage
+  - research
+  - resilience
+  - safety-emergency
+  - smart-trade
+  - talent
+  - tourism
+related_services:
+  - culture
+  - digital-nervous-system
+  - education
+  - food-water
+  - health
+  - industrial-energy
+  - infrastructure
+  - justice
+  - land
+  - life-care
+  - mobility-logistics
+  - national-digital-twin
+  - religious-heritage
+  - research
+  - resilience
+  - safety-emergency
+  - smart-trade
+  - talent
+  - tourism
+ai_capabilities:
+  - pollution source attribution
+  - climate projection
+  - waste reuse matching
+iot_capabilities:
+  - air quality
+  - water quality
+  - noise
+  - temperature
+  - humidity
+  - rainfall
+  - wind speed
+digital_twin_capabilities:
+  - station twin
+  - climate zone twin
+data:
+  synthetic_only: true
+  owns_collection: stations
+  seeded_rows: 40

@@ -1,0 +1,208 @@
+id: health
+name: Connected Health Intelligence System
+ministry: Health
+description: Hospital capacity, epidemic signals and care that reaches beyond
+  the hospital walls.
+mission: Publish capacity continuously so no other ministry has to guess it, and
+  read the environment so that a health event is anticipated rather than
+  counted.
+capabilities:
+  - Pseudonymous cohort twins — never an identified person.
+  - Beds, ICU, emergency load, in real time.
+  - Coordination with transport, social services and emergency.
+modules:
+  - id: personal-health-digital-twin
+    name: Personal Health Digital Twin
+    purpose: Pseudonymous cohort twins — never an identified person.
+  - id: smart-hospital-operating-system
+    name: Smart Hospital Operating System
+    purpose: Beds, ICU, emergency load, in real time.
+  - id: healthcare-mesh
+    name: Healthcare Mesh
+    purpose: Coordination with transport, social services and emergency.
+owns:
+  - HospitalRef
+  - HealthCapacity
+  - CareEpisodeRef
+apis:
+  - method: GET
+    path: /api/health/facilities
+    summary: health Health facility
+    module: platform
+  - method: GET
+    path: /api/health/facilities
+    summary: list Health facility
+    module: smart-hospital-operating-system
+  - method: GET
+    path: /api/health/facilities/:id
+    summary: get Health facility
+    module: smart-hospital-operating-system
+  - method: GET
+    path: /api/health/capacity
+    summary: Capacity by governorate. The endpoint every dispatcher calls.
+    module: smart-hospital-operating-system
+  - method: POST
+    path: /api/health/triage
+    summary: Assess a case description and name the facility type it needs.
+    module: healthcare-mesh
+  - method: POST
+    path: /api/health/epidemic/scan
+    summary: Scan cohort and environmental signals for an emerging epidemic pattern.
+    module: personal-health-digital-twin
+  - method: GET
+    path: /api/health/facilities
+    summary: signals Health facility
+    module: platform
+  - method: GET
+    path: /api/health/facilities
+    summary: twins Health facility
+    module: platform
+  - method: GET
+    path: /api/health/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/health/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/health/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: health.capacity.updated.v1
+    summary: Bed and emergency capacity at a facility. Consumed widely — dispatch
+      depends on it.
+  - event: health.epidemic-signal.detected.v1
+    summary: An unusual health signal was detected in a governorate.
+  - event: health.emergency.declared.v1
+    summary: Health declares an emergency requiring resources it does not own.
+  - event: health.care-episode.updated.v1
+    summary: Aggregate care activity for a cohort.
+consumes:
+  - event: environment.air-quality.updated.v1
+    from: environment
+    criticality: critical
+    reason: Respiratory admissions follow particulate load with a short, known lag.
+  - event: environment.water-quality.updated.v1
+    from: environment
+    criticality: critical
+    reason: Water-borne disease surveillance starts at the water station, not at the
+      ward.
+  - event: environment.climate-risk.updated.v1
+    from: environment
+    criticality: normal
+    reason: Heat risk is a direct predictor of emergency load in vulnerable cohorts.
+  - event: iot.sensor.observation.v1
+    from: digital-nervous-system
+    criticality: critical
+    reason: Wearable and facility observations feed the cohort and hospital twins.
+  - event: emergency.incident.created.v1
+    from: safety-emergency
+    criticality: critical
+    reason: Incoming casualties are known from the incident, before they arrive.
+  - event: transport.resource.dispatched.v1
+    from: mobility-logistics
+    criticality: critical
+    reason: The hospital needs the ETA of what is coming to it.
+  - event: social.vulnerability.updated.v1
+    from: social-mobility
+    criticality: critical
+    reason: Vulnerable cohorts need outreach, not availability.
+  - event: agriculture.water-shortage.predicted.v1
+    from: food-water
+    criticality: normal
+    reason: Water shortage has a documented health consequence within weeks.
+  - event: education.school-condition.updated.v1
+    from: education
+    criticality: normal
+    reason: School air quality and crowding are paediatric health signals.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: critical
+    reason: Crisis mode changes triage rules and capacity reporting frequency.
+  - event: care.facility-capacity.updated.v1
+    from: life-care
+    criticality: critical
+    reason: Discharge to a care facility is what frees a hospital bed.
+  - event: energy.outage-risk.flagged.v1
+    from: industrial-energy
+    criticality: critical
+    reason: An ICU without power is an evacuation, planned in advance or not at all.
+  - event: tourism.visitor-flow.updated.v1
+    from: tourism
+    criticality: normal
+    reason: Seasonal population changes the denominator of every capacity ratio.
+  - event: talent.injury-risk.flagged.v1
+    from: talent
+    criticality: normal
+    reason: Sports injury load is predictable and lands in the same emergency rooms.
+depends_on:
+  - digital-nervous-system
+  - education
+  - environment
+  - food-water
+  - industrial-energy
+  - life-care
+  - mobility-logistics
+  - resilience
+  - safety-emergency
+  - social-mobility
+  - talent
+  - tourism
+consumed_by:
+  - digital-nervous-system
+  - education
+  - food-water
+  - global-tunisia
+  - infrastructure
+  - justice
+  - life-care
+  - mobility-logistics
+  - national-digital-twin
+  - research
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - smart-trade
+  - social-mobility
+  - talent
+  - tourism
+  - treasury
+related_services:
+  - digital-nervous-system
+  - education
+  - environment
+  - food-water
+  - global-tunisia
+  - industrial-energy
+  - infrastructure
+  - justice
+  - life-care
+  - mobility-logistics
+  - national-digital-twin
+  - research
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - smart-trade
+  - social-mobility
+  - talent
+  - tourism
+  - treasury
+ai_capabilities:
+  - triage
+  - epidemic signal detection
+  - capacity forecasting
+iot_capabilities:
+  - wearable heart rate
+  - air quality
+  - occupancy
+  - temperature
+digital_twin_capabilities:
+  - hospital twin
+  - cohort health twin
+data:
+  synthetic_only: true
+  owns_collection: facilities
+  seeded_rows: 34

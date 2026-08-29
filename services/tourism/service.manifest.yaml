@@ -1,0 +1,202 @@
+id: tourism
+name: Tunisia Immersive Tourism OS
+ministry: Tourism
+description: Visitor flows, site pressure and experiences that exist before the
+  visitor arrives.
+mission: Spread visitors instead of concentrating them, using signals the
+  country already produces — and protect the sites that make the visit worth it.
+capabilities:
+  - Site capacity, pressure and seasonality.
+  - Anchored augmented-reality scenes at real sites.
+  - Itineraries that redistribute pressure.
+modules:
+  - id: tourism-digital-twin
+    name: Tourism Digital Twin
+    purpose: Site capacity, pressure and seasonality.
+  - id: ar-tunisia
+    name: AR Tunisia
+    purpose: Anchored augmented-reality scenes at real sites.
+  - id: ai-tourism-flow-engine
+    name: AI Tourism Flow Engine
+    purpose: Itineraries that redistribute pressure.
+owns:
+  - TourismAssetRef
+  - VisitorFlowRef
+  - ARSceneRef
+apis:
+  - method: GET
+    path: /api/tourism/sites
+    summary: health Tourism site
+    module: platform
+  - method: GET
+    path: /api/tourism/sites
+    summary: list Tourism site
+    module: tourism-digital-twin
+  - method: GET
+    path: /api/tourism/sites/:id
+    summary: get Tourism site
+    module: tourism-digital-twin
+  - method: POST
+    path: /api/tourism/sites
+    summary: create Tourism site
+    module: tourism-digital-twin
+  - method: POST
+    path: /api/tourism/itinerary
+    summary: Build an itinerary that avoids saturated sites and bad air days.
+    module: ai-tourism-flow-engine
+  - method: GET
+    path: /api/tourism/flows
+    summary: Visitor pressure by governorate.
+    module: tourism-digital-twin
+  - method: GET
+    path: /api/tourism/sites
+    summary: signals Tourism site
+    module: platform
+  - method: GET
+    path: /api/tourism/sites
+    summary: twins Tourism site
+    module: platform
+  - method: GET
+    path: /api/tourism/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/tourism/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/tourism/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: tourism.visitor-flow.updated.v1
+    summary: Visitor volume at a site or zone.
+  - event: tourism.site-pressure.detected.v1
+    summary: A site is over its sustainable capacity.
+  - event: tourism.experience.published.v1
+    summary: A new itinerary or AR experience is available.
+consumes:
+  - event: environment.air-quality.updated.v1
+    from: environment
+    criticality: critical
+    reason: A bad air day is a bad visit; itineraries route around it.
+  - event: environment.water-quality.updated.v1
+    from: environment
+    criticality: critical
+    reason: Bathing water quality decides whether a beach can be recommended at all.
+  - event: environment.climate-risk.updated.v1
+    from: environment
+    criticality: normal
+    reason: Heat risk reshapes the summer offer towards inland and evening options.
+  - event: culture.event.scheduled.v1
+    from: culture
+    criticality: critical
+    reason: Cultural programming is the primary content of any itinerary.
+  - event: culture.asset-condition.updated.v1
+    from: culture
+    criticality: critical
+    reason: A closed or fragile asset must leave the itinerary immediately.
+  - event: heritage.site-condition.updated.v1
+    from: religious-heritage
+    criticality: critical
+    reason: Access limits at heritage sites are conservation decisions tourism must
+      honour.
+  - event: transport.congestion.detected.v1
+    from: mobility-logistics
+    criticality: critical
+    reason: Access time is the constraint that actually breaks an itinerary.
+  - event: transport.mobility-demand.updated.v1
+    from: mobility-logistics
+    criticality: normal
+    reason: Visitor flows and general mobility share the same corridors.
+  - event: health.capacity.updated.v1
+    from: health
+    criticality: normal
+    reason: Medical coverage is part of a responsible destination recommendation.
+  - event: emergency.incident.created.v1
+    from: safety-emergency
+    criticality: critical
+    reason: An incident at or near a site suspends recommendations for it.
+  - event: iot.sensor.observation.v1
+    from: digital-nervous-system
+    criticality: critical
+    reason: Occupancy and noise observations are the site pressure index.
+  - event: global.diaspora-signal.updated.v1
+    from: global-tunisia
+    criticality: normal
+    reason: Diaspora travel is a distinct, forecastable segment.
+  - event: infrastructure.asset-health.updated.v1
+    from: infrastructure
+    criticality: normal
+    reason: Access roads, quays and walkways gate site capacity.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: critical
+    reason: A crisis withdraws affected zones from every published itinerary.
+  - event: talent.facility-usage.updated.v1
+    from: talent
+    criticality: normal
+    reason: Sporting events are a major and plannable driver of visitor flows.
+  - event: treasury.funding.approved.v1
+    from: treasury
+    criticality: normal
+    reason: Destination promotion and site upgrades exist once funded.
+depends_on:
+  - culture
+  - digital-nervous-system
+  - environment
+  - global-tunisia
+  - health
+  - infrastructure
+  - mobility-logistics
+  - religious-heritage
+  - resilience
+  - safety-emergency
+  - talent
+  - treasury
+consumed_by:
+  - culture
+  - digital-nervous-system
+  - environment
+  - global-tunisia
+  - health
+  - infrastructure
+  - land
+  - mobility-logistics
+  - national-digital-twin
+  - religious-heritage
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+related_services:
+  - culture
+  - digital-nervous-system
+  - environment
+  - global-tunisia
+  - health
+  - infrastructure
+  - land
+  - mobility-logistics
+  - national-digital-twin
+  - religious-heritage
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - talent
+  - treasury
+ai_capabilities:
+  - itinerary generation
+  - pressure forecasting
+  - multilingual site narration
+iot_capabilities:
+  - occupancy
+  - air quality
+  - noise
+  - temperature
+digital_twin_capabilities:
+  - site twin
+  - visitor flow twin
+data:
+  synthetic_only: true
+  owns_collection: sites
+  seeded_rows: 36

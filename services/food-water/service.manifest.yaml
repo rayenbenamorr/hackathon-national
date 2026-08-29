@@ -1,0 +1,208 @@
+id: food-water
+name: Autonomous Food & Water Grid
+ministry: Agriculture & Water Resources
+description: Water where it is needed, farms that know their own state,
+  fisheries that are not guessed at.
+mission: Turn water from a resource that is discovered to be missing into a
+  resource that is forecast — and make that forecast reach the ministries whose
+  plans depend on it.
+capabilities:
+  - Reservoirs, networks and demand as one balance.
+  - Soil, crop and irrigation state per farm.
+  - Stock and effort per fishing zone.
+modules:
+  - id: autonomous-water-grid
+    name: Autonomous Water Grid
+    purpose: Reservoirs, networks and demand as one balance.
+  - id: ai-farm-digital-twin
+    name: AI Farm Digital Twin
+    purpose: Soil, crop and irrigation state per farm.
+  - id: smart-ocean-fisheries-network
+    name: Smart Ocean & Fisheries Network
+    purpose: Stock and effort per fishing zone.
+owns:
+  - FarmRef
+  - WaterAssetRef
+  - FishingZoneRef
+apis:
+  - method: GET
+    path: /api/food-water/farms
+    summary: health Farm
+    module: platform
+  - method: GET
+    path: /api/food-water/farms
+    summary: list Farm
+    module: ai-farm-digital-twin
+  - method: GET
+    path: /api/food-water/farms/:id
+    summary: get Farm
+    module: ai-farm-digital-twin
+  - method: POST
+    path: /api/food-water/farms
+    summary: create Farm
+    module: ai-farm-digital-twin
+  - method: POST
+    path: /api/food-water/water/demand/forecast
+    summary: Forecast water demand for a governorate from soil, weather and crop state.
+    module: autonomous-water-grid
+  - method: POST
+    path: /api/food-water/water/shortage/predict
+    summary: Predict a shortage and alert every ministry that depends on water.
+    module: autonomous-water-grid
+  - method: GET
+    path: /api/food-water/irrigation/plan
+    summary: Water demand by governorate.
+    module: autonomous-water-grid
+  - method: GET
+    path: /api/food-water/farms
+    summary: signals Farm
+    module: platform
+  - method: GET
+    path: /api/food-water/farms
+    summary: twins Farm
+    module: platform
+  - method: GET
+    path: /api/food-water/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/food-water/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/food-water/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: agriculture.water-demand.predicted.v1
+    summary: Forecast water demand for a zone — the canonical cross-ministry
+      forecast on this platform.
+  - event: agriculture.water-shortage.predicted.v1
+    summary: "A shortage is expected: demand will exceed available supply."
+  - event: agriculture.yield.forecast.v1
+    summary: Expected yield for a crop in a governorate.
+  - event: water.reservoir-level.updated.v1
+    summary: Reservoir fill level changed.
+  - event: fisheries.stock.updated.v1
+    summary: Stock and fishing effort for a maritime zone.
+consumes:
+  - event: environment.climate-risk.updated.v1
+    from: environment
+    criticality: critical
+    reason: Drought index is the dominant term in every water demand forecast.
+  - event: environment.water-quality.updated.v1
+    from: environment
+    criticality: critical
+    reason: Unusable water is not supply; quality belongs in the balance.
+  - event: environment.air-quality.updated.v1
+    from: environment
+    criticality: normal
+    reason: Heat and particulate load affect evapotranspiration and crop stress.
+  - event: iot.sensor.observation.v1
+    from: digital-nervous-system
+    criticality: critical
+    reason: Soil moisture, rainfall and reservoir level are the farm and water twins.
+  - event: infrastructure.failure.predicted.v1
+    from: infrastructure
+    criticality: critical
+    reason: A failing water network turns available water into unavailable water.
+  - event: energy.outage-risk.flagged.v1
+    from: industrial-energy
+    criticality: critical
+    reason: Irrigation is pumping; no power is no irrigation.
+  - event: land.parcel.updated.v1
+    from: land
+    criticality: normal
+    reason: Farm boundaries and areas come from the land register.
+  - event: land.zoning.changed.v1
+    from: land
+    criticality: normal
+    reason: Agricultural land converted to another use leaves the water demand model.
+  - event: treasury.funding.approved.v1
+    from: treasury
+    criticality: normal
+    reason: Irrigation programmes and compensation move with approved funding.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: critical
+    reason: Under drought crisis the grid switches to allocation rather than
+      demand-following.
+  - event: trade.export-opportunity.detected.v1
+    from: smart-trade
+    criticality: normal
+    reason: Export demand changes which crops are worth the water.
+  - event: research.finding.released.v1
+    from: research
+    criticality: normal
+    reason: Agronomy and water results are adopted directly by the farm twin.
+  - event: health.epidemic-signal.detected.v1
+    from: health
+    criticality: normal
+    reason: Water-borne health signals point back at a water asset.
+  - event: twin.state.updated.v1
+    from: national-digital-twin
+    criticality: normal
+    reason: Regional state gives the demand context a single farm cannot see.
+depends_on:
+  - digital-nervous-system
+  - environment
+  - health
+  - industrial-energy
+  - infrastructure
+  - land
+  - national-digital-twin
+  - research
+  - resilience
+  - smart-trade
+  - treasury
+consumed_by:
+  - digital-nervous-system
+  - environment
+  - health
+  - industrial-energy
+  - infrastructure
+  - land
+  - mobility-logistics
+  - national-digital-twin
+  - research
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - smart-trade
+  - social-mobility
+  - treasury
+related_services:
+  - digital-nervous-system
+  - environment
+  - health
+  - industrial-energy
+  - infrastructure
+  - land
+  - mobility-logistics
+  - national-digital-twin
+  - research
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - smart-trade
+  - social-mobility
+  - treasury
+ai_capabilities:
+  - water demand forecasting
+  - shortage prediction
+  - yield forecasting
+  - irrigation optimisation
+iot_capabilities:
+  - soil moisture
+  - water level
+  - rainfall
+  - temperature
+  - humidity
+digital_twin_capabilities:
+  - farm twin
+  - reservoir twin
+  - fishing zone twin
+data:
+  synthetic_only: true
+  owns_collection: farms
+  seeded_rows: 44

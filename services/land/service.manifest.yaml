@@ -1,0 +1,195 @@
+id: land
+name: National Land Intelligence System
+ministry: State Property & Land Affairs
+description: Parcels, zoning and whether a site is actually a good idea.
+mission: Answer "can this be built here, and should it" with evidence from every
+  other ministry rather than with a map alone.
+capabilities:
+  - Parcels, zoning and current use.
+  - Multi-criteria site suitability scoring.
+  - What the State owns and whether it is used.
+modules:
+  - id: tunisia-land-digital-twin
+    name: Tunisia Land Digital Twin
+    purpose: Parcels, zoning and current use.
+  - id: ai-site-planner
+    name: AI Site Planner
+    purpose: Multi-criteria site suitability scoring.
+  - id: public-asset-intelligence
+    name: Public Asset Intelligence
+    purpose: What the State owns and whether it is used.
+owns:
+  - LandParcelRef
+  - PublicAssetRef
+  - ZoningRuleRef
+apis:
+  - method: GET
+    path: /api/land/parcels
+    summary: health Land parcel
+    module: platform
+  - method: GET
+    path: /api/land/parcels
+    summary: list Land parcel
+    module: tunisia-land-digital-twin
+  - method: GET
+    path: /api/land/parcels/:id
+    summary: get Land parcel
+    module: tunisia-land-digital-twin
+  - method: POST
+    path: /api/land/parcels
+    summary: create Land parcel
+    module: tunisia-land-digital-twin
+  - method: POST
+    path: /api/land/siting/evaluate
+    summary: Score a parcel for a proposed use against water, risk, mobility and
+      environment constraints.
+    module: ai-site-planner
+  - method: GET
+    path: /api/land/parcels/pressure
+    summary: Land pressure by governorate.
+    module: public-asset-intelligence
+  - method: GET
+    path: /api/land/parcels
+    summary: signals Land parcel
+    module: platform
+  - method: GET
+    path: /api/land/parcels
+    summary: twins Land parcel
+    module: platform
+  - method: GET
+    path: /api/land/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/land/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/land/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: land.parcel.updated.v1
+    summary: A parcel record changed.
+  - event: land.zoning.changed.v1
+    summary: Zoning changed — several ministries must re-plan.
+  - event: land.site-suitability.scored.v1
+    summary: A site was scored for a proposed use.
+consumes:
+  - event: environment.climate-risk.updated.v1
+    from: environment
+    criticality: critical
+    reason: Flood and drought risk are hard constraints on any siting score.
+  - event: environment.air-quality.updated.v1
+    from: environment
+    criticality: normal
+    reason: Air quality is a constraint on residential and school siting.
+  - event: agriculture.water-demand.predicted.v1
+    from: food-water
+    criticality: critical
+    reason: Water availability decides whether agricultural zoning is viable.
+  - event: agriculture.water-shortage.predicted.v1
+    from: food-water
+    criticality: critical
+    reason: A shortage forecast should freeze water-intensive siting decisions.
+  - event: infrastructure.asset-health.updated.v1
+    from: infrastructure
+    criticality: critical
+    reason: A site is only suitable if the networks reaching it are.
+  - event: transport.mobility-demand.updated.v1
+    from: mobility-logistics
+    criticality: critical
+    reason: Accessibility is one of the strongest terms in a suitability score.
+  - event: industry.production.updated.v1
+    from: industrial-energy
+    criticality: normal
+    reason: Industrial activity defines the real use of industrial zoning.
+  - event: emergency.incident.created.v1
+    from: safety-emergency
+    criticality: normal
+    reason: Repeated incidents on a parcel are a siting constraint.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: normal
+    reason: Crisis staging areas are drawn from the public asset register.
+  - event: treasury.budget-line.updated.v1
+    from: treasury
+    criticality: normal
+    reason: Public asset valuation and the budget move together.
+  - event: tourism.site-pressure.detected.v1
+    from: tourism
+    criticality: normal
+    reason: Touristic zoning pressure is measured, not assumed.
+  - event: culture.asset-condition.updated.v1
+    from: culture
+    criticality: normal
+    reason: Protected cultural assets constrain neighbouring parcels.
+  - event: education.school-condition.updated.v1
+    from: education
+    criticality: normal
+    reason: School siting is a land decision with a 40-year horizon.
+  - event: twin.scenario.completed.v1
+    from: national-digital-twin
+    criticality: normal
+    reason: Scenario outcomes are usually expressed as land decisions.
+depends_on:
+  - culture
+  - education
+  - environment
+  - food-water
+  - industrial-energy
+  - infrastructure
+  - mobility-logistics
+  - national-digital-twin
+  - resilience
+  - safety-emergency
+  - tourism
+  - treasury
+consumed_by:
+  - digital-nervous-system
+  - environment
+  - food-water
+  - global-tunisia
+  - industrial-energy
+  - infrastructure
+  - justice
+  - national-digital-twin
+  - religious-heritage
+  - research
+  - resilience
+  - smart-trade
+  - treasury
+related_services:
+  - culture
+  - digital-nervous-system
+  - education
+  - environment
+  - food-water
+  - global-tunisia
+  - industrial-energy
+  - infrastructure
+  - justice
+  - mobility-logistics
+  - national-digital-twin
+  - religious-heritage
+  - research
+  - resilience
+  - safety-emergency
+  - smart-trade
+  - tourism
+  - treasury
+ai_capabilities:
+  - multi-criteria siting
+  - zoning conflict detection
+  - unused asset detection
+iot_capabilities:
+  - soil moisture
+  - water level
+  - structural strain
+digital_twin_capabilities:
+  - parcel twin
+  - public asset twin
+data:
+  synthetic_only: true
+  owns_collection: parcels
+  seeded_rows: 50

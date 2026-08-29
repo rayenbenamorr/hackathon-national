@@ -1,0 +1,186 @@
+id: talent
+name: National Talent Intelligence Network
+ministry: Youth & Sports
+description: Athlete development, facility usage and youth opportunity as one pipeline.
+mission: Find talent where the facilities and the data already are, and stop
+  losing athletes to injuries and gaps nobody was watching.
+capabilities:
+  - Load, performance and injury risk from wearable signals.
+  - Facility usage, condition and energy.
+  - Connects young people to missions, training and clubs.
+modules:
+  - id: athlete-digital-twin
+    name: Athlete Digital Twin
+    purpose: Load, performance and injury risk from wearable signals.
+  - id: smart-sports-infrastructure-grid
+    name: Smart Sports Infrastructure Grid
+    purpose: Facility usage, condition and energy.
+  - id: youth-opportunity-ai
+    name: Youth Opportunity AI
+    purpose: Connects young people to missions, training and clubs.
+owns:
+  - AthleteCohortRef
+  - SportsFacilityRef
+apis:
+  - method: GET
+    path: /api/talent/facilities
+    summary: health Sports facility
+    module: platform
+  - method: GET
+    path: /api/talent/facilities
+    summary: list Sports facility
+    module: smart-sports-infrastructure-grid
+  - method: GET
+    path: /api/talent/facilities/:id
+    summary: get Sports facility
+    module: smart-sports-infrastructure-grid
+  - method: POST
+    path: /api/talent/facilities
+    summary: create Sports facility
+    module: smart-sports-infrastructure-grid
+  - method: POST
+    path: /api/talent/talent/scout
+    summary: Assess a cohort load profile and flag injury risk.
+    module: athlete-digital-twin
+  - method: GET
+    path: /api/talent/facilities/usage
+    summary: Facility usage by governorate.
+    module: smart-sports-infrastructure-grid
+  - method: GET
+    path: /api/talent/facilities
+    summary: signals Sports facility
+    module: platform
+  - method: GET
+    path: /api/talent/facilities
+    summary: twins Sports facility
+    module: platform
+  - method: GET
+    path: /api/talent/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/talent/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/talent/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: talent.performance.updated.v1
+    summary: Aggregate performance for an athlete cohort.
+  - event: talent.facility-usage.updated.v1
+    summary: Usage and condition at a sports facility.
+  - event: talent.injury-risk.flagged.v1
+    summary: Training load suggests elevated injury risk for a cohort.
+consumes:
+  - event: iot.sensor.observation.v1
+    from: digital-nervous-system
+    criticality: critical
+    reason: Wearable and occupancy observations are the athlete and facility twins.
+  - event: health.capacity.updated.v1
+    from: health
+    criticality: normal
+    reason: Sports medicine capacity gates both competition and training volume.
+  - event: education.learning-progress.updated.v1
+    from: education
+    criticality: normal
+    reason: School sport is where the pipeline actually starts.
+  - event: education.school-condition.updated.v1
+    from: education
+    criticality: normal
+    reason: School facilities are the majority of accessible sports infrastructure.
+  - event: environment.air-quality.updated.v1
+    from: environment
+    criticality: critical
+    reason: Outdoor training on a high-particulate day is a measurable injury and
+      health risk.
+  - event: environment.climate-risk.updated.v1
+    from: environment
+    criticality: normal
+    reason: Heat risk decides whether a session is held at all.
+  - event: infrastructure.asset-health.updated.v1
+    from: infrastructure
+    criticality: critical
+    reason: A stadium is an infrastructure asset before it is a venue.
+  - event: energy.grid-load.updated.v1
+    from: industrial-energy
+    criticality: normal
+    reason: Facility energy use is measured against the grid it sits on.
+  - event: social.vulnerability.updated.v1
+    from: social-mobility
+    criticality: critical
+    reason: Youth opportunity is targeted where mobility is blocked.
+  - event: skills.micro-mission.published.v1
+    from: skills-opportunity
+    criticality: normal
+    reason: Youth missions and sports pipelines share the same participants.
+  - event: culture.event.scheduled.v1
+    from: culture
+    criticality: normal
+    reason: Venues and calendars are shared with cultural programming.
+  - event: transport.mobility-demand.updated.v1
+    from: mobility-logistics
+    criticality: normal
+    reason: Match-day mobility is planned, not absorbed.
+  - event: emergency.incident.created.v1
+    from: safety-emergency
+    criticality: normal
+    reason: Crowd incidents at venues change facility operating rules.
+  - event: treasury.budget-line.updated.v1
+    from: treasury
+    criticality: normal
+    reason: Facility maintenance and youth programmes follow the budget line.
+depends_on:
+  - culture
+  - digital-nervous-system
+  - education
+  - environment
+  - health
+  - industrial-energy
+  - infrastructure
+  - mobility-logistics
+  - safety-emergency
+  - skills-opportunity
+  - social-mobility
+  - treasury
+consumed_by:
+  - education
+  - health
+  - life-care
+  - research
+  - safety-emergency
+  - skills-opportunity
+  - tourism
+related_services:
+  - culture
+  - digital-nervous-system
+  - education
+  - environment
+  - health
+  - industrial-energy
+  - infrastructure
+  - life-care
+  - mobility-logistics
+  - research
+  - safety-emergency
+  - skills-opportunity
+  - social-mobility
+  - tourism
+  - treasury
+ai_capabilities:
+  - injury risk from load
+  - talent identification
+  - facility allocation
+iot_capabilities:
+  - wearable heart rate
+  - occupancy
+  - energy load
+  - temperature
+digital_twin_capabilities:
+  - athlete cohort twin
+  - facility twin
+data:
+  synthetic_only: true
+  owns_collection: facilities
+  seeded_rows: 30

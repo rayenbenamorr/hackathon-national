@@ -1,0 +1,206 @@
+id: safety-emergency
+name: National Safety & Emergency Grid
+ministry: Interior
+description: Incidents, dispatch and road risk — the fastest loop on the platform.
+mission: Receive an incident from anywhere, understand it in seconds, and pull
+  the nearest capable resource from whichever ministry owns it.
+capabilities:
+  - Triage, severity and the dispatch decision.
+  - Continuous risk scoring of road segments.
+  - Civil requests that do not need an emergency response.
+modules:
+  - id: national-emergency-brain
+    name: National Emergency Brain
+    purpose: Triage, severity and the dispatch decision.
+  - id: ai-road-safety-grid
+    name: AI Road Safety Grid
+    purpose: Continuous risk scoring of road segments.
+  - id: smart-civil-services
+    name: Smart Civil Services
+    purpose: Civil requests that do not need an emergency response.
+owns:
+  - IncidentRef
+  - PatrolUnitRef
+apis:
+  - method: GET
+    path: /api/safety-emergency/incidents
+    summary: health Incident
+    module: platform
+  - method: GET
+    path: /api/safety-emergency/incidents
+    summary: list Incident
+    module: national-emergency-brain
+  - method: GET
+    path: /api/safety-emergency/incidents/:id
+    summary: get Incident
+    module: national-emergency-brain
+  - method: POST
+    path: /api/safety-emergency/incidents
+    summary: create Incident
+    module: national-emergency-brain
+  - method: POST
+    path: /api/safety-emergency/triage
+    summary: Classify an incoming report and say what to dispatch.
+    module: national-emergency-brain
+  - method: GET
+    path: /api/safety-emergency/road-risk
+    summary: Road risk by governorate, blending incidents with weather and traffic
+      signals.
+    module: ai-road-safety-grid
+  - method: GET
+    path: /api/safety-emergency/incidents
+    summary: signals Incident
+    module: platform
+  - method: GET
+    path: /api/safety-emergency/incidents
+    summary: twins Incident
+    module: platform
+  - method: GET
+    path: /api/safety-emergency/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/safety-emergency/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/safety-emergency/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: emergency.incident.created.v1
+    summary: An incident was reported. The most widely consumed event on the platform.
+  - event: emergency.incident.resolved.v1
+    summary: An incident is closed, with how long it took.
+  - event: emergency.resource.requested.v1
+    summary: Emergency asks another ministry for a specific resource.
+  - event: emergency.road-risk.updated.v1
+    summary: Risk score for a road segment changed.
+consumes:
+  - event: health.capacity.updated.v1
+    from: health
+    criticality: critical
+    reason: Dispatch sends casualties to the nearest facility that can actually
+      receive them.
+  - event: health.emergency.declared.v1
+    from: health
+    criticality: critical
+    reason: A health emergency needs civil protection resources Health does not own.
+  - event: transport.congestion.detected.v1
+    from: mobility-logistics
+    criticality: critical
+    reason: Congestion changes response time more than distance does.
+  - event: environment.air-quality.updated.v1
+    from: environment
+    criticality: normal
+    reason: Air quality drives both road risk and the protection level responders need.
+  - event: iot.sensor.observation.v1
+    from: digital-nervous-system
+    criticality: critical
+    reason: Traffic, rainfall and vibration observations feed continuous road-risk
+      scoring.
+  - event: infrastructure.failure.predicted.v1
+    from: infrastructure
+    criticality: critical
+    reason: A failing bridge is a road-risk input and a route exclusion at the same
+      time.
+  - event: water.reservoir-level.updated.v1
+    from: food-water
+    criticality: normal
+    reason: Reservoir state is a flood precursor for downstream zones.
+  - event: industry.production.updated.v1
+    from: industrial-energy
+    criticality: normal
+    reason: Industrial activity localises the risk of industrial incidents.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: critical
+    reason: Under a declared crisis the grid switches to crisis dispatch rules.
+  - event: culture.event.scheduled.v1
+    from: culture
+    criticality: normal
+    reason: A scheduled gathering changes both crowd risk and the resources to
+      pre-position.
+  - event: tourism.visitor-flow.updated.v1
+    from: tourism
+    criticality: normal
+    reason: Visitor volume changes how many people are in a zone at a given hour.
+  - event: talent.facility-usage.updated.v1
+    from: talent
+    criticality: normal
+    reason: Stadium and gymnasium usage is crowd exposure.
+  - event: education.school-condition.updated.v1
+    from: education
+    criticality: normal
+    reason: School condition and occupancy shape the response to a building incident.
+  - event: social.vulnerability.updated.v1
+    from: social-mobility
+    criticality: normal
+    reason: Vulnerable cohorts need a different response, not the same one faster.
+depends_on:
+  - culture
+  - digital-nervous-system
+  - education
+  - environment
+  - food-water
+  - health
+  - industrial-energy
+  - infrastructure
+  - mobility-logistics
+  - resilience
+  - social-mobility
+  - talent
+  - tourism
+consumed_by:
+  - culture
+  - digital-nervous-system
+  - environment
+  - health
+  - infrastructure
+  - justice
+  - land
+  - life-care
+  - mobility-logistics
+  - national-digital-twin
+  - religious-heritage
+  - resilience
+  - social-mobility
+  - talent
+  - tourism
+  - treasury
+related_services:
+  - culture
+  - digital-nervous-system
+  - education
+  - environment
+  - food-water
+  - health
+  - industrial-energy
+  - infrastructure
+  - justice
+  - land
+  - life-care
+  - mobility-logistics
+  - national-digital-twin
+  - religious-heritage
+  - resilience
+  - social-mobility
+  - talent
+  - tourism
+  - treasury
+ai_capabilities:
+  - incident triage
+  - road risk scoring
+  - dispatch recommendation agent
+iot_capabilities:
+  - traffic flow
+  - air quality
+  - rainfall
+  - vibration
+digital_twin_capabilities:
+  - incident twin
+  - road segment twin
+data:
+  synthetic_only: true
+  owns_collection: incidents
+  seeded_rows: 30

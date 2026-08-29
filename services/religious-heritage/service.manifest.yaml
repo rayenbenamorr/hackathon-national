@@ -1,0 +1,205 @@
+id: religious-heritage
+name: Smart Religious Heritage Network
+ministry: Religious Affairs
+description: Sites that report their own condition, buildings that manage their
+  own energy, knowledge that is sourced.
+mission: Protect fragile places with sensors instead of inspections, and answer
+  questions about heritage from documented sources only.
+capabilities:
+  - Humidity, strain and vibration on fragile fabric.
+  - Consumption and comfort in places of worship.
+  - Sourced, verifiable knowledge — never generated assertion.
+modules:
+  - id: smart-heritage-sensor-network
+    name: Smart Heritage Sensor Network
+    purpose: Humidity, strain and vibration on fragile fabric.
+  - id: smart-building-energy-system
+    name: Smart Building / Energy System
+    purpose: Consumption and comfort in places of worship.
+  - id: trusted-knowledge-graph
+    name: Trusted Knowledge Graph
+    purpose: Sourced, verifiable knowledge — never generated assertion.
+owns:
+  - HeritageSiteRef
+  - ManuscriptRef
+apis:
+  - method: GET
+    path: /api/religious-heritage/sites
+    summary: health Heritage site
+    module: platform
+  - method: GET
+    path: /api/religious-heritage/sites
+    summary: list Heritage site
+    module: smart-heritage-sensor-network
+  - method: GET
+    path: /api/religious-heritage/sites/:id
+    summary: get Heritage site
+    module: smart-heritage-sensor-network
+  - method: POST
+    path: /api/religious-heritage/sites
+    summary: create Heritage site
+    module: smart-heritage-sensor-network
+  - method: POST
+    path: /api/religious-heritage/knowledge/ask
+    summary: Answer only from registered sources, and say when there are none.
+    module: trusted-knowledge-graph
+  - method: GET
+    path: /api/religious-heritage/sites/condition
+    summary: Site condition by governorate.
+    module: smart-heritage-sensor-network
+  - method: GET
+    path: /api/religious-heritage/sites
+    summary: signals Heritage site
+    module: platform
+  - method: GET
+    path: /api/religious-heritage/sites
+    summary: twins Heritage site
+    module: platform
+  - method: GET
+    path: /api/religious-heritage/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/religious-heritage/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/religious-heritage/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: heritage.site-condition.updated.v1
+    summary: Condition of a heritage site changed.
+  - event: heritage.energy-usage.updated.v1
+    summary: Energy consumption at a site.
+  - event: heritage.knowledge.published.v1
+    summary: A sourced knowledge entry was published.
+consumes:
+  - event: iot.sensor.observation.v1
+    from: digital-nervous-system
+    criticality: critical
+    reason: Humidity, vibration and strain observations are the site condition twin.
+  - event: environment.air-quality.updated.v1
+    from: environment
+    criticality: critical
+    reason: Particulates and pollutants are the main slow destroyer of historic fabric.
+  - event: environment.climate-risk.updated.v1
+    from: environment
+    criticality: critical
+    reason: Humidity and flood risk decide conservation priority.
+  - event: infrastructure.failure.predicted.v1
+    from: infrastructure
+    criticality: critical
+    reason: Historic buildings are infrastructure assets with irreplaceable value.
+  - event: infrastructure.maintenance.scheduled.v1
+    from: infrastructure
+    criticality: normal
+    reason: Conservation work is scheduled through the same maintenance system.
+  - event: energy.grid-load.updated.v1
+    from: industrial-energy
+    criticality: normal
+    reason: Site energy systems are optimised against the local grid.
+  - event: culture.asset-condition.updated.v1
+    from: culture
+    criticality: critical
+    reason: Many sites are both religious and cultural assets; conditions must agree.
+  - event: tourism.visitor-flow.updated.v1
+    from: tourism
+    criticality: critical
+    reason: Visitor pressure is the fastest controllable driver of degradation.
+  - event: tourism.site-pressure.detected.v1
+    from: tourism
+    criticality: critical
+    reason: Over-capacity is the signal that access must be regulated.
+  - event: transport.mobility-demand.updated.v1
+    from: mobility-logistics
+    criticality: normal
+    reason: Access flows around historic quarters are a conservation variable.
+  - event: research.finding.released.v1
+    from: research
+    criticality: normal
+    reason: Conservation science results are adopted directly by the sensor network.
+  - event: emergency.incident.created.v1
+    from: safety-emergency
+    criticality: normal
+    reason: Fire and structural incidents at sites need an immediate, specific
+      response.
+  - event: treasury.funding.approved.v1
+    from: treasury
+    criticality: normal
+    reason: Restoration programmes exist only once funded.
+  - event: education.program.updated.v1
+    from: education
+    criticality: normal
+    reason: Heritage education programmes are built on the knowledge graph.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: critical
+    reason: Historic sites are protection and evacuation priorities the moment a
+      crisis is declared.
+  - event: land.zoning.changed.v1
+    from: land
+    criticality: normal
+    reason: What may be built next to a protected site is decided by zoning around it.
+  - event: social.vulnerability.updated.v1
+    from: social-mobility
+    criticality: normal
+    reason: Zaouias and madrasas remain community services in the most fragile
+      neighbourhoods.
+  - event: twin.state.updated.v1
+    from: national-digital-twin
+    criticality: normal
+    reason: Regional state orders the conservation queue between governorates.
+depends_on:
+  - culture
+  - digital-nervous-system
+  - education
+  - environment
+  - industrial-energy
+  - infrastructure
+  - land
+  - mobility-logistics
+  - national-digital-twin
+  - research
+  - resilience
+  - safety-emergency
+  - social-mobility
+  - tourism
+  - treasury
+consumed_by:
+  - culture
+  - infrastructure
+  - tourism
+related_services:
+  - culture
+  - digital-nervous-system
+  - education
+  - environment
+  - industrial-energy
+  - infrastructure
+  - land
+  - mobility-logistics
+  - national-digital-twin
+  - research
+  - resilience
+  - safety-emergency
+  - social-mobility
+  - tourism
+  - treasury
+ai_capabilities:
+  - sourced RAG with refusal
+  - degradation forecasting
+  - energy optimisation
+iot_capabilities:
+  - humidity
+  - vibration
+  - structural strain
+  - occupancy
+  - energy load
+digital_twin_capabilities:
+  - site twin
+  - building energy twin
+data:
+  synthetic_only: true
+  owns_collection: sites
+  seeded_rows: 28

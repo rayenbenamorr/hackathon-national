@@ -1,0 +1,187 @@
+id: skills-opportunity
+name: National Skills & Opportunity OS
+ministry: Employment & Vocational Training
+description: What the country can do, what it needs to be able to do, and the
+  shortest path between.
+mission: Read skill demand from what the other ministries are actually building,
+  and open real missions against the gaps.
+capabilities:
+  - Skills, adjacencies and regional supply.
+  - A path from where a person is to where demand is.
+  - Short, real assignments published against detected gaps.
+modules:
+  - id: national-skills-graph
+    name: National Skills Graph
+    purpose: Skills, adjacencies and regional supply.
+  - id: ai-career-digital-twin
+    name: AI Career Digital Twin
+    purpose: A path from where a person is to where demand is.
+  - id: national-micro-mission-network
+    name: National Micro-Mission Network
+    purpose: Short, real assignments published against detected gaps.
+owns:
+  - SkillRef
+  - MicroMissionRef
+  - CareerPathRef
+apis:
+  - method: GET
+    path: /api/skills-opportunity/skills
+    summary: health Skill
+    module: platform
+  - method: GET
+    path: /api/skills-opportunity/skills
+    summary: list Skill
+    module: national-skills-graph
+  - method: GET
+    path: /api/skills-opportunity/skills/:id
+    summary: get Skill
+    module: national-skills-graph
+  - method: POST
+    path: /api/skills-opportunity/skills
+    summary: create Skill
+    module: national-micro-mission-network
+  - method: POST
+    path: /api/skills-opportunity/career/plan
+    summary: Build a training path from a current profile to real regional demand.
+    module: ai-career-digital-twin
+  - method: GET
+    path: /api/skills-opportunity/gaps
+    summary: Skill gaps by governorate.
+    module: national-skills-graph
+  - method: GET
+    path: /api/skills-opportunity/skills
+    summary: signals Skill
+    module: platform
+  - method: GET
+    path: /api/skills-opportunity/skills
+    summary: twins Skill
+    module: platform
+  - method: GET
+    path: /api/skills-opportunity/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/skills-opportunity/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/skills-opportunity/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: skills.gap.detected.v1
+    summary: Demand for a skill exceeds regional supply.
+  - event: skills.micro-mission.published.v1
+    summary: A short real assignment was opened against a gap.
+  - event: skills.profile.updated.v1
+    summary: Regional skill supply moved.
+consumes:
+  - event: education.program.updated.v1
+    from: education
+    criticality: critical
+    reason: Programmes are the supply side of the skills graph.
+  - event: education.learning-progress.updated.v1
+    from: education
+    criticality: normal
+    reason: Cohort mastery is how supply becomes real rather than enrolled.
+  - event: research.project.published.v1
+    from: research
+    criticality: normal
+    reason: Research activity is an advanced-skill demand signal.
+  - event: research.transfer.matched.v1
+    from: research
+    criticality: normal
+    reason: A technology transfer creates a specific, datable skill need.
+  - event: industry.production.updated.v1
+    from: industrial-energy
+    criticality: critical
+    reason: Industrial activity is the largest single source of skill demand.
+  - event: agriculture.yield.forecast.v1
+    from: food-water
+    criticality: normal
+    reason: Agricultural seasons drive predictable seasonal skill demand.
+  - event: trade.export-opportunity.detected.v1
+    from: smart-trade
+    criticality: critical
+    reason: An export opening is a skill requirement with a deadline.
+  - event: infrastructure.maintenance.scheduled.v1
+    from: infrastructure
+    criticality: normal
+    reason: Scheduled works are dated demand for named trades.
+  - event: health.capacity.updated.v1
+    from: health
+    criticality: normal
+    reason: Chronic saturation is a health workforce gap, not only a bed gap.
+  - event: treasury.funding.approved.v1
+    from: treasury
+    criticality: normal
+    reason: A funded programme is a hiring plan.
+  - event: tourism.visitor-flow.updated.v1
+    from: tourism
+    criticality: normal
+    reason: Seasonal tourism demand is seasonal skill demand.
+  - event: global.diaspora-signal.updated.v1
+    from: global-tunisia
+    criticality: normal
+    reason: Skills concentrated abroad are supply the national graph should count.
+  - event: talent.performance.updated.v1
+    from: talent
+    criticality: normal
+    reason: Youth pipelines feed both sport and the wider opportunity network.
+  - event: social.vulnerability.updated.v1
+    from: social-mobility
+    criticality: critical
+    reason: Micro-missions are placed where mobility is blocked, not where it is easy.
+depends_on:
+  - education
+  - food-water
+  - global-tunisia
+  - health
+  - industrial-energy
+  - infrastructure
+  - research
+  - smart-trade
+  - social-mobility
+  - talent
+  - tourism
+  - treasury
+consumed_by:
+  - culture
+  - education
+  - global-tunisia
+  - industrial-energy
+  - life-care
+  - national-digital-twin
+  - research
+  - smart-trade
+  - social-mobility
+  - talent
+related_services:
+  - culture
+  - education
+  - food-water
+  - global-tunisia
+  - health
+  - industrial-energy
+  - infrastructure
+  - life-care
+  - national-digital-twin
+  - research
+  - smart-trade
+  - social-mobility
+  - talent
+  - tourism
+  - treasury
+ai_capabilities:
+  - gap detection from cross-ministry demand
+  - career path planning
+  - skill adjacency embedding
+iot_capabilities:
+  - training centre occupancy
+digital_twin_capabilities:
+  - skill twin
+  - regional labour twin
+data:
+  synthetic_only: true
+  owns_collection: skills
+  seeded_rows: 40

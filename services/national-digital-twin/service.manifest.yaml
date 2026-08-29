@@ -1,0 +1,221 @@
+id: national-digital-twin
+name: Tunisia National Digital Twin
+ministry: Planning / Prime Ministry
+description: The country as one queryable model, assembled from what the other 23 publish.
+mission: "Hold the whole picture without owning anyone else data: aggregate
+  references and signals, run scenarios across them, and hand every ministry
+  back the context it cannot see alone."
+capabilities:
+  - Regional state assembled from every ministry signal.
+  - What-if simulation across sectors.
+  - Investment and priority proposals per governorate.
+modules:
+  - id: tunisia-digital-twin
+    name: Tunisia Digital Twin
+    purpose: Regional state assembled from every ministry signal.
+  - id: national-scenario-engine
+    name: National Scenario Engine
+    purpose: What-if simulation across sectors.
+  - id: regional-ai-planner
+    name: Regional AI Planner
+    purpose: Investment and priority proposals per governorate.
+owns:
+  - RegionStateRef
+  - ScenarioRef
+apis:
+  - method: GET
+    path: /api/national-digital-twin/regionStates
+    summary: health Region state
+    module: platform
+  - method: GET
+    path: /api/national-digital-twin/regionStates
+    summary: list Region state
+    module: tunisia-digital-twin
+  - method: GET
+    path: /api/national-digital-twin/regionStates/:id
+    summary: get Region state
+    module: tunisia-digital-twin
+  - method: POST
+    path: /api/national-digital-twin/scenarios/run
+    summary: Run a cross-sector what-if and broadcast the outcome.
+    module: national-scenario-engine
+  - method: GET
+    path: /api/national-digital-twin/regions/stress
+    summary: Composite stress index per governorate, with the services that drove it.
+    module: regional-ai-planner
+  - method: GET
+    path: /api/national-digital-twin/regionStates
+    summary: signals Region state
+    module: platform
+  - method: GET
+    path: /api/national-digital-twin/regionStates
+    summary: twins Region state
+    module: platform
+  - method: GET
+    path: /api/national-digital-twin/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/national-digital-twin/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/national-digital-twin/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: twin.state.updated.v1
+    summary: The national twin recomputed a region state.
+  - event: twin.scenario.completed.v1
+    summary: A cross-sector scenario finished running.
+  - event: twin.anomaly.detected.v1
+    summary: A region deviates from its own baseline across several sectors at once.
+consumes:
+  - event: environment.air-quality.updated.v1
+    from: environment
+    criticality: critical
+    reason: Air quality is one of the six axes of the regional state vector.
+  - event: environment.climate-risk.updated.v1
+    from: environment
+    criticality: critical
+    reason: Climate risk is the slow variable every scenario is run against.
+  - event: agriculture.water-demand.predicted.v1
+    from: food-water
+    criticality: critical
+    reason: Water demand versus supply is the axis that moves every other one.
+  - event: agriculture.water-shortage.predicted.v1
+    from: food-water
+    criticality: critical
+    reason: A shortage prediction propagates into health, economy and mobility in
+      the model.
+  - event: health.capacity.updated.v1
+    from: health
+    criticality: critical
+    reason: Health load is a direct component of the regional stress index.
+  - event: transport.mobility-demand.updated.v1
+    from: mobility-logistics
+    criticality: critical
+    reason: Mobility pressure is a component of the regional stress index.
+  - event: energy.grid-load.updated.v1
+    from: industrial-energy
+    criticality: critical
+    reason: Energy load is a component of regional economic activity.
+  - event: infrastructure.asset-health.updated.v1
+    from: infrastructure
+    criticality: critical
+    reason: Asset health bounds what any scenario can assume about capacity.
+  - event: social.vulnerability.updated.v1
+    from: social-mobility
+    criticality: critical
+    reason: Vulnerability is what makes the same shock a different event in two
+      governorates.
+  - event: emergency.incident.created.v1
+    from: safety-emergency
+    criticality: normal
+    reason: Incident density is a fast indicator against a slow model.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: critical
+    reason: A declared crisis switches the twin into crisis mode for that zone.
+  - event: education.school-condition.updated.v1
+    from: education
+    criticality: normal
+    reason: School condition is a durable component of regional capability.
+  - event: land.zoning.changed.v1
+    from: land
+    criticality: normal
+    reason: Zoning is the lever most scenarios end up recommending.
+  - event: tourism.visitor-flow.updated.v1
+    from: tourism
+    criticality: normal
+    reason: Seasonal population is not resident population; the model needs both.
+  - event: treasury.fiscal-risk.flagged.v1
+    from: treasury
+    criticality: normal
+    reason: A fiscal constraint bounds which scenario outcomes are reachable.
+  - event: iot.sensor.observation.v1
+    from: digital-nervous-system
+    criticality: critical
+    reason: Raw observations keep regional twins current between ministry publications.
+  - event: trade.shipment.updated.v1
+    from: smart-trade
+    criticality: normal
+    reason: Trade flows are the economic exchange term between regions.
+  - event: skills.gap.detected.v1
+    from: skills-opportunity
+    criticality: normal
+    reason: Skill availability limits what a regional plan can actually execute.
+  - event: culture.creative-economy.updated.v1
+    from: culture
+    criticality: normal
+    reason: Creative activity is a measurable part of regional economic activity.
+  - event: care.facility-capacity.updated.v1
+    from: life-care
+    criticality: normal
+    reason: Care coverage is part of the social axis of the region state.
+depends_on:
+  - culture
+  - digital-nervous-system
+  - education
+  - environment
+  - food-water
+  - health
+  - industrial-energy
+  - infrastructure
+  - land
+  - life-care
+  - mobility-logistics
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - smart-trade
+  - social-mobility
+  - tourism
+  - treasury
+consumed_by:
+  - digital-nervous-system
+  - food-water
+  - global-tunisia
+  - industrial-energy
+  - justice
+  - land
+  - religious-heritage
+  - research
+  - resilience
+  - treasury
+related_services:
+  - culture
+  - digital-nervous-system
+  - education
+  - environment
+  - food-water
+  - global-tunisia
+  - health
+  - industrial-energy
+  - infrastructure
+  - justice
+  - land
+  - life-care
+  - mobility-logistics
+  - religious-heritage
+  - research
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - smart-trade
+  - social-mobility
+  - tourism
+  - treasury
+ai_capabilities:
+  - cross-sector scenario simulation
+  - multivariate anomaly detection
+  - regional priority ranking
+iot_capabilities:
+  - every sensor kind, as aggregate references
+digital_twin_capabilities:
+  - 24 governorate twins
+  - national composite twin
+data:
+  synthetic_only: true
+  owns_collection: regionStates
+  seeded_rows: 24

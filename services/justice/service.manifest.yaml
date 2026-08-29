@@ -1,0 +1,189 @@
+id: justice
+name: Justice Intelligence OS
+ministry: Justice
+description: Case flow, legal knowledge and court capacity as one observable system.
+mission: "Make the journey of a case legible end to end: where it is, what it is
+  waiting on, and which court is saturated — so delay becomes a measurable,
+  addressable quantity rather than an anecdote."
+capabilities:
+  - "A live twin per court: pending load, average delay, saturation."
+  - RAG over published legal texts so a citizen question gets a sourced answer.
+  - Case stages, deadlines and the events other ministries need.
+modules:
+  - id: justice-digital-twin
+    name: Justice Digital Twin
+    purpose: "A live twin per court: pending load, average delay, saturation."
+  - id: ai-legal-navigator
+    name: AI Legal Navigator
+    purpose: RAG over published legal texts so a citizen question gets a sourced answer.
+  - id: smart-justice-workflow
+    name: Smart Justice Workflow
+    purpose: Case stages, deadlines and the events other ministries need.
+owns:
+  - CaseRef
+  - CourtRef
+  - LegalTextRef
+apis:
+  - method: GET
+    path: /api/justice/cases
+    summary: health Case
+    module: platform
+  - method: GET
+    path: /api/justice/cases
+    summary: list Case
+    module: smart-justice-workflow
+  - method: GET
+    path: /api/justice/cases/:id
+    summary: get Case
+    module: smart-justice-workflow
+  - method: POST
+    path: /api/justice/cases
+    summary: create Case
+    module: smart-justice-workflow
+  - method: POST
+    path: /api/justice/navigator/ask
+    summary: Ask a legal question; answered only from the published texts held by
+      this service.
+    module: ai-legal-navigator
+  - method: GET
+    path: /api/justice/courts/load
+    summary: Pending load and saturation per court.
+    module: justice-digital-twin
+  - method: GET
+    path: /api/justice/cases
+    summary: signals Case
+    module: platform
+  - method: GET
+    path: /api/justice/cases
+    summary: twins Case
+    module: platform
+  - method: GET
+    path: /api/justice/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/justice/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/justice/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: justice.case.filed.v1
+    summary: A new case entered the system.
+  - event: justice.case.decided.v1
+    summary: A case reached a decision.
+  - event: justice.court-load.updated.v1
+    summary: Pending load and saturation for a court.
+  - event: justice.legal-text.published.v1
+    summary: A legal text became applicable — other ministries may need to adapt.
+consumes:
+  - event: emergency.incident.created.v1
+    from: safety-emergency
+    criticality: normal
+    reason: A serious incident becomes a case file; opening it from the incident
+      removes a manual re-entry step.
+  - event: land.zoning.changed.v1
+    from: land
+    criticality: normal
+    reason: Zoning changes are the single largest generator of land disputes; the
+      court twin anticipates the load.
+  - event: land.parcel.updated.v1
+    from: land
+    criticality: normal
+    reason: Parcel records are evidence in property cases and must be current when a
+      case is heard.
+  - event: social.vulnerability.updated.v1
+    from: social-mobility
+    criticality: normal
+    reason: Legal aid is targeted at the cohorts that cannot otherwise reach a court.
+  - event: treasury.budget-line.updated.v1
+    from: treasury
+    criticality: normal
+    reason: Court staffing and digitisation move with the justice budget line.
+  - event: trade.supply-risk.flagged.v1
+    from: smart-trade
+    criticality: normal
+    reason: Commercial disputes rise with supply failures; the workflow
+      pre-positions commercial chambers.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: critical
+    reason: A declared crisis suspends deadlines and moves hearings — the workflow
+      must know immediately.
+  - event: health.epidemic-signal.detected.v1
+    from: health
+    criticality: normal
+    reason: Hearing continuity plans depend on health restrictions in the governorate.
+  - event: transport.congestion.detected.v1
+    from: mobility-logistics
+    criticality: normal
+    reason: Non-appearance correlates with corridor congestion on hearing days.
+  - event: environment.water-quality.updated.v1
+    from: environment
+    criticality: normal
+    reason: Environmental degradation records are evidence in environmental
+      proceedings.
+  - event: research.finding.released.v1
+    from: research
+    criticality: normal
+    reason: Forensic and legal-informatics results are adopted by the navigator when
+      released.
+  - event: twin.anomaly.detected.v1
+    from: national-digital-twin
+    criticality: normal
+    reason: A regional anomaly usually precedes a case surge in the same governorate.
+  - event: iot.sensor.observation.v1
+    from: digital-nervous-system
+    criticality: normal
+    reason: Courthouse occupancy sensors feed the court twin, so saturation is
+      measured rather than asserted.
+depends_on:
+  - digital-nervous-system
+  - environment
+  - health
+  - land
+  - mobility-logistics
+  - national-digital-twin
+  - research
+  - resilience
+  - safety-emergency
+  - smart-trade
+  - social-mobility
+  - treasury
+consumed_by:
+  - global-tunisia
+  - life-care
+  - smart-trade
+  - social-mobility
+  - treasury
+related_services:
+  - digital-nervous-system
+  - environment
+  - global-tunisia
+  - health
+  - land
+  - life-care
+  - mobility-logistics
+  - national-digital-twin
+  - research
+  - resilience
+  - safety-emergency
+  - smart-trade
+  - social-mobility
+  - treasury
+ai_capabilities:
+  - RAG over legal texts
+  - case-duration forecasting
+  - matter classification
+iot_capabilities:
+  - courthouse occupancy sensors
+  - hearing-room environment
+digital_twin_capabilities:
+  - court twin (load, delay, saturation)
+  - case-flow process twin
+data:
+  synthetic_only: true
+  owns_collection: cases
+  seeded_rows: 40

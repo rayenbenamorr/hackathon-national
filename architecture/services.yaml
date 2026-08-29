@@ -1,0 +1,2054 @@
+version: 1
+generated_from: tools/spec/services.part1.mjs + services.part2.mjs
+minimum_partners_per_service: 14
+services:
+  - id: justice
+    name: Justice Intelligence OS
+    ministry: Justice
+    description: Case flow, legal knowledge and court capacity as one observable system.
+    capabilities:
+      - "A live twin per court: pending load, average delay, saturation."
+      - RAG over published legal texts so a citizen question gets a sourced
+        answer.
+      - Case stages, deadlines and the events other ministries need.
+    owns:
+      - CaseRef
+      - CourtRef
+      - LegalTextRef
+    apis:
+      - GET /api/justice/cases
+      - GET /api/justice/cases
+      - GET /api/justice/cases/:id
+      - POST /api/justice/cases
+      - POST /api/justice/navigator/ask
+      - GET /api/justice/courts/load
+      - GET /api/justice/cases
+      - GET /api/justice/cases
+    publishes:
+      - justice.case.filed.v1
+      - justice.case.decided.v1
+      - justice.court-load.updated.v1
+      - justice.legal-text.published.v1
+    consumes:
+      - emergency.incident.created.v1
+      - land.zoning.changed.v1
+      - land.parcel.updated.v1
+      - social.vulnerability.updated.v1
+      - treasury.budget-line.updated.v1
+      - trade.supply-risk.flagged.v1
+      - resilience.crisis.declared.v1
+      - health.epidemic-signal.detected.v1
+      - transport.congestion.detected.v1
+      - environment.water-quality.updated.v1
+      - research.finding.released.v1
+      - twin.anomaly.detected.v1
+      - iot.sensor.observation.v1
+    depends_on:
+      - digital-nervous-system
+      - environment
+      - health
+      - land
+      - mobility-logistics
+      - national-digital-twin
+      - research
+      - resilience
+      - safety-emergency
+      - smart-trade
+      - social-mobility
+      - treasury
+    related_services:
+      - digital-nervous-system
+      - environment
+      - global-tunisia
+      - health
+      - land
+      - life-care
+      - mobility-logistics
+      - national-digital-twin
+      - research
+      - resilience
+      - safety-emergency
+      - smart-trade
+      - social-mobility
+      - treasury
+    ai_capabilities:
+      - RAG over legal texts
+      - case-duration forecasting
+      - matter classification
+    iot_capabilities:
+      - courthouse occupancy sensors
+      - hearing-room environment
+    digital_twin_capabilities:
+      - court twin (load, delay, saturation)
+      - case-flow process twin
+  - id: resilience
+    name: National Resilience Command System
+    ministry: Interior / Civil Protection
+    description: Crisis declaration, relief logistics and a mesh that survives the
+      network going down.
+    capabilities:
+      - Live state of every declared crisis and the zones it covers.
+      - Turns needs into a resourced, sequenced relief plan.
+      - Store-and-forward node health when normal connectivity is gone.
+    owns:
+      - CrisisRef
+      - ReliefPlanRef
+      - MeshNodeRef
+    apis:
+      - GET /api/resilience/crises
+      - GET /api/resilience/crises
+      - GET /api/resilience/crises/:id
+      - POST /api/resilience/crises
+      - POST /api/resilience/logistics/plan
+      - GET /api/resilience/mesh/nodes
+      - GET /api/resilience/crises
+      - GET /api/resilience/crises
+    publishes:
+      - resilience.crisis.declared.v1
+      - resilience.relief-plan.updated.v1
+      - resilience.resource-request.created.v1
+      - resilience.mesh-node.status.v1
+    consumes:
+      - emergency.incident.created.v1
+      - environment.climate-risk.updated.v1
+      - agriculture.water-shortage.predicted.v1
+      - health.capacity.updated.v1
+      - infrastructure.failure.predicted.v1
+      - energy.outage-risk.flagged.v1
+      - transport.resource.dispatched.v1
+      - social.vulnerability.updated.v1
+      - iot.sensor.observation.v1
+      - treasury.funding.approved.v1
+      - land.site-suitability.scored.v1
+      - education.school-condition.updated.v1
+      - tourism.site-pressure.detected.v1
+      - twin.anomaly.detected.v1
+    depends_on:
+      - digital-nervous-system
+      - education
+      - environment
+      - food-water
+      - health
+      - industrial-energy
+      - infrastructure
+      - land
+      - mobility-logistics
+      - national-digital-twin
+      - safety-emergency
+      - social-mobility
+      - tourism
+      - treasury
+    related_services:
+      - digital-nervous-system
+      - education
+      - environment
+      - food-water
+      - global-tunisia
+      - health
+      - industrial-energy
+      - infrastructure
+      - justice
+      - land
+      - life-care
+      - mobility-logistics
+      - national-digital-twin
+      - religious-heritage
+      - safety-emergency
+      - smart-trade
+      - social-mobility
+      - tourism
+      - treasury
+    ai_capabilities:
+      - relief planning under constraint
+      - crisis severity classification
+      - multi-hazard scenario agent
+    iot_capabilities:
+      - mesh node telemetry
+      - water level
+      - rainfall
+      - wind speed
+    digital_twin_capabilities:
+      - crisis twin per event
+      - governorate resilience twin
+  - id: safety-emergency
+    name: National Safety & Emergency Grid
+    ministry: Interior
+    description: Incidents, dispatch and road risk — the fastest loop on the platform.
+    capabilities:
+      - Triage, severity and the dispatch decision.
+      - Continuous risk scoring of road segments.
+      - Civil requests that do not need an emergency response.
+    owns:
+      - IncidentRef
+      - PatrolUnitRef
+    apis:
+      - GET /api/safety-emergency/incidents
+      - GET /api/safety-emergency/incidents
+      - GET /api/safety-emergency/incidents/:id
+      - POST /api/safety-emergency/incidents
+      - POST /api/safety-emergency/triage
+      - GET /api/safety-emergency/road-risk
+      - GET /api/safety-emergency/incidents
+      - GET /api/safety-emergency/incidents
+    publishes:
+      - emergency.incident.created.v1
+      - emergency.incident.resolved.v1
+      - emergency.resource.requested.v1
+      - emergency.road-risk.updated.v1
+    consumes:
+      - health.capacity.updated.v1
+      - health.emergency.declared.v1
+      - transport.congestion.detected.v1
+      - environment.air-quality.updated.v1
+      - iot.sensor.observation.v1
+      - infrastructure.failure.predicted.v1
+      - water.reservoir-level.updated.v1
+      - industry.production.updated.v1
+      - resilience.crisis.declared.v1
+      - culture.event.scheduled.v1
+      - tourism.visitor-flow.updated.v1
+      - talent.facility-usage.updated.v1
+      - education.school-condition.updated.v1
+      - social.vulnerability.updated.v1
+    depends_on:
+      - culture
+      - digital-nervous-system
+      - education
+      - environment
+      - food-water
+      - health
+      - industrial-energy
+      - infrastructure
+      - mobility-logistics
+      - resilience
+      - social-mobility
+      - talent
+      - tourism
+    related_services:
+      - culture
+      - digital-nervous-system
+      - education
+      - environment
+      - food-water
+      - health
+      - industrial-energy
+      - infrastructure
+      - justice
+      - land
+      - life-care
+      - mobility-logistics
+      - national-digital-twin
+      - religious-heritage
+      - resilience
+      - social-mobility
+      - talent
+      - tourism
+      - treasury
+    ai_capabilities:
+      - incident triage
+      - road risk scoring
+      - dispatch recommendation agent
+    iot_capabilities:
+      - traffic flow
+      - air quality
+      - rainfall
+      - vibration
+    digital_twin_capabilities:
+      - incident twin
+      - road segment twin
+  - id: global-tunisia
+    name: Global Tunisia Network
+    ministry: Foreign Affairs
+    description: "The diaspora as a live network: consular load, skills abroad,
+      opportunities home."
+    capabilities:
+      - Aggregate, privacy-safe picture of skills and presence abroad.
+      - Consular demand and processing time per post.
+      - Matches opportunities at home to capabilities abroad.
+    owns:
+      - DiasporaCohortRef
+      - ConsulateRef
+      - GlobalOpportunityRef
+    apis:
+      - GET /api/global-tunisia/consulates
+      - GET /api/global-tunisia/consulates
+      - GET /api/global-tunisia/consulates/:id
+      - POST /api/global-tunisia/consulates
+      - POST /api/global-tunisia/opportunities/match
+      - GET /api/global-tunisia/diaspora/stats
+      - GET /api/global-tunisia/consulates
+      - GET /api/global-tunisia/consulates
+    publishes:
+      - global.consular-request.created.v1
+      - global.opportunity.published.v1
+      - global.diaspora-signal.updated.v1
+    consumes:
+      - skills.gap.detected.v1
+      - skills.micro-mission.published.v1
+      - research.project.published.v1
+      - trade.export-opportunity.detected.v1
+      - treasury.funding.approved.v1
+      - culture.event.scheduled.v1
+      - tourism.experience.published.v1
+      - justice.legal-text.published.v1
+      - health.epidemic-signal.detected.v1
+      - resilience.crisis.declared.v1
+      - education.program.updated.v1
+      - twin.state.updated.v1
+      - land.site-suitability.scored.v1
+      - care.life-event.recorded.v1
+      - social.benefit.granted.v1
+      - industry.production.updated.v1
+    depends_on:
+      - culture
+      - education
+      - health
+      - industrial-energy
+      - justice
+      - land
+      - life-care
+      - national-digital-twin
+      - research
+      - resilience
+      - skills-opportunity
+      - smart-trade
+      - social-mobility
+      - tourism
+      - treasury
+    related_services:
+      - culture
+      - education
+      - health
+      - industrial-energy
+      - justice
+      - land
+      - life-care
+      - national-digital-twin
+      - research
+      - resilience
+      - skills-opportunity
+      - smart-trade
+      - social-mobility
+      - tourism
+      - treasury
+    ai_capabilities:
+      - skill-to-opportunity matching
+      - consular demand forecasting
+      - multilingual request summarisation
+    iot_capabilities:
+      - consular queue occupancy
+    digital_twin_capabilities:
+      - consular post twin
+      - country cohort twin
+  - id: treasury
+    name: Intelligent Treasury OS
+    ministry: Finance
+    description: Where public money is, where it is committed, and what it is buying.
+    capabilities:
+      - Live position of every budget line.
+      - Reallocation proposals under an explicit constraint.
+      - Targeted, traceable aid disbursement.
+    owns:
+      - FinancialProgramRef
+      - BudgetLineRef
+      - AidWalletRef
+    apis:
+      - GET /api/treasury/budgetLines
+      - GET /api/treasury/budgetLines
+      - GET /api/treasury/budgetLines/:id
+      - POST /api/treasury/budgetLines
+      - POST /api/treasury/budget/optimise
+      - GET /api/treasury/position
+      - GET /api/treasury/budgetLines
+      - GET /api/treasury/budgetLines
+    publishes:
+      - treasury.budget-line.updated.v1
+      - treasury.funding.approved.v1
+      - treasury.aid.disbursed.v1
+      - treasury.fiscal-risk.flagged.v1
+    consumes:
+      - resilience.relief-plan.updated.v1
+      - resilience.resource-request.created.v1
+      - health.capacity.updated.v1
+      - agriculture.water-shortage.predicted.v1
+      - infrastructure.failure.predicted.v1
+      - infrastructure.maintenance.scheduled.v1
+      - social.household-need.detected.v1
+      - energy.outage-risk.flagged.v1
+      - trade.supply-risk.flagged.v1
+      - education.program.updated.v1
+      - justice.court-load.updated.v1
+      - twin.scenario.completed.v1
+      - emergency.incident.resolved.v1
+      - land.site-suitability.scored.v1
+      - research.transfer.matched.v1
+    depends_on:
+      - education
+      - food-water
+      - health
+      - industrial-energy
+      - infrastructure
+      - justice
+      - land
+      - national-digital-twin
+      - research
+      - resilience
+      - safety-emergency
+      - smart-trade
+      - social-mobility
+    related_services:
+      - culture
+      - digital-nervous-system
+      - education
+      - food-water
+      - global-tunisia
+      - health
+      - industrial-energy
+      - infrastructure
+      - justice
+      - land
+      - life-care
+      - national-digital-twin
+      - religious-heritage
+      - research
+      - resilience
+      - safety-emergency
+      - skills-opportunity
+      - smart-trade
+      - social-mobility
+      - talent
+      - tourism
+    ai_capabilities:
+      - budget reallocation under constraint
+      - fiscal anomaly detection
+      - shock cost estimation
+    iot_capabilities: []
+    digital_twin_capabilities:
+      - budget line twin
+      - programme twin
+  - id: national-digital-twin
+    name: Tunisia National Digital Twin
+    ministry: Planning / Prime Ministry
+    description: The country as one queryable model, assembled from what the other
+      23 publish.
+    capabilities:
+      - Regional state assembled from every ministry signal.
+      - What-if simulation across sectors.
+      - Investment and priority proposals per governorate.
+    owns:
+      - RegionStateRef
+      - ScenarioRef
+    apis:
+      - GET /api/national-digital-twin/regionStates
+      - GET /api/national-digital-twin/regionStates
+      - GET /api/national-digital-twin/regionStates/:id
+      - POST /api/national-digital-twin/scenarios/run
+      - GET /api/national-digital-twin/regions/stress
+      - GET /api/national-digital-twin/regionStates
+      - GET /api/national-digital-twin/regionStates
+    publishes:
+      - twin.state.updated.v1
+      - twin.scenario.completed.v1
+      - twin.anomaly.detected.v1
+    consumes:
+      - environment.air-quality.updated.v1
+      - environment.climate-risk.updated.v1
+      - agriculture.water-demand.predicted.v1
+      - agriculture.water-shortage.predicted.v1
+      - health.capacity.updated.v1
+      - transport.mobility-demand.updated.v1
+      - energy.grid-load.updated.v1
+      - infrastructure.asset-health.updated.v1
+      - social.vulnerability.updated.v1
+      - emergency.incident.created.v1
+      - resilience.crisis.declared.v1
+      - education.school-condition.updated.v1
+      - land.zoning.changed.v1
+      - tourism.visitor-flow.updated.v1
+      - treasury.fiscal-risk.flagged.v1
+      - iot.sensor.observation.v1
+      - trade.shipment.updated.v1
+      - skills.gap.detected.v1
+      - culture.creative-economy.updated.v1
+      - care.facility-capacity.updated.v1
+    depends_on:
+      - culture
+      - digital-nervous-system
+      - education
+      - environment
+      - food-water
+      - health
+      - industrial-energy
+      - infrastructure
+      - land
+      - life-care
+      - mobility-logistics
+      - resilience
+      - safety-emergency
+      - skills-opportunity
+      - smart-trade
+      - social-mobility
+      - tourism
+      - treasury
+    related_services:
+      - culture
+      - digital-nervous-system
+      - education
+      - environment
+      - food-water
+      - global-tunisia
+      - health
+      - industrial-energy
+      - infrastructure
+      - justice
+      - land
+      - life-care
+      - mobility-logistics
+      - religious-heritage
+      - research
+      - resilience
+      - safety-emergency
+      - skills-opportunity
+      - smart-trade
+      - social-mobility
+      - tourism
+      - treasury
+    ai_capabilities:
+      - cross-sector scenario simulation
+      - multivariate anomaly detection
+      - regional priority ranking
+    iot_capabilities:
+      - every sensor kind, as aggregate references
+    digital_twin_capabilities:
+      - 24 governorate twins
+      - national composite twin
+  - id: social-mobility
+    name: Social Mobility OS
+    ministry: Social Affairs
+    description: Household vulnerability and benefits that arrive without a form.
+    capabilities:
+      - Vulnerability per household cohort, continuously updated.
+      - Eligibility computed from existing signals.
+      - What actually moves a cohort upward, by governorate.
+    owns:
+      - HouseholdCohortRef
+      - SocialBenefitRef
+    apis:
+      - GET /api/social-mobility/cohorts
+      - GET /api/social-mobility/cohorts
+      - GET /api/social-mobility/cohorts/:id
+      - POST /api/social-mobility/eligibility
+      - GET /api/social-mobility/vulnerability
+      - GET /api/social-mobility/cohorts
+      - GET /api/social-mobility/cohorts
+    publishes:
+      - social.vulnerability.updated.v1
+      - social.benefit.granted.v1
+      - social.household-need.detected.v1
+    consumes:
+      - health.capacity.updated.v1
+      - health.epidemic-signal.detected.v1
+      - education.learning-progress.updated.v1
+      - education.school-condition.updated.v1
+      - agriculture.water-shortage.predicted.v1
+      - energy.outage-risk.flagged.v1
+      - treasury.aid.disbursed.v1
+      - skills.gap.detected.v1
+      - transport.mobility-demand.updated.v1
+      - care.support-need.detected.v1
+      - emergency.incident.created.v1
+      - resilience.crisis.declared.v1
+      - infrastructure.asset-health.updated.v1
+      - justice.case.filed.v1
+    depends_on:
+      - education
+      - food-water
+      - health
+      - industrial-energy
+      - infrastructure
+      - justice
+      - life-care
+      - mobility-logistics
+      - resilience
+      - safety-emergency
+      - skills-opportunity
+      - treasury
+    related_services:
+      - education
+      - food-water
+      - global-tunisia
+      - health
+      - industrial-energy
+      - infrastructure
+      - justice
+      - life-care
+      - mobility-logistics
+      - national-digital-twin
+      - religious-heritage
+      - resilience
+      - safety-emergency
+      - skills-opportunity
+      - talent
+      - treasury
+    ai_capabilities:
+      - need detection from weak signals
+      - eligibility explanation
+      - mobility driver ranking
+    iot_capabilities:
+      - housing conditions
+      - water and energy access
+    digital_twin_capabilities:
+      - household cohort twin
+      - governorate social twin
+  - id: industrial-energy
+    name: Industrial & Energy Intelligence Grid
+    ministry: Industry & Energy
+    description: Production, grid load and the waste of one plant becoming the input
+      of another.
+    capabilities:
+      - "Twin per industrial asset: output, consumption, condition."
+      - Node-level load, generation and renewable share.
+      - Matches one plant output stream to another plant input.
+    owns:
+      - IndustrialAssetRef
+      - EnergyNodeRef
+      - SymbiosisMatchRef
+    apis:
+      - GET /api/industrial-energy/assets
+      - GET /api/industrial-energy/assets
+      - GET /api/industrial-energy/assets/:id
+      - POST /api/industrial-energy/assets
+      - POST /api/industrial-energy/symbiosis/match
+      - GET /api/industrial-energy/grid/load
+      - GET /api/industrial-energy/assets
+      - GET /api/industrial-energy/assets
+    publishes:
+      - energy.grid-load.updated.v1
+      - energy.outage-risk.flagged.v1
+      - industry.production.updated.v1
+      - industry.symbiosis.matched.v1
+    consumes:
+      - environment.air-quality.updated.v1
+      - environment.waste-stream.updated.v1
+      - environment.climate-risk.updated.v1
+      - iot.sensor.observation.v1
+      - agriculture.water-demand.predicted.v1
+      - infrastructure.failure.predicted.v1
+      - logistics.freight.updated.v1
+      - trade.supply-risk.flagged.v1
+      - treasury.funding.approved.v1
+      - resilience.crisis.declared.v1
+      - research.finding.released.v1
+      - skills.gap.detected.v1
+      - land.site-suitability.scored.v1
+      - twin.scenario.completed.v1
+    depends_on:
+      - digital-nervous-system
+      - environment
+      - food-water
+      - infrastructure
+      - land
+      - mobility-logistics
+      - national-digital-twin
+      - research
+      - resilience
+      - skills-opportunity
+      - smart-trade
+      - treasury
+    related_services:
+      - digital-nervous-system
+      - education
+      - environment
+      - food-water
+      - global-tunisia
+      - health
+      - infrastructure
+      - land
+      - mobility-logistics
+      - national-digital-twin
+      - religious-heritage
+      - research
+      - resilience
+      - safety-emergency
+      - skills-opportunity
+      - smart-trade
+      - social-mobility
+      - talent
+      - treasury
+    ai_capabilities:
+      - load forecasting
+      - symbiosis matching
+      - equipment anomaly detection
+    iot_capabilities:
+      - energy load
+      - vibration
+      - temperature
+      - air quality
+    digital_twin_capabilities:
+      - industrial asset twin
+      - grid node twin
+  - id: smart-trade
+    name: Smart Trade Network
+    ministry: Commerce & Export
+    description: Product passports, export guidance and a supply graph that shows
+      where it will break.
+    capabilities:
+      - Origin, footprint and certification as a portable record.
+      - What a producer must do to reach a target market.
+      - Dependencies between products, inputs and corridors.
+    owns:
+      - ProductRef
+      - ProductPassportRef
+      - ShipmentRef
+    apis:
+      - GET /api/smart-trade/products
+      - GET /api/smart-trade/products
+      - GET /api/smart-trade/products/:id
+      - POST /api/smart-trade/products
+      - POST /api/smart-trade/export/advice
+      - GET /api/smart-trade/supply/graph
+      - GET /api/smart-trade/products
+      - GET /api/smart-trade/products
+    publishes:
+      - trade.product-passport.issued.v1
+      - trade.shipment.updated.v1
+      - trade.export-opportunity.detected.v1
+      - trade.supply-risk.flagged.v1
+    consumes:
+      - agriculture.yield.forecast.v1
+      - fisheries.stock.updated.v1
+      - industry.production.updated.v1
+      - logistics.freight.updated.v1
+      - transport.congestion.detected.v1
+      - environment.air-quality.updated.v1
+      - infrastructure.asset-health.updated.v1
+      - treasury.fiscal-risk.flagged.v1
+      - global.diaspora-signal.updated.v1
+      - justice.legal-text.published.v1
+      - research.finding.released.v1
+      - resilience.crisis.declared.v1
+      - land.zoning.changed.v1
+      - skills.gap.detected.v1
+      - iot.sensor.observation.v1
+      - health.epidemic-signal.detected.v1
+    depends_on:
+      - digital-nervous-system
+      - environment
+      - food-water
+      - global-tunisia
+      - health
+      - industrial-energy
+      - infrastructure
+      - justice
+      - land
+      - mobility-logistics
+      - research
+      - resilience
+      - skills-opportunity
+      - treasury
+    related_services:
+      - digital-nervous-system
+      - environment
+      - food-water
+      - global-tunisia
+      - health
+      - industrial-energy
+      - infrastructure
+      - justice
+      - land
+      - mobility-logistics
+      - national-digital-twin
+      - research
+      - resilience
+      - skills-opportunity
+      - treasury
+    ai_capabilities:
+      - market requirement extraction
+      - supply risk propagation
+      - footprint estimation
+    iot_capabilities:
+      - cold chain temperature
+      - container GPS
+      - port occupancy
+    digital_twin_capabilities:
+      - product twin
+      - corridor twin
+  - id: food-water
+    name: Autonomous Food & Water Grid
+    ministry: Agriculture & Water Resources
+    description: Water where it is needed, farms that know their own state,
+      fisheries that are not guessed at.
+    capabilities:
+      - Reservoirs, networks and demand as one balance.
+      - Soil, crop and irrigation state per farm.
+      - Stock and effort per fishing zone.
+    owns:
+      - FarmRef
+      - WaterAssetRef
+      - FishingZoneRef
+    apis:
+      - GET /api/food-water/farms
+      - GET /api/food-water/farms
+      - GET /api/food-water/farms/:id
+      - POST /api/food-water/farms
+      - POST /api/food-water/water/demand/forecast
+      - POST /api/food-water/water/shortage/predict
+      - GET /api/food-water/irrigation/plan
+      - GET /api/food-water/farms
+      - GET /api/food-water/farms
+    publishes:
+      - agriculture.water-demand.predicted.v1
+      - agriculture.water-shortage.predicted.v1
+      - agriculture.yield.forecast.v1
+      - water.reservoir-level.updated.v1
+      - fisheries.stock.updated.v1
+    consumes:
+      - environment.climate-risk.updated.v1
+      - environment.water-quality.updated.v1
+      - environment.air-quality.updated.v1
+      - iot.sensor.observation.v1
+      - infrastructure.failure.predicted.v1
+      - energy.outage-risk.flagged.v1
+      - land.parcel.updated.v1
+      - land.zoning.changed.v1
+      - treasury.funding.approved.v1
+      - resilience.crisis.declared.v1
+      - trade.export-opportunity.detected.v1
+      - research.finding.released.v1
+      - health.epidemic-signal.detected.v1
+      - twin.state.updated.v1
+    depends_on:
+      - digital-nervous-system
+      - environment
+      - health
+      - industrial-energy
+      - infrastructure
+      - land
+      - national-digital-twin
+      - research
+      - resilience
+      - smart-trade
+      - treasury
+    related_services:
+      - digital-nervous-system
+      - environment
+      - health
+      - industrial-energy
+      - infrastructure
+      - land
+      - mobility-logistics
+      - national-digital-twin
+      - research
+      - resilience
+      - safety-emergency
+      - skills-opportunity
+      - smart-trade
+      - social-mobility
+      - treasury
+    ai_capabilities:
+      - water demand forecasting
+      - shortage prediction
+      - yield forecasting
+      - irrigation optimisation
+    iot_capabilities:
+      - soil moisture
+      - water level
+      - rainfall
+      - temperature
+      - humidity
+    digital_twin_capabilities:
+      - farm twin
+      - reservoir twin
+      - fishing zone twin
+  - id: skills-opportunity
+    name: National Skills & Opportunity OS
+    ministry: Employment & Vocational Training
+    description: What the country can do, what it needs to be able to do, and the
+      shortest path between.
+    capabilities:
+      - Skills, adjacencies and regional supply.
+      - A path from where a person is to where demand is.
+      - Short, real assignments published against detected gaps.
+    owns:
+      - SkillRef
+      - MicroMissionRef
+      - CareerPathRef
+    apis:
+      - GET /api/skills-opportunity/skills
+      - GET /api/skills-opportunity/skills
+      - GET /api/skills-opportunity/skills/:id
+      - POST /api/skills-opportunity/skills
+      - POST /api/skills-opportunity/career/plan
+      - GET /api/skills-opportunity/gaps
+      - GET /api/skills-opportunity/skills
+      - GET /api/skills-opportunity/skills
+    publishes:
+      - skills.gap.detected.v1
+      - skills.micro-mission.published.v1
+      - skills.profile.updated.v1
+    consumes:
+      - education.program.updated.v1
+      - education.learning-progress.updated.v1
+      - research.project.published.v1
+      - research.transfer.matched.v1
+      - industry.production.updated.v1
+      - agriculture.yield.forecast.v1
+      - trade.export-opportunity.detected.v1
+      - infrastructure.maintenance.scheduled.v1
+      - health.capacity.updated.v1
+      - treasury.funding.approved.v1
+      - tourism.visitor-flow.updated.v1
+      - global.diaspora-signal.updated.v1
+      - talent.performance.updated.v1
+      - social.vulnerability.updated.v1
+    depends_on:
+      - education
+      - food-water
+      - global-tunisia
+      - health
+      - industrial-energy
+      - infrastructure
+      - research
+      - smart-trade
+      - social-mobility
+      - talent
+      - tourism
+      - treasury
+    related_services:
+      - culture
+      - education
+      - food-water
+      - global-tunisia
+      - health
+      - industrial-energy
+      - infrastructure
+      - life-care
+      - national-digital-twin
+      - research
+      - smart-trade
+      - social-mobility
+      - talent
+      - tourism
+      - treasury
+    ai_capabilities:
+      - gap detection from cross-ministry demand
+      - career path planning
+      - skill adjacency embedding
+    iot_capabilities:
+      - training centre occupancy
+    digital_twin_capabilities:
+      - skill twin
+      - regional labour twin
+  - id: health
+    name: Connected Health Intelligence System
+    ministry: Health
+    description: Hospital capacity, epidemic signals and care that reaches beyond
+      the hospital walls.
+    capabilities:
+      - Pseudonymous cohort twins — never an identified person.
+      - Beds, ICU, emergency load, in real time.
+      - Coordination with transport, social services and emergency.
+    owns:
+      - HospitalRef
+      - HealthCapacity
+      - CareEpisodeRef
+    apis:
+      - GET /api/health/facilities
+      - GET /api/health/facilities
+      - GET /api/health/facilities/:id
+      - GET /api/health/capacity
+      - POST /api/health/triage
+      - POST /api/health/epidemic/scan
+      - GET /api/health/facilities
+      - GET /api/health/facilities
+    publishes:
+      - health.capacity.updated.v1
+      - health.epidemic-signal.detected.v1
+      - health.emergency.declared.v1
+      - health.care-episode.updated.v1
+    consumes:
+      - environment.air-quality.updated.v1
+      - environment.water-quality.updated.v1
+      - environment.climate-risk.updated.v1
+      - iot.sensor.observation.v1
+      - emergency.incident.created.v1
+      - transport.resource.dispatched.v1
+      - social.vulnerability.updated.v1
+      - agriculture.water-shortage.predicted.v1
+      - education.school-condition.updated.v1
+      - resilience.crisis.declared.v1
+      - care.facility-capacity.updated.v1
+      - energy.outage-risk.flagged.v1
+      - tourism.visitor-flow.updated.v1
+      - talent.injury-risk.flagged.v1
+    depends_on:
+      - digital-nervous-system
+      - education
+      - environment
+      - food-water
+      - industrial-energy
+      - life-care
+      - mobility-logistics
+      - resilience
+      - safety-emergency
+      - social-mobility
+      - talent
+      - tourism
+    related_services:
+      - digital-nervous-system
+      - education
+      - environment
+      - food-water
+      - global-tunisia
+      - industrial-energy
+      - infrastructure
+      - justice
+      - life-care
+      - mobility-logistics
+      - national-digital-twin
+      - research
+      - resilience
+      - safety-emergency
+      - skills-opportunity
+      - smart-trade
+      - social-mobility
+      - talent
+      - tourism
+      - treasury
+    ai_capabilities:
+      - triage
+      - epidemic signal detection
+      - capacity forecasting
+    iot_capabilities:
+      - wearable heart rate
+      - air quality
+      - occupancy
+      - temperature
+    digital_twin_capabilities:
+      - hospital twin
+      - cohort health twin
+  - id: education
+    name: Adaptive Education OS
+    ministry: Education
+    description: A learning twin per learner cohort, schools that report their own
+      condition, one knowledge graph.
+    capabilities:
+      - Cohort-level mastery and progression, never a named pupil.
+      - Air quality, occupancy and building condition per school.
+      - Concepts, prerequisites and programme coverage.
+    owns:
+      - SchoolRef
+      - EducationProgramRef
+      - LearnerCohortRef
+    apis:
+      - GET /api/education/schools
+      - GET /api/education/schools
+      - GET /api/education/schools/:id
+      - POST /api/education/schools
+      - POST /api/education/programs/adapt
+      - GET /api/education/schools/condition
+      - GET /api/education/schools
+      - GET /api/education/schools
+    publishes:
+      - education.learning-progress.updated.v1
+      - education.program.updated.v1
+      - education.school-condition.updated.v1
+    consumes:
+      - skills.gap.detected.v1
+      - iot.sensor.observation.v1
+      - environment.air-quality.updated.v1
+      - infrastructure.asset-health.updated.v1
+      - infrastructure.failure.predicted.v1
+      - social.vulnerability.updated.v1
+      - research.finding.released.v1
+      - treasury.budget-line.updated.v1
+      - health.epidemic-signal.detected.v1
+      - transport.mobility-demand.updated.v1
+      - culture.event.scheduled.v1
+      - industry.production.updated.v1
+      - resilience.crisis.declared.v1
+      - talent.facility-usage.updated.v1
+    depends_on:
+      - culture
+      - digital-nervous-system
+      - environment
+      - health
+      - industrial-energy
+      - infrastructure
+      - mobility-logistics
+      - research
+      - resilience
+      - skills-opportunity
+      - social-mobility
+      - talent
+      - treasury
+    related_services:
+      - culture
+      - digital-nervous-system
+      - environment
+      - global-tunisia
+      - health
+      - industrial-energy
+      - infrastructure
+      - land
+      - life-care
+      - mobility-logistics
+      - national-digital-twin
+      - religious-heritage
+      - research
+      - resilience
+      - safety-emergency
+      - skills-opportunity
+      - social-mobility
+      - talent
+      - treasury
+    ai_capabilities:
+      - learning path adaptation
+      - dropout risk detection
+      - knowledge graph querying
+    iot_capabilities:
+      - air quality
+      - occupancy
+      - temperature
+      - structural strain
+    digital_twin_capabilities:
+      - school twin
+      - learner cohort twin
+  - id: research
+    name: Tunisia Research Brain
+    ministry: Higher Education & Research
+    description: National research as an addressable capability, and a path from
+      result to deployment.
+    capabilities:
+      - Projects, disciplines, maturity, findings.
+      - Real-territory pilots with instrumented outcomes.
+      - Matches a research result to the ministry that needs it.
+    owns:
+      - ResearchProjectRef
+      - PatentRef
+      - LivingLabRef
+    apis:
+      - GET /api/research/projects
+      - GET /api/research/projects
+      - GET /api/research/projects/:id
+      - POST /api/research/projects
+      - POST /api/research/transfer/match
+      - GET /api/research/capability
+      - GET /api/research/projects
+      - GET /api/research/projects
+    publishes:
+      - research.project.published.v1
+      - research.finding.released.v1
+      - research.transfer.matched.v1
+    consumes:
+      - skills.gap.detected.v1
+      - agriculture.water-shortage.predicted.v1
+      - environment.climate-risk.updated.v1
+      - health.epidemic-signal.detected.v1
+      - industry.symbiosis.matched.v1
+      - infrastructure.failure.predicted.v1
+      - education.program.updated.v1
+      - treasury.funding.approved.v1
+      - twin.scenario.completed.v1
+      - land.site-suitability.scored.v1
+      - trade.supply-risk.flagged.v1
+      - global.diaspora-signal.updated.v1
+      - culture.asset-condition.updated.v1
+      - talent.injury-risk.flagged.v1
+    depends_on:
+      - culture
+      - education
+      - environment
+      - food-water
+      - global-tunisia
+      - health
+      - industrial-energy
+      - infrastructure
+      - land
+      - national-digital-twin
+      - skills-opportunity
+      - smart-trade
+      - talent
+      - treasury
+    related_services:
+      - culture
+      - digital-nervous-system
+      - education
+      - environment
+      - food-water
+      - global-tunisia
+      - health
+      - industrial-energy
+      - infrastructure
+      - justice
+      - land
+      - national-digital-twin
+      - religious-heritage
+      - skills-opportunity
+      - smart-trade
+      - talent
+      - treasury
+    ai_capabilities:
+      - RAG over publications
+      - need-to-capability matching
+      - maturity scoring
+    iot_capabilities:
+      - living lab instrumentation
+    digital_twin_capabilities:
+      - project twin
+      - living lab twin
+  - id: talent
+    name: National Talent Intelligence Network
+    ministry: Youth & Sports
+    description: Athlete development, facility usage and youth opportunity as one pipeline.
+    capabilities:
+      - Load, performance and injury risk from wearable signals.
+      - Facility usage, condition and energy.
+      - Connects young people to missions, training and clubs.
+    owns:
+      - AthleteCohortRef
+      - SportsFacilityRef
+    apis:
+      - GET /api/talent/facilities
+      - GET /api/talent/facilities
+      - GET /api/talent/facilities/:id
+      - POST /api/talent/facilities
+      - POST /api/talent/talent/scout
+      - GET /api/talent/facilities/usage
+      - GET /api/talent/facilities
+      - GET /api/talent/facilities
+    publishes:
+      - talent.performance.updated.v1
+      - talent.facility-usage.updated.v1
+      - talent.injury-risk.flagged.v1
+    consumes:
+      - iot.sensor.observation.v1
+      - health.capacity.updated.v1
+      - education.learning-progress.updated.v1
+      - education.school-condition.updated.v1
+      - environment.air-quality.updated.v1
+      - environment.climate-risk.updated.v1
+      - infrastructure.asset-health.updated.v1
+      - energy.grid-load.updated.v1
+      - social.vulnerability.updated.v1
+      - skills.micro-mission.published.v1
+      - culture.event.scheduled.v1
+      - transport.mobility-demand.updated.v1
+      - emergency.incident.created.v1
+      - treasury.budget-line.updated.v1
+    depends_on:
+      - culture
+      - digital-nervous-system
+      - education
+      - environment
+      - health
+      - industrial-energy
+      - infrastructure
+      - mobility-logistics
+      - safety-emergency
+      - skills-opportunity
+      - social-mobility
+      - treasury
+    related_services:
+      - culture
+      - digital-nervous-system
+      - education
+      - environment
+      - health
+      - industrial-energy
+      - infrastructure
+      - life-care
+      - mobility-logistics
+      - research
+      - safety-emergency
+      - skills-opportunity
+      - social-mobility
+      - tourism
+      - treasury
+    ai_capabilities:
+      - injury risk from load
+      - talent identification
+      - facility allocation
+    iot_capabilities:
+      - wearable heart rate
+      - occupancy
+      - energy load
+      - temperature
+    digital_twin_capabilities:
+      - athlete cohort twin
+      - facility twin
+  - id: religious-heritage
+    name: Smart Religious Heritage Network
+    ministry: Religious Affairs
+    description: Sites that report their own condition, buildings that manage their
+      own energy, knowledge that is sourced.
+    capabilities:
+      - Humidity, strain and vibration on fragile fabric.
+      - Consumption and comfort in places of worship.
+      - Sourced, verifiable knowledge — never generated assertion.
+    owns:
+      - HeritageSiteRef
+      - ManuscriptRef
+    apis:
+      - GET /api/religious-heritage/sites
+      - GET /api/religious-heritage/sites
+      - GET /api/religious-heritage/sites/:id
+      - POST /api/religious-heritage/sites
+      - POST /api/religious-heritage/knowledge/ask
+      - GET /api/religious-heritage/sites/condition
+      - GET /api/religious-heritage/sites
+      - GET /api/religious-heritage/sites
+    publishes:
+      - heritage.site-condition.updated.v1
+      - heritage.energy-usage.updated.v1
+      - heritage.knowledge.published.v1
+    consumes:
+      - iot.sensor.observation.v1
+      - environment.air-quality.updated.v1
+      - environment.climate-risk.updated.v1
+      - infrastructure.failure.predicted.v1
+      - infrastructure.maintenance.scheduled.v1
+      - energy.grid-load.updated.v1
+      - culture.asset-condition.updated.v1
+      - tourism.visitor-flow.updated.v1
+      - tourism.site-pressure.detected.v1
+      - transport.mobility-demand.updated.v1
+      - research.finding.released.v1
+      - emergency.incident.created.v1
+      - treasury.funding.approved.v1
+      - education.program.updated.v1
+      - resilience.crisis.declared.v1
+      - land.zoning.changed.v1
+      - social.vulnerability.updated.v1
+      - twin.state.updated.v1
+    depends_on:
+      - culture
+      - digital-nervous-system
+      - education
+      - environment
+      - industrial-energy
+      - infrastructure
+      - land
+      - mobility-logistics
+      - national-digital-twin
+      - research
+      - resilience
+      - safety-emergency
+      - social-mobility
+      - tourism
+      - treasury
+    related_services:
+      - culture
+      - digital-nervous-system
+      - education
+      - environment
+      - industrial-energy
+      - infrastructure
+      - land
+      - mobility-logistics
+      - national-digital-twin
+      - research
+      - resilience
+      - safety-emergency
+      - social-mobility
+      - tourism
+      - treasury
+    ai_capabilities:
+      - sourced RAG with refusal
+      - degradation forecasting
+      - energy optimisation
+    iot_capabilities:
+      - humidity
+      - vibration
+      - structural strain
+      - occupancy
+      - energy load
+    digital_twin_capabilities:
+      - site twin
+      - building energy twin
+  - id: digital-nervous-system
+    name: Tunisia Digital Nervous System
+    ministry: Digital Economy & Communication Technologies
+    description: "The backbone: sensor fabric, identity, service registry and the
+      event bus itself."
+    capabilities:
+      - Edge node health and locally-processed inference.
+      - Sensor registry and the single national ingest endpoint.
+      - Service registry, event catalogue, pseudonymous identity.
+    owns:
+      - SensorRef
+      - SensorObservation
+      - EdgeNodeRef
+      - EventCatalog
+    apis:
+      - GET /api/digital-nervous-system/sensors
+      - GET /api/digital-nervous-system/sensors
+      - GET /api/digital-nervous-system/sensors/:id
+      - POST /api/digital-nervous-system/sensors/observations
+      - GET /api/digital-nervous-system/registry/services
+      - GET /api/digital-nervous-system/registry/events
+      - GET /api/digital-nervous-system/sensors/coverage
+      - GET /api/digital-nervous-system/sensors
+      - GET /api/digital-nervous-system/sensors
+    publishes:
+      - iot.sensor.observation.v1
+      - dns.sensor.registered.v1
+      - dns.edge-node.status.v1
+      - dns.identity.verified.v1
+    consumes:
+      - environment.air-quality.updated.v1
+      - emergency.incident.created.v1
+      - resilience.crisis.declared.v1
+      - resilience.mesh-node.status.v1
+      - infrastructure.asset-health.updated.v1
+      - energy.grid-load.updated.v1
+      - transport.resource.dispatched.v1
+      - water.reservoir-level.updated.v1
+      - health.capacity.updated.v1
+      - education.school-condition.updated.v1
+      - land.parcel.updated.v1
+      - research.finding.released.v1
+      - twin.anomaly.detected.v1
+      - treasury.funding.approved.v1
+      - tourism.site-pressure.detected.v1
+    depends_on:
+      - education
+      - environment
+      - food-water
+      - health
+      - industrial-energy
+      - infrastructure
+      - land
+      - mobility-logistics
+      - national-digital-twin
+      - research
+      - resilience
+      - safety-emergency
+      - tourism
+      - treasury
+    related_services:
+      - culture
+      - education
+      - environment
+      - food-water
+      - health
+      - industrial-energy
+      - infrastructure
+      - justice
+      - land
+      - mobility-logistics
+      - national-digital-twin
+      - religious-heritage
+      - research
+      - resilience
+      - safety-emergency
+      - smart-trade
+      - talent
+      - tourism
+      - treasury
+    ai_capabilities:
+      - edge inference routing
+      - sensor fault detection
+    iot_capabilities:
+      - all 16 sensor kinds — this service owns the fabric
+    digital_twin_capabilities:
+      - sensor network twin
+      - edge node twin
+  - id: mobility-logistics
+    name: Autonomous Mobility & Logistics Grid
+    ministry: Transport
+    description: Where people and goods are moving, and the nearest vehicle that can
+      be sent.
+    capabilities:
+      - Flows, congestion and demand by corridor.
+      - Road-side signals and vehicle-to-infrastructure messages.
+      - Freight planning and resource dispatch.
+    owns:
+      - TransportResourceRef
+      - RouteRef
+      - FreightOrderRef
+      - MobilityFlow
+    apis:
+      - GET /api/mobility-logistics/resources
+      - GET /api/mobility-logistics/resources
+      - GET /api/mobility-logistics/resources/:id
+      - GET /api/mobility-logistics/resources/nearest
+      - POST /api/mobility-logistics/dispatch
+      - GET /api/mobility-logistics/flows
+      - GET /api/mobility-logistics/resources
+      - GET /api/mobility-logistics/resources
+    publishes:
+      - transport.mobility-demand.updated.v1
+      - transport.resource.dispatched.v1
+      - transport.congestion.detected.v1
+      - logistics.freight.updated.v1
+    consumes:
+      - emergency.incident.created.v1
+      - emergency.resource.requested.v1
+      - health.emergency.declared.v1
+      - health.capacity.updated.v1
+      - resilience.resource-request.created.v1
+      - resilience.crisis.declared.v1
+      - environment.air-quality.updated.v1
+      - environment.climate-risk.updated.v1
+      - iot.sensor.observation.v1
+      - infrastructure.failure.predicted.v1
+      - infrastructure.maintenance.scheduled.v1
+      - trade.shipment.updated.v1
+      - culture.event.scheduled.v1
+      - tourism.visitor-flow.updated.v1
+      - education.school-condition.updated.v1
+      - agriculture.yield.forecast.v1
+    depends_on:
+      - culture
+      - digital-nervous-system
+      - education
+      - environment
+      - food-water
+      - health
+      - infrastructure
+      - resilience
+      - safety-emergency
+      - smart-trade
+      - tourism
+    related_services:
+      - culture
+      - digital-nervous-system
+      - education
+      - environment
+      - food-water
+      - health
+      - industrial-energy
+      - infrastructure
+      - justice
+      - land
+      - life-care
+      - national-digital-twin
+      - religious-heritage
+      - resilience
+      - safety-emergency
+      - smart-trade
+      - social-mobility
+      - talent
+      - tourism
+    ai_capabilities:
+      - demand forecasting
+      - dispatch optimisation
+      - congestion cause attribution
+    iot_capabilities:
+      - traffic flow
+      - GPS position
+      - air quality
+      - noise
+    digital_twin_capabilities:
+      - corridor twin
+      - vehicle twin
+  - id: infrastructure
+    name: Smart Infrastructure OS
+    ministry: Equipment & Housing
+    description: Asset health, maintenance before failure, and housing that runs itself.
+    capabilities:
+      - Health per asset, continuously.
+      - Failure prediction and work orders.
+      - Public housing comfort, energy and water.
+    owns:
+      - InfrastructureAssetRef
+      - MaintenanceOrderRef
+      - HousingUnitRef
+    apis:
+      - GET /api/infrastructure/assets
+      - GET /api/infrastructure/assets
+      - GET /api/infrastructure/assets/:id
+      - POST /api/infrastructure/assets
+      - POST /api/infrastructure/maintenance/predict
+      - GET /api/infrastructure/assets/health
+      - GET /api/infrastructure/assets
+      - GET /api/infrastructure/assets
+    publishes:
+      - infrastructure.asset-health.updated.v1
+      - infrastructure.failure.predicted.v1
+      - infrastructure.maintenance.scheduled.v1
+    consumes:
+      - iot.sensor.observation.v1
+      - environment.climate-risk.updated.v1
+      - environment.water-quality.updated.v1
+      - transport.mobility-demand.updated.v1
+      - transport.congestion.detected.v1
+      - emergency.incident.created.v1
+      - energy.grid-load.updated.v1
+      - agriculture.water-demand.predicted.v1
+      - treasury.funding.approved.v1
+      - resilience.crisis.declared.v1
+      - land.zoning.changed.v1
+      - education.school-condition.updated.v1
+      - health.capacity.updated.v1
+      - heritage.site-condition.updated.v1
+      - tourism.site-pressure.detected.v1
+    depends_on:
+      - digital-nervous-system
+      - education
+      - environment
+      - food-water
+      - health
+      - industrial-energy
+      - land
+      - mobility-logistics
+      - religious-heritage
+      - resilience
+      - safety-emergency
+      - tourism
+      - treasury
+    related_services:
+      - culture
+      - digital-nervous-system
+      - education
+      - environment
+      - food-water
+      - health
+      - industrial-energy
+      - land
+      - mobility-logistics
+      - national-digital-twin
+      - religious-heritage
+      - research
+      - resilience
+      - safety-emergency
+      - skills-opportunity
+      - smart-trade
+      - social-mobility
+      - talent
+      - tourism
+      - treasury
+    ai_capabilities:
+      - failure prediction
+      - maintenance prioritisation
+      - strain anomaly detection
+    iot_capabilities:
+      - vibration
+      - structural strain
+      - water level
+      - energy load
+      - temperature
+    digital_twin_capabilities:
+      - asset twin
+      - network twin
+  - id: land
+    name: National Land Intelligence System
+    ministry: State Property & Land Affairs
+    description: Parcels, zoning and whether a site is actually a good idea.
+    capabilities:
+      - Parcels, zoning and current use.
+      - Multi-criteria site suitability scoring.
+      - What the State owns and whether it is used.
+    owns:
+      - LandParcelRef
+      - PublicAssetRef
+      - ZoningRuleRef
+    apis:
+      - GET /api/land/parcels
+      - GET /api/land/parcels
+      - GET /api/land/parcels/:id
+      - POST /api/land/parcels
+      - POST /api/land/siting/evaluate
+      - GET /api/land/parcels/pressure
+      - GET /api/land/parcels
+      - GET /api/land/parcels
+    publishes:
+      - land.parcel.updated.v1
+      - land.zoning.changed.v1
+      - land.site-suitability.scored.v1
+    consumes:
+      - environment.climate-risk.updated.v1
+      - environment.air-quality.updated.v1
+      - agriculture.water-demand.predicted.v1
+      - agriculture.water-shortage.predicted.v1
+      - infrastructure.asset-health.updated.v1
+      - transport.mobility-demand.updated.v1
+      - industry.production.updated.v1
+      - emergency.incident.created.v1
+      - resilience.crisis.declared.v1
+      - treasury.budget-line.updated.v1
+      - tourism.site-pressure.detected.v1
+      - culture.asset-condition.updated.v1
+      - education.school-condition.updated.v1
+      - twin.scenario.completed.v1
+    depends_on:
+      - culture
+      - education
+      - environment
+      - food-water
+      - industrial-energy
+      - infrastructure
+      - mobility-logistics
+      - national-digital-twin
+      - resilience
+      - safety-emergency
+      - tourism
+      - treasury
+    related_services:
+      - culture
+      - digital-nervous-system
+      - education
+      - environment
+      - food-water
+      - global-tunisia
+      - industrial-energy
+      - infrastructure
+      - justice
+      - mobility-logistics
+      - national-digital-twin
+      - religious-heritage
+      - research
+      - resilience
+      - safety-emergency
+      - smart-trade
+      - tourism
+      - treasury
+    ai_capabilities:
+      - multi-criteria siting
+      - zoning conflict detection
+      - unused asset detection
+    iot_capabilities:
+      - soil moisture
+      - water level
+      - structural strain
+    digital_twin_capabilities:
+      - parcel twin
+      - public asset twin
+  - id: environment
+    name: Environmental Nervous System
+    ministry: Environment
+    description: "The country senses itself: air, water, climate and the circular
+      use of what is thrown away."
+    capabilities:
+      - Air, water and noise observations everywhere.
+      - Projections and climate risk per zone.
+      - Waste streams and their possible reuse.
+    owns:
+      - EnvironmentalObservation
+      - ClimateProjectionRef
+      - WasteStreamRef
+    apis:
+      - GET /api/environment/stations
+      - GET /api/environment/stations
+      - GET /api/environment/stations/:id
+      - POST /api/environment/stations
+      - GET /api/environment/air-quality
+      - POST /api/environment/climate/projection
+      - GET /api/environment/stations
+      - GET /api/environment/stations
+    publishes:
+      - environment.air-quality.updated.v1
+      - environment.water-quality.updated.v1
+      - environment.climate-risk.updated.v1
+      - environment.waste-stream.updated.v1
+    consumes:
+      - iot.sensor.observation.v1
+      - industry.production.updated.v1
+      - energy.grid-load.updated.v1
+      - transport.mobility-demand.updated.v1
+      - transport.congestion.detected.v1
+      - agriculture.water-demand.predicted.v1
+      - water.reservoir-level.updated.v1
+      - infrastructure.failure.predicted.v1
+      - emergency.incident.created.v1
+      - trade.product-passport.issued.v1
+      - tourism.site-pressure.detected.v1
+      - land.zoning.changed.v1
+      - resilience.crisis.declared.v1
+      - research.finding.released.v1
+      - culture.event.scheduled.v1
+    depends_on:
+      - culture
+      - digital-nervous-system
+      - food-water
+      - industrial-energy
+      - infrastructure
+      - land
+      - mobility-logistics
+      - research
+      - resilience
+      - safety-emergency
+      - smart-trade
+      - tourism
+    related_services:
+      - culture
+      - digital-nervous-system
+      - education
+      - food-water
+      - health
+      - industrial-energy
+      - infrastructure
+      - justice
+      - land
+      - life-care
+      - mobility-logistics
+      - national-digital-twin
+      - religious-heritage
+      - research
+      - resilience
+      - safety-emergency
+      - smart-trade
+      - talent
+      - tourism
+    ai_capabilities:
+      - pollution source attribution
+      - climate projection
+      - waste reuse matching
+    iot_capabilities:
+      - air quality
+      - water quality
+      - noise
+      - temperature
+      - humidity
+      - rainfall
+      - wind speed
+    digital_twin_capabilities:
+      - station twin
+      - climate zone twin
+  - id: tourism
+    name: Tunisia Immersive Tourism OS
+    ministry: Tourism
+    description: Visitor flows, site pressure and experiences that exist before the
+      visitor arrives.
+    capabilities:
+      - Site capacity, pressure and seasonality.
+      - Anchored augmented-reality scenes at real sites.
+      - Itineraries that redistribute pressure.
+    owns:
+      - TourismAssetRef
+      - VisitorFlowRef
+      - ARSceneRef
+    apis:
+      - GET /api/tourism/sites
+      - GET /api/tourism/sites
+      - GET /api/tourism/sites/:id
+      - POST /api/tourism/sites
+      - POST /api/tourism/itinerary
+      - GET /api/tourism/flows
+      - GET /api/tourism/sites
+      - GET /api/tourism/sites
+    publishes:
+      - tourism.visitor-flow.updated.v1
+      - tourism.site-pressure.detected.v1
+      - tourism.experience.published.v1
+    consumes:
+      - environment.air-quality.updated.v1
+      - environment.water-quality.updated.v1
+      - environment.climate-risk.updated.v1
+      - culture.event.scheduled.v1
+      - culture.asset-condition.updated.v1
+      - heritage.site-condition.updated.v1
+      - transport.congestion.detected.v1
+      - transport.mobility-demand.updated.v1
+      - health.capacity.updated.v1
+      - emergency.incident.created.v1
+      - iot.sensor.observation.v1
+      - global.diaspora-signal.updated.v1
+      - infrastructure.asset-health.updated.v1
+      - resilience.crisis.declared.v1
+      - talent.facility-usage.updated.v1
+      - treasury.funding.approved.v1
+    depends_on:
+      - culture
+      - digital-nervous-system
+      - environment
+      - global-tunisia
+      - health
+      - infrastructure
+      - mobility-logistics
+      - religious-heritage
+      - resilience
+      - safety-emergency
+      - talent
+      - treasury
+    related_services:
+      - culture
+      - digital-nervous-system
+      - environment
+      - global-tunisia
+      - health
+      - infrastructure
+      - land
+      - mobility-logistics
+      - national-digital-twin
+      - religious-heritage
+      - resilience
+      - safety-emergency
+      - skills-opportunity
+      - talent
+      - treasury
+    ai_capabilities:
+      - itinerary generation
+      - pressure forecasting
+      - multilingual site narration
+    iot_capabilities:
+      - occupancy
+      - air quality
+      - noise
+      - temperature
+    digital_twin_capabilities:
+      - site twin
+      - visitor flow twin
+  - id: life-care
+    name: Life & Care Intelligence OS
+    ministry: Family, Women, Childhood & Seniors
+    description: Life events, care capacity and the path to economic independence.
+    capabilities:
+      - Life events and the support each one should trigger.
+      - Care facilities, capacity and coverage.
+      - The concrete path from support to autonomy.
+    owns:
+      - CareCohortRef
+      - CareFacilityRef
+      - LifeEventRef
+    apis:
+      - GET /api/life-care/facilities
+      - GET /api/life-care/facilities
+      - GET /api/life-care/facilities/:id
+      - POST /api/life-care/facilities
+      - POST /api/life-care/life-event
+      - GET /api/life-care/coverage
+      - GET /api/life-care/facilities
+      - GET /api/life-care/facilities
+    publishes:
+      - care.life-event.recorded.v1
+      - care.support-need.detected.v1
+      - care.facility-capacity.updated.v1
+    consumes:
+      - social.vulnerability.updated.v1
+      - social.household-need.detected.v1
+      - health.capacity.updated.v1
+      - health.care-episode.updated.v1
+      - education.learning-progress.updated.v1
+      - skills.micro-mission.published.v1
+      - treasury.aid.disbursed.v1
+      - justice.case.filed.v1
+      - emergency.incident.created.v1
+      - resilience.crisis.declared.v1
+      - environment.climate-risk.updated.v1
+      - transport.mobility-demand.updated.v1
+      - culture.event.scheduled.v1
+      - talent.facility-usage.updated.v1
+    depends_on:
+      - culture
+      - education
+      - environment
+      - health
+      - justice
+      - mobility-logistics
+      - resilience
+      - safety-emergency
+      - skills-opportunity
+      - social-mobility
+      - talent
+      - treasury
+    related_services:
+      - culture
+      - education
+      - environment
+      - global-tunisia
+      - health
+      - justice
+      - mobility-logistics
+      - national-digital-twin
+      - resilience
+      - safety-emergency
+      - skills-opportunity
+      - social-mobility
+      - talent
+      - treasury
+    ai_capabilities:
+      - life-event to support inference
+      - independence path planning
+      - coverage gap detection
+    iot_capabilities:
+      - occupancy
+      - temperature
+      - wearable heart rate
+    digital_twin_capabilities:
+      - care facility twin
+      - life cohort twin
+  - id: culture
+    name: Tunisia Cultural Intelligence Network
+    ministry: Culture
+    description: Cultural assets, immersive access and a creative economy that can
+      be measured.
+    capabilities:
+      - Condition and use of every cultural asset.
+      - Digitised works and immersive access.
+      - Creative activity, audience and revenue.
+    owns:
+      - CulturalAssetRef
+      - CreativeWorkRef
+      - CulturalEventRef
+    apis:
+      - GET /api/culture/assets
+      - GET /api/culture/assets
+      - GET /api/culture/assets/:id
+      - POST /api/culture/assets
+      - POST /api/culture/events/plan
+      - GET /api/culture/assets/condition
+      - GET /api/culture/assets
+      - GET /api/culture/assets
+    publishes:
+      - culture.asset-condition.updated.v1
+      - culture.event.scheduled.v1
+      - culture.creative-economy.updated.v1
+    consumes:
+      - iot.sensor.observation.v1
+      - environment.air-quality.updated.v1
+      - environment.climate-risk.updated.v1
+      - tourism.visitor-flow.updated.v1
+      - tourism.site-pressure.detected.v1
+      - heritage.site-condition.updated.v1
+      - infrastructure.failure.predicted.v1
+      - transport.mobility-demand.updated.v1
+      - education.program.updated.v1
+      - skills.gap.detected.v1
+      - treasury.funding.approved.v1
+      - emergency.incident.created.v1
+      - research.finding.released.v1
+      - global.opportunity.published.v1
+    depends_on:
+      - digital-nervous-system
+      - education
+      - environment
+      - global-tunisia
+      - infrastructure
+      - mobility-logistics
+      - religious-heritage
+      - research
+      - safety-emergency
+      - skills-opportunity
+      - tourism
+      - treasury
+    related_services:
+      - digital-nervous-system
+      - education
+      - environment
+      - global-tunisia
+      - infrastructure
+      - land
+      - life-care
+      - mobility-logistics
+      - national-digital-twin
+      - religious-heritage
+      - research
+      - safety-emergency
+      - skills-opportunity
+      - talent
+      - tourism
+      - treasury
+    ai_capabilities:
+      - condition forecasting
+      - audience recommendation
+      - archive summarisation
+    iot_capabilities:
+      - humidity
+      - temperature
+      - occupancy
+      - vibration
+    digital_twin_capabilities:
+      - cultural asset twin
+      - creative economy twin

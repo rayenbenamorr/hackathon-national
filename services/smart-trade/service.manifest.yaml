@@ -1,0 +1,204 @@
+id: smart-trade
+name: Smart Trade Network
+ministry: Commerce & Export
+description: Product passports, export guidance and a supply graph that shows
+  where it will break.
+mission: Give every exported product a verifiable identity, and give the country
+  a map of the dependencies that decide whether it can be produced at all.
+capabilities:
+  - Origin, footprint and certification as a portable record.
+  - What a producer must do to reach a target market.
+  - Dependencies between products, inputs and corridors.
+modules:
+  - id: smart-product-passport
+    name: Smart Product Passport
+    purpose: Origin, footprint and certification as a portable record.
+  - id: ai-export-copilot
+    name: AI Export Copilot
+    purpose: What a producer must do to reach a target market.
+  - id: national-supply-graph
+    name: National Supply Graph
+    purpose: Dependencies between products, inputs and corridors.
+owns:
+  - ProductRef
+  - ProductPassportRef
+  - ShipmentRef
+apis:
+  - method: GET
+    path: /api/smart-trade/products
+    summary: health Product
+    module: platform
+  - method: GET
+    path: /api/smart-trade/products
+    summary: list Product
+    module: smart-product-passport
+  - method: GET
+    path: /api/smart-trade/products/:id
+    summary: get Product
+    module: smart-product-passport
+  - method: POST
+    path: /api/smart-trade/products
+    summary: create Product
+    module: smart-product-passport
+  - method: POST
+    path: /api/smart-trade/export/advice
+    summary: What this product needs to enter a given market.
+    module: ai-export-copilot
+  - method: GET
+    path: /api/smart-trade/supply/graph
+    summary: Export concentration by governorate of origin.
+    module: national-supply-graph
+  - method: GET
+    path: /api/smart-trade/products
+    summary: signals Product
+    module: platform
+  - method: GET
+    path: /api/smart-trade/products
+    summary: twins Product
+    module: platform
+  - method: GET
+    path: /api/smart-trade/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/smart-trade/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/smart-trade/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: trade.product-passport.issued.v1
+    summary: A product passport was issued — origin, footprint, certification.
+  - event: trade.shipment.updated.v1
+    summary: A shipment changed state.
+  - event: trade.export-opportunity.detected.v1
+    summary: A market opening was detected for a product.
+  - event: trade.supply-risk.flagged.v1
+    summary: A dependency in the supply graph is at risk.
+consumes:
+  - event: agriculture.yield.forecast.v1
+    from: food-water
+    criticality: critical
+    reason: Exportable volume of olive oil, dates and cereals is a yield forecast
+      first.
+  - event: fisheries.stock.updated.v1
+    from: food-water
+    criticality: normal
+    reason: Seafood export capacity follows stock and effort.
+  - event: industry.production.updated.v1
+    from: industrial-energy
+    criticality: critical
+    reason: The supply graph is built from what plants actually produce.
+  - event: logistics.freight.updated.v1
+    from: mobility-logistics
+    criticality: critical
+    reason: A shipment without a freight movement is a plan, not a shipment.
+  - event: transport.congestion.detected.v1
+    from: mobility-logistics
+    criticality: normal
+    reason: Corridor congestion is the most common cause of a missed export window.
+  - event: environment.air-quality.updated.v1
+    from: environment
+    criticality: normal
+    reason: Carbon and emission context feeds the product passport footprint.
+  - event: infrastructure.asset-health.updated.v1
+    from: infrastructure
+    criticality: critical
+    reason: Port and rail health is a hard constraint on export capacity.
+  - event: treasury.fiscal-risk.flagged.v1
+    from: treasury
+    criticality: normal
+    reason: Customs revenue exposure and trade risk are read together.
+  - event: global.diaspora-signal.updated.v1
+    from: global-tunisia
+    criticality: normal
+    reason: Diaspora demand is a real and under-used export channel.
+  - event: justice.legal-text.published.v1
+    from: justice
+    criticality: normal
+    reason: Export requirements change when the applicable text changes.
+  - event: research.finding.released.v1
+    from: research
+    criticality: normal
+    reason: Certification and process results unlock markets that were closed.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: normal
+    reason: A crisis reroutes or blocks corridors and shipments.
+  - event: land.zoning.changed.v1
+    from: land
+    criticality: normal
+    reason: Industrial zoning determines where production can expand.
+  - event: skills.gap.detected.v1
+    from: skills-opportunity
+    criticality: normal
+    reason: Certification and quality-control skills gate export readiness.
+  - event: iot.sensor.observation.v1
+    from: digital-nervous-system
+    criticality: critical
+    reason: Cold-chain temperature and container GPS observations are the shipment
+      twin.
+  - event: health.epidemic-signal.detected.v1
+    from: health
+    criticality: normal
+    reason: Food and pharmaceutical export controls follow health signals at the
+      border.
+depends_on:
+  - digital-nervous-system
+  - environment
+  - food-water
+  - global-tunisia
+  - health
+  - industrial-energy
+  - infrastructure
+  - justice
+  - land
+  - mobility-logistics
+  - research
+  - resilience
+  - skills-opportunity
+  - treasury
+consumed_by:
+  - environment
+  - food-water
+  - global-tunisia
+  - industrial-energy
+  - justice
+  - mobility-logistics
+  - national-digital-twin
+  - research
+  - skills-opportunity
+  - treasury
+related_services:
+  - digital-nervous-system
+  - environment
+  - food-water
+  - global-tunisia
+  - health
+  - industrial-energy
+  - infrastructure
+  - justice
+  - land
+  - mobility-logistics
+  - national-digital-twin
+  - research
+  - resilience
+  - skills-opportunity
+  - treasury
+ai_capabilities:
+  - market requirement extraction
+  - supply risk propagation
+  - footprint estimation
+iot_capabilities:
+  - cold chain temperature
+  - container GPS
+  - port occupancy
+digital_twin_capabilities:
+  - product twin
+  - corridor twin
+data:
+  synthetic_only: true
+  owns_collection: products
+  seeded_rows: 30

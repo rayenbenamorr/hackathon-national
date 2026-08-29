@@ -1,0 +1,181 @@
+id: life-care
+name: Life & Care Intelligence OS
+ministry: Family, Women, Childhood & Seniors
+description: Life events, care capacity and the path to economic independence.
+mission: Follow a life journey across the ministries that touch it, so that
+  support arrives at the transition instead of after it.
+capabilities:
+  - Life events and the support each one should trigger.
+  - Care facilities, capacity and coverage.
+  - The concrete path from support to autonomy.
+modules:
+  - id: life-journey-ai
+    name: Life Journey AI
+    purpose: Life events and the support each one should trigger.
+  - id: smart-care-network
+    name: Smart Care Network
+    purpose: Care facilities, capacity and coverage.
+  - id: economic-independence-engine
+    name: Economic Independence Engine
+    purpose: The concrete path from support to autonomy.
+owns:
+  - CareCohortRef
+  - CareFacilityRef
+  - LifeEventRef
+apis:
+  - method: GET
+    path: /api/life-care/facilities
+    summary: health Care facility
+    module: platform
+  - method: GET
+    path: /api/life-care/facilities
+    summary: list Care facility
+    module: smart-care-network
+  - method: GET
+    path: /api/life-care/facilities/:id
+    summary: get Care facility
+    module: smart-care-network
+  - method: POST
+    path: /api/life-care/facilities
+    summary: create Care facility
+    module: smart-care-network
+  - method: POST
+    path: /api/life-care/life-event
+    summary: Record a life event and infer the support it should trigger.
+    module: life-journey-ai
+  - method: GET
+    path: /api/life-care/coverage
+    summary: Care coverage by governorate.
+    module: economic-independence-engine
+  - method: GET
+    path: /api/life-care/facilities
+    summary: signals Care facility
+    module: platform
+  - method: GET
+    path: /api/life-care/facilities
+    summary: twins Care facility
+    module: platform
+  - method: GET
+    path: /api/life-care/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/life-care/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/life-care/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: care.life-event.recorded.v1
+    summary: A life transition was recorded for a cohort.
+  - event: care.support-need.detected.v1
+    summary: A support need was inferred from a life event and other ministry signals.
+  - event: care.facility-capacity.updated.v1
+    summary: Care facility capacity changed.
+consumes:
+  - event: social.vulnerability.updated.v1
+    from: social-mobility
+    criticality: critical
+    reason: Vulnerability and care need are the same household from two angles.
+  - event: social.household-need.detected.v1
+    from: social-mobility
+    criticality: critical
+    reason: A detected household need usually resolves into a care placement.
+  - event: health.capacity.updated.v1
+    from: health
+    criticality: critical
+    reason: Discharge planning is only possible if hospital pressure is visible.
+  - event: health.care-episode.updated.v1
+    from: health
+    criticality: critical
+    reason: A care episode ending is where the care network takes over.
+  - event: education.learning-progress.updated.v1
+    from: education
+    criticality: normal
+    reason: Schooling is the main childhood life transition the journey tracks.
+  - event: skills.micro-mission.published.v1
+    from: skills-opportunity
+    criticality: critical
+    reason: Economic independence is built out of real, paid missions.
+  - event: treasury.aid.disbursed.v1
+    from: treasury
+    criticality: critical
+    reason: Aid arrival is the event that changes an independence trajectory.
+  - event: justice.case.filed.v1
+    from: justice
+    criticality: normal
+    reason: Family and guardianship cases are life events with legal weight.
+  - event: emergency.incident.created.v1
+    from: safety-emergency
+    criticality: normal
+    reason: An incident affecting a household is a care trigger.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: critical
+    reason: Care facilities are evacuation-priority sites with dependent occupants.
+  - event: environment.climate-risk.updated.v1
+    from: environment
+    criticality: normal
+    reason: Heat waves are a documented mortality risk for elderly cohorts.
+  - event: transport.mobility-demand.updated.v1
+    from: mobility-logistics
+    criticality: normal
+    reason: Access to a care facility is a transport question for its users.
+  - event: culture.event.scheduled.v1
+    from: culture
+    criticality: normal
+    reason: Cultural participation is part of elderly and youth care programming.
+  - event: talent.facility-usage.updated.v1
+    from: talent
+    criticality: normal
+    reason: Youth clubs are shared between sport and care programming.
+depends_on:
+  - culture
+  - education
+  - environment
+  - health
+  - justice
+  - mobility-logistics
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - social-mobility
+  - talent
+  - treasury
+consumed_by:
+  - global-tunisia
+  - health
+  - national-digital-twin
+  - social-mobility
+related_services:
+  - culture
+  - education
+  - environment
+  - global-tunisia
+  - health
+  - justice
+  - mobility-logistics
+  - national-digital-twin
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - social-mobility
+  - talent
+  - treasury
+ai_capabilities:
+  - life-event to support inference
+  - independence path planning
+  - coverage gap detection
+iot_capabilities:
+  - occupancy
+  - temperature
+  - wearable heart rate
+digital_twin_capabilities:
+  - care facility twin
+  - life cohort twin
+data:
+  synthetic_only: true
+  owns_collection: facilities
+  seeded_rows: 32

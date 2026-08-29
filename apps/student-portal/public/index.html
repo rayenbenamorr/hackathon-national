@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Plateforme nationale — Hackathon</title>
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%87%B9%F0%9F%87%B3%3C/text%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <header class="top">
+      <div class="brand">
+        <span class="dot" id="status-dot"></span>
+        <div>
+          <strong>Écosystème numérique national</strong>
+          <small id="status-line">connexion…</small>
+          <small id="host-line" class="hostline" hidden></small>
+        </div>
+      </div>
+      <nav>
+        <button data-view="ministries" class="active">Ministères</button>
+        <button data-view="graph">Graphe</button>
+        <button data-view="events">Événements</button>
+        <button data-view="sensors">Capteurs</button>
+        <a href="/admin" class="ghost">Observabilité →</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- ============================ MINISTRIES ======================== -->
+      <section id="view-ministries" class="view active">
+        <div class="split">
+          <aside class="list" id="ministry-list"></aside>
+
+          <div class="detail" id="ministry-detail">
+            <div class="empty">
+              <h1>Choisissez votre ministère</h1>
+              <p>
+                Vous en avez un attribué. Cliquez-le à gauche : le portail retient votre choix et vous
+                montre tout ce dont vous avez besoin — vos données, vos voisins, vos événements.
+              </p>
+              <p class="muted">
+                Pick your ministry on the left. The portal remembers it and shows your data, your
+                neighbours and your events.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================== GRAPH =========================== -->
+      <section id="view-graph" class="view">
+        <div class="panel wide">
+          <header>
+            <h2>Le pays comme un seul système</h2>
+            <p class="muted">
+              24 ministères, <span id="graph-edge-count">…</span> relations déclarées. Survolez un
+              service pour voir uniquement les siennes. Rouge = intégration cassée.
+            </p>
+          </header>
+          <div class="graph-wrap">
+            <svg id="graph" viewBox="0 0 900 900" role="img" aria-label="Graphe des relations"></svg>
+            <div class="graph-legend">
+              <span><i class="k-event"></i> événement</span>
+              <span><i class="k-api"></i> appel d'API</span>
+              <span><i class="k-broken"></i> cassée</span>
+              <span><i class="k-critical"></i> critique</span>
+            </div>
+          </div>
+          <div id="graph-focus" class="graph-focus"></div>
+        </div>
+      </section>
+
+      <!-- ============================= EVENTS =========================== -->
+      <section id="view-events" class="view">
+        <div class="split">
+          <div class="panel">
+            <header>
+              <h2>Flux en direct</h2>
+              <p class="muted">Chaque événement publié sur le bus national, en temps réel.</p>
+            </header>
+            <ul id="live-feed" class="feed"></ul>
+          </div>
+          <div class="panel">
+            <header>
+              <h2>Catalogue des contrats</h2>
+              <p class="muted">
+                <span id="event-count">…</span> événements. Un seul service peut publier chacun.
+              </p>
+            </header>
+            <input id="event-filter" placeholder="filtrer… (ex. water, health, sensor)" />
+            <div id="event-catalog" class="catalog"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================ SENSORS =========================== -->
+      <section id="view-sensors" class="view">
+        <div class="panel wide">
+          <header>
+            <h2>Capteurs</h2>
+            <p class="muted">
+              16 types. Le simulateur et un vrai ESP32 utilisent exactement le même point d'entrée :
+              <code>POST /api/digital-nervous-system/sensors/observations</code>
+            </p>
+          </header>
+          <div id="sensor-kinds" class="cards"></div>
+        </div>
+      </section>
+    </main>
+
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>

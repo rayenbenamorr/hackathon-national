@@ -1,0 +1,209 @@
+id: treasury
+name: Intelligent Treasury OS
+ministry: Finance
+description: Where public money is, where it is committed, and what it is buying.
+mission: Make the budget a live object other ministries can query and react to —
+  so a drought, an outage or an epidemic has a visible fiscal consequence the
+  same day, not the following year.
+capabilities:
+  - Live position of every budget line.
+  - Reallocation proposals under an explicit constraint.
+  - Targeted, traceable aid disbursement.
+modules:
+  - id: real-time-treasury-twin
+    name: Real-Time Treasury Twin
+    purpose: Live position of every budget line.
+  - id: ai-public-budget-optimizer
+    name: AI Public Budget Optimizer
+    purpose: Reallocation proposals under an explicit constraint.
+  - id: smart-aid-wallet
+    name: Smart Aid Wallet
+    purpose: Targeted, traceable aid disbursement.
+owns:
+  - FinancialProgramRef
+  - BudgetLineRef
+  - AidWalletRef
+apis:
+  - method: GET
+    path: /api/treasury/budgetLines
+    summary: health Budget line
+    module: platform
+  - method: GET
+    path: /api/treasury/budgetLines
+    summary: list Budget line
+    module: real-time-treasury-twin
+  - method: GET
+    path: /api/treasury/budgetLines/:id
+    summary: get Budget line
+    module: real-time-treasury-twin
+  - method: POST
+    path: /api/treasury/budgetLines
+    summary: create Budget line
+    module: real-time-treasury-twin
+  - method: POST
+    path: /api/treasury/budget/optimise
+    summary: Propose a reallocation under a stated constraint, with its rationale.
+    module: ai-public-budget-optimizer
+  - method: GET
+    path: /api/treasury/position
+    summary: Commitment rate by ministry.
+    module: real-time-treasury-twin
+  - method: GET
+    path: /api/treasury/budgetLines
+    summary: signals Budget line
+    module: platform
+  - method: GET
+    path: /api/treasury/budgetLines
+    summary: twins Budget line
+    module: platform
+  - method: GET
+    path: /api/treasury/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/treasury/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/treasury/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: treasury.budget-line.updated.v1
+    summary: A budget line moved.
+  - event: treasury.funding.approved.v1
+    summary: Funding was approved for another ministry request.
+  - event: treasury.aid.disbursed.v1
+    summary: Targeted aid reached a beneficiary cohort.
+  - event: treasury.fiscal-risk.flagged.v1
+    summary: A fiscal risk was detected — over-commitment, shock exposure, revenue gap.
+consumes:
+  - event: resilience.relief-plan.updated.v1
+    from: resilience
+    criticality: critical
+    reason: A relief plan is a spending commitment; the treasury twin must see it as
+      it forms.
+  - event: resilience.resource-request.created.v1
+    from: resilience
+    criticality: critical
+    reason: Resource requests are funding requests wearing another name.
+  - event: health.capacity.updated.v1
+    from: health
+    criticality: normal
+    reason: Saturation is the earliest signal of an unbudgeted health cost.
+  - event: agriculture.water-shortage.predicted.v1
+    from: food-water
+    criticality: critical
+    reason: "Water shortage has a known fiscal shape: compensation, tankering, import."
+  - event: infrastructure.failure.predicted.v1
+    from: infrastructure
+    criticality: critical
+    reason: Predicted failure lets maintenance be budgeted instead of emergency-funded.
+  - event: infrastructure.maintenance.scheduled.v1
+    from: infrastructure
+    criticality: normal
+    reason: Scheduled work orders are the committed half of the infrastructure budget.
+  - event: social.household-need.detected.v1
+    from: social-mobility
+    criticality: critical
+    reason: Detected need is what the aid wallet exists to answer.
+  - event: energy.outage-risk.flagged.v1
+    from: industrial-energy
+    criticality: normal
+    reason: Outage risk carries a subsidy and compensation exposure.
+  - event: trade.supply-risk.flagged.v1
+    from: smart-trade
+    criticality: normal
+    reason: Supply risk moves customs revenue and import cost together.
+  - event: education.program.updated.v1
+    from: education
+    criticality: normal
+    reason: A new programme is a recurring cost that must enter the fiscal year.
+  - event: justice.court-load.updated.v1
+    from: justice
+    criticality: normal
+    reason: Court saturation is the justification for justice budget reallocation.
+  - event: twin.scenario.completed.v1
+    from: national-digital-twin
+    criticality: critical
+    reason: Scenario outcomes are costed before they are decided.
+  - event: emergency.incident.resolved.v1
+    from: safety-emergency
+    criticality: normal
+    reason: Resolved incidents give the actual cost of response, not the estimate.
+  - event: land.site-suitability.scored.v1
+    from: land
+    criticality: normal
+    reason: Public asset valuation and investment siting share the same scores.
+  - event: research.transfer.matched.v1
+    from: research
+    criticality: normal
+    reason: A matched transfer is a funding decision waiting to be made.
+depends_on:
+  - education
+  - food-water
+  - health
+  - industrial-energy
+  - infrastructure
+  - justice
+  - land
+  - national-digital-twin
+  - research
+  - resilience
+  - safety-emergency
+  - smart-trade
+  - social-mobility
+consumed_by:
+  - culture
+  - digital-nervous-system
+  - education
+  - food-water
+  - global-tunisia
+  - industrial-energy
+  - infrastructure
+  - justice
+  - land
+  - life-care
+  - national-digital-twin
+  - religious-heritage
+  - research
+  - resilience
+  - skills-opportunity
+  - smart-trade
+  - social-mobility
+  - talent
+  - tourism
+related_services:
+  - culture
+  - digital-nervous-system
+  - education
+  - food-water
+  - global-tunisia
+  - health
+  - industrial-energy
+  - infrastructure
+  - justice
+  - land
+  - life-care
+  - national-digital-twin
+  - religious-heritage
+  - research
+  - resilience
+  - safety-emergency
+  - skills-opportunity
+  - smart-trade
+  - social-mobility
+  - talent
+  - tourism
+ai_capabilities:
+  - budget reallocation under constraint
+  - fiscal anomaly detection
+  - shock cost estimation
+iot_capabilities: []
+digital_twin_capabilities:
+  - budget line twin
+  - programme twin
+data:
+  synthetic_only: true
+  owns_collection: budgetLines
+  seeded_rows: 48

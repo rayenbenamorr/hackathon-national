@@ -1,0 +1,215 @@
+id: resilience
+name: National Resilience Command System
+ministry: Interior / Civil Protection
+description: Crisis declaration, relief logistics and a mesh that survives the
+  network going down.
+mission: Hold one shared picture of a crisis across every ministry, and turn it
+  into a relief plan with named resources — because in a crisis the failure is
+  almost never lack of resources, it is lack of a shared picture.
+capabilities:
+  - Live state of every declared crisis and the zones it covers.
+  - Turns needs into a resourced, sequenced relief plan.
+  - Store-and-forward node health when normal connectivity is gone.
+modules:
+  - id: national-resilience-digital-twin
+    name: National Resilience Digital Twin
+    purpose: Live state of every declared crisis and the zones it covers.
+  - id: autonomous-crisis-logistics
+    name: Autonomous Crisis Logistics
+    purpose: Turns needs into a resourced, sequenced relief plan.
+  - id: emergency-mesh-network
+    name: Emergency Mesh Network
+    purpose: Store-and-forward node health when normal connectivity is gone.
+owns:
+  - CrisisRef
+  - ReliefPlanRef
+  - MeshNodeRef
+apis:
+  - method: GET
+    path: /api/resilience/crises
+    summary: health Crisis
+    module: platform
+  - method: GET
+    path: /api/resilience/crises
+    summary: list Crisis
+    module: national-resilience-digital-twin
+  - method: GET
+    path: /api/resilience/crises/:id
+    summary: get Crisis
+    module: national-resilience-digital-twin
+  - method: POST
+    path: /api/resilience/crises
+    summary: create Crisis
+    module: national-resilience-digital-twin
+  - method: POST
+    path: /api/resilience/logistics/plan
+    summary: Produce a relief plan for a crisis and broadcast it.
+    module: autonomous-crisis-logistics
+  - method: GET
+    path: /api/resilience/mesh/nodes
+    summary: Mesh node reachability by governorate.
+    module: emergency-mesh-network
+  - method: GET
+    path: /api/resilience/crises
+    summary: signals Crisis
+    module: platform
+  - method: GET
+    path: /api/resilience/crises
+    summary: twins Crisis
+    module: platform
+  - method: GET
+    path: /api/resilience/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/resilience/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/resilience/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: resilience.crisis.declared.v1
+    summary: A crisis is declared — the single signal that reconfigures the whole
+      platform.
+  - event: resilience.relief-plan.updated.v1
+    summary: The resourced relief plan for a crisis changed.
+  - event: resilience.resource-request.created.v1
+    summary: Resilience needs a resource another ministry controls.
+  - event: resilience.mesh-node.status.v1
+    summary: Emergency mesh node reachability.
+consumes:
+  - event: emergency.incident.created.v1
+    from: safety-emergency
+    criticality: critical
+    reason: Clustered incidents are how a crisis is first detected, before anyone
+      declares one.
+  - event: environment.climate-risk.updated.v1
+    from: environment
+    criticality: critical
+    reason: Drought, heat and flood risk are the leading indicators the command
+      system watches.
+  - event: agriculture.water-shortage.predicted.v1
+    from: food-water
+    criticality: critical
+    reason: A predicted water shortage is a slow-onset crisis; declaring early is
+      the whole point.
+  - event: health.capacity.updated.v1
+    from: health
+    criticality: critical
+    reason: A relief plan that ignores hospital saturation sends people where they
+      cannot be treated.
+  - event: infrastructure.failure.predicted.v1
+    from: infrastructure
+    criticality: critical
+    reason: A predicted bridge or network failure changes every evacuation route.
+  - event: energy.outage-risk.flagged.v1
+    from: industrial-energy
+    criticality: normal
+    reason: Power shortfall determines which shelters and hospitals need generators.
+  - event: transport.resource.dispatched.v1
+    from: mobility-logistics
+    criticality: critical
+    reason: The relief plan tracks coverage only if it sees what was actually
+      dispatched.
+  - event: social.vulnerability.updated.v1
+    from: social-mobility
+    criticality: critical
+    reason: Evacuation and aid priority follow vulnerability, not geography alone.
+  - event: iot.sensor.observation.v1
+    from: digital-nervous-system
+    criticality: critical
+    reason: Water level, rainfall and wind observations drive early crisis detection.
+  - event: treasury.funding.approved.v1
+    from: treasury
+    criticality: normal
+    reason: A relief plan is only real once its funding is approved.
+  - event: land.site-suitability.scored.v1
+    from: land
+    criticality: normal
+    reason: Shelter and staging sites come from land suitability, scored in advance.
+  - event: education.school-condition.updated.v1
+    from: education
+    criticality: normal
+    reason: Schools are the default shelter network; their condition decides which
+      can be used.
+  - event: tourism.site-pressure.detected.v1
+    from: tourism
+    criticality: normal
+    reason: Visitor concentration changes the population actually present in a zone.
+  - event: twin.anomaly.detected.v1
+    from: national-digital-twin
+    criticality: normal
+    reason: Multi-sector anomalies are early crisis signatures.
+depends_on:
+  - digital-nervous-system
+  - education
+  - environment
+  - food-water
+  - health
+  - industrial-energy
+  - infrastructure
+  - land
+  - mobility-logistics
+  - national-digital-twin
+  - safety-emergency
+  - social-mobility
+  - tourism
+  - treasury
+consumed_by:
+  - digital-nervous-system
+  - education
+  - environment
+  - food-water
+  - global-tunisia
+  - health
+  - industrial-energy
+  - infrastructure
+  - justice
+  - land
+  - life-care
+  - mobility-logistics
+  - national-digital-twin
+  - religious-heritage
+  - safety-emergency
+  - smart-trade
+  - social-mobility
+  - tourism
+  - treasury
+related_services:
+  - digital-nervous-system
+  - education
+  - environment
+  - food-water
+  - global-tunisia
+  - health
+  - industrial-energy
+  - infrastructure
+  - justice
+  - land
+  - life-care
+  - mobility-logistics
+  - national-digital-twin
+  - religious-heritage
+  - safety-emergency
+  - smart-trade
+  - social-mobility
+  - tourism
+  - treasury
+ai_capabilities:
+  - relief planning under constraint
+  - crisis severity classification
+  - multi-hazard scenario agent
+iot_capabilities:
+  - mesh node telemetry
+  - water level
+  - rainfall
+  - wind speed
+digital_twin_capabilities:
+  - crisis twin per event
+  - governorate resilience twin
+data:
+  synthetic_only: true
+  owns_collection: crises
+  seeded_rows: 8

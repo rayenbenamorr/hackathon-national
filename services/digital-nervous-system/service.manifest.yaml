@@ -1,0 +1,212 @@
+id: digital-nervous-system
+name: Tunisia Digital Nervous System
+ministry: Digital Economy & Communication Technologies
+description: "The backbone: sensor fabric, identity, service registry and the
+  event bus itself."
+mission: "Be the layer nobody thinks about because it never fails: every sensor
+  observation in the country enters here and reaches whichever ministries care,
+  without any of them knowing the others exist."
+capabilities:
+  - Edge node health and locally-processed inference.
+  - Sensor registry and the single national ingest endpoint.
+  - Service registry, event catalogue, pseudonymous identity.
+modules:
+  - id: tunisia-edge-ai-mesh
+    name: Tunisia Edge AI Mesh
+    purpose: Edge node health and locally-processed inference.
+  - id: sovereign-iot-fabric
+    name: Sovereign IoT Fabric
+    purpose: Sensor registry and the single national ingest endpoint.
+  - id: national-digital-identity-event-bus
+    name: National Digital Identity + Event Bus
+    purpose: Service registry, event catalogue, pseudonymous identity.
+owns:
+  - SensorRef
+  - SensorObservation
+  - EdgeNodeRef
+  - EventCatalog
+apis:
+  - method: GET
+    path: /api/digital-nervous-system/sensors
+    summary: health Sensor
+    module: platform
+  - method: GET
+    path: /api/digital-nervous-system/sensors
+    summary: list Sensor
+    module: sovereign-iot-fabric
+  - method: GET
+    path: /api/digital-nervous-system/sensors/:id
+    summary: get Sensor
+    module: sovereign-iot-fabric
+  - method: POST
+    path: /api/digital-nervous-system/sensors/observations
+    summary: The national sensor ingest endpoint. Real devices and the simulator
+      both POST here.
+    module: sovereign-iot-fabric
+  - method: GET
+    path: /api/digital-nervous-system/registry/services
+    summary: Every running ministry service and its routes.
+    module: national-digital-identity-event-bus
+  - method: GET
+    path: /api/digital-nervous-system/registry/events
+    summary: The full event catalogue with owners and subscribers.
+    module: national-digital-identity-event-bus
+  - method: GET
+    path: /api/digital-nervous-system/sensors/coverage
+    summary: Sensor coverage by governorate.
+    module: tunisia-edge-ai-mesh
+  - method: GET
+    path: /api/digital-nervous-system/sensors
+    summary: signals Sensor
+    module: platform
+  - method: GET
+    path: /api/digital-nervous-system/sensors
+    summary: twins Sensor
+    module: platform
+  - method: GET
+    path: /api/digital-nervous-system/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/digital-nervous-system/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/digital-nervous-system/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: iot.sensor.observation.v1
+    summary: One sensor observation. The highest-volume event on the platform; ten
+      ministries consume it.
+  - event: dns.sensor.registered.v1
+    summary: A new sensor joined the national fabric.
+  - event: dns.edge-node.status.v1
+    summary: Edge node reachability and local inference load.
+  - event: dns.identity.verified.v1
+    summary: A pseudonymous identity assertion was verified.
+consumes:
+  - event: environment.air-quality.updated.v1
+    from: environment
+    criticality: normal
+    reason: Station readings validate the fabric against an independent publication.
+  - event: emergency.incident.created.v1
+    from: safety-emergency
+    criticality: normal
+    reason: Incidents localise where edge capacity must be reinforced.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: critical
+    reason: Crisis mode changes edge routing to store-and-forward.
+  - event: resilience.mesh-node.status.v1
+    from: resilience
+    criticality: critical
+    reason: Mesh nodes are edge nodes seen by the ministry that deploys them.
+  - event: infrastructure.asset-health.updated.v1
+    from: infrastructure
+    criticality: critical
+    reason: Telecom sites are infrastructure assets; their health is fabric health.
+  - event: energy.grid-load.updated.v1
+    from: industrial-energy
+    criticality: critical
+    reason: An edge node without power is an edge node that is gone.
+  - event: transport.resource.dispatched.v1
+    from: mobility-logistics
+    criticality: normal
+    reason: Moving resources carry sensors that join and leave the fabric.
+  - event: water.reservoir-level.updated.v1
+    from: food-water
+    criticality: normal
+    reason: Confirms that water sensors registered here are producing usable values.
+  - event: health.capacity.updated.v1
+    from: health
+    criticality: normal
+    reason: Facility connectivity is prioritised by criticality of the facility.
+  - event: education.school-condition.updated.v1
+    from: education
+    criticality: normal
+    reason: School connectivity is a fabric coverage question.
+  - event: land.parcel.updated.v1
+    from: land
+    criticality: normal
+    reason: Sensor and node siting is a land question.
+  - event: research.finding.released.v1
+    from: research
+    criticality: normal
+    reason: Edge inference and networking results are deployed on the fabric.
+  - event: twin.anomaly.detected.v1
+    from: national-digital-twin
+    criticality: normal
+    reason: An anomaly across sensors is often a fabric fault, not a real event.
+  - event: treasury.funding.approved.v1
+    from: treasury
+    criticality: normal
+    reason: Coverage extension programmes follow approved funding.
+  - event: tourism.site-pressure.detected.v1
+    from: tourism
+    criticality: normal
+    reason: Crowded sites are where public connectivity is most contested.
+depends_on:
+  - education
+  - environment
+  - food-water
+  - health
+  - industrial-energy
+  - infrastructure
+  - land
+  - mobility-logistics
+  - national-digital-twin
+  - research
+  - resilience
+  - safety-emergency
+  - tourism
+  - treasury
+consumed_by:
+  - culture
+  - education
+  - environment
+  - food-water
+  - health
+  - industrial-energy
+  - infrastructure
+  - justice
+  - mobility-logistics
+  - national-digital-twin
+  - religious-heritage
+  - resilience
+  - safety-emergency
+  - smart-trade
+  - talent
+  - tourism
+related_services:
+  - culture
+  - education
+  - environment
+  - food-water
+  - health
+  - industrial-energy
+  - infrastructure
+  - justice
+  - land
+  - mobility-logistics
+  - national-digital-twin
+  - religious-heritage
+  - research
+  - resilience
+  - safety-emergency
+  - smart-trade
+  - talent
+  - tourism
+  - treasury
+ai_capabilities:
+  - edge inference routing
+  - sensor fault detection
+iot_capabilities:
+  - all 16 sensor kinds — this service owns the fabric
+digital_twin_capabilities:
+  - sensor network twin
+  - edge node twin
+data:
+  synthetic_only: true
+  owns_collection: sensors
+  seeded_rows: 0

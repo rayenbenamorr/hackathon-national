@@ -1,0 +1,197 @@
+id: global-tunisia
+name: Global Tunisia Network
+ministry: Foreign Affairs
+description: "The diaspora as a live network: consular load, skills abroad,
+  opportunities home."
+mission: Treat Tunisians abroad as a connected part of the national system — a
+  source of skills, investment and demand, not a mailing list.
+capabilities:
+  - Aggregate, privacy-safe picture of skills and presence abroad.
+  - Consular demand and processing time per post.
+  - Matches opportunities at home to capabilities abroad.
+modules:
+  - id: diaspora-intelligence-graph
+    name: Diaspora Intelligence Graph
+    purpose: Aggregate, privacy-safe picture of skills and presence abroad.
+  - id: ai-consular-twin
+    name: AI Consular Twin
+    purpose: Consular demand and processing time per post.
+  - id: global-opportunity-engine
+    name: Global Opportunity Engine
+    purpose: Matches opportunities at home to capabilities abroad.
+owns:
+  - DiasporaCohortRef
+  - ConsulateRef
+  - GlobalOpportunityRef
+apis:
+  - method: GET
+    path: /api/global-tunisia/consulates
+    summary: health Consular post
+    module: platform
+  - method: GET
+    path: /api/global-tunisia/consulates
+    summary: list Consular post
+    module: ai-consular-twin
+  - method: GET
+    path: /api/global-tunisia/consulates/:id
+    summary: get Consular post
+    module: ai-consular-twin
+  - method: POST
+    path: /api/global-tunisia/consulates
+    summary: create Consular post
+    module: ai-consular-twin
+  - method: POST
+    path: /api/global-tunisia/opportunities/match
+    summary: Match a national need to diaspora capability.
+    module: global-opportunity-engine
+  - method: GET
+    path: /api/global-tunisia/diaspora/stats
+    summary: Cohorts and skills by country.
+    module: diaspora-intelligence-graph
+  - method: GET
+    path: /api/global-tunisia/consulates
+    summary: signals Consular post
+    module: platform
+  - method: GET
+    path: /api/global-tunisia/consulates
+    summary: twins Consular post
+    module: platform
+  - method: GET
+    path: /api/global-tunisia/signals
+    summary: Signals received from other ministries.
+    module: platform
+  - method: GET
+    path: /api/global-tunisia/twins
+    summary: Digital twins maintained here.
+    module: platform
+  - method: GET
+    path: /api/global-tunisia/dependencies
+    summary: Live status of outgoing integrations.
+    module: platform
+publishes:
+  - event: global.consular-request.created.v1
+    summary: A consular request was filed abroad.
+  - event: global.opportunity.published.v1
+    summary: An opportunity at home is opened to the diaspora.
+  - event: global.diaspora-signal.updated.v1
+    summary: "Aggregate diaspora signal: skills concentration and investment
+      appetite per country."
+consumes:
+  - event: skills.gap.detected.v1
+    from: skills-opportunity
+    criticality: critical
+    reason: A national skill gap is exactly what the diaspora is asked to fill.
+  - event: skills.micro-mission.published.v1
+    from: skills-opportunity
+    criticality: normal
+    reason: Remote missions are the lowest-friction way to mobilise expertise abroad.
+  - event: research.project.published.v1
+    from: research
+    criticality: normal
+    reason: Research projects abroad and at home are matched through the diaspora
+      graph.
+  - event: trade.export-opportunity.detected.v1
+    from: smart-trade
+    criticality: critical
+    reason: Export openings are relayed to diaspora networks in the target market.
+  - event: treasury.funding.approved.v1
+    from: treasury
+    criticality: normal
+    reason: Funded programmes are the opportunities worth publishing abroad.
+  - event: culture.event.scheduled.v1
+    from: culture
+    criticality: normal
+    reason: Cultural programming is the main reason diaspora travel is planned.
+  - event: tourism.experience.published.v1
+    from: tourism
+    criticality: normal
+    reason: Diaspora visits are a distinct, high-value tourism segment.
+  - event: justice.legal-text.published.v1
+    from: justice
+    criticality: normal
+    reason: Consular guidance is only correct if it tracks the applicable text.
+  - event: health.epidemic-signal.detected.v1
+    from: health
+    criticality: normal
+    reason: Travel advice to citizens abroad depends on the health situation at home.
+  - event: resilience.crisis.declared.v1
+    from: resilience
+    criticality: critical
+    reason: A crisis at home triggers consular contact procedures for affected
+      families.
+  - event: education.program.updated.v1
+    from: education
+    criticality: normal
+    reason: Recognition and equivalence questions follow programme changes.
+  - event: twin.state.updated.v1
+    from: national-digital-twin
+    criticality: normal
+    reason: Regional state is what the diaspora asks about before investing.
+  - event: land.site-suitability.scored.v1
+    from: land
+    criticality: normal
+    reason: Diaspora investment is overwhelmingly land- and site-driven.
+  - event: care.life-event.recorded.v1
+    from: life-care
+    criticality: normal
+    reason: Civil-status life events abroad and at home must reconcile.
+  - event: social.benefit.granted.v1
+    from: social-mobility
+    criticality: normal
+    reason: Portability of social rights is one of the most common consular questions.
+  - event: industry.production.updated.v1
+    from: industrial-energy
+    criticality: normal
+    reason: Diaspora investment targets specific industrial sectors, not the country
+      in the abstract.
+depends_on:
+  - culture
+  - education
+  - health
+  - industrial-energy
+  - justice
+  - land
+  - life-care
+  - national-digital-twin
+  - research
+  - resilience
+  - skills-opportunity
+  - smart-trade
+  - social-mobility
+  - tourism
+  - treasury
+consumed_by:
+  - culture
+  - research
+  - skills-opportunity
+  - smart-trade
+  - tourism
+related_services:
+  - culture
+  - education
+  - health
+  - industrial-energy
+  - justice
+  - land
+  - life-care
+  - national-digital-twin
+  - research
+  - resilience
+  - skills-opportunity
+  - smart-trade
+  - social-mobility
+  - tourism
+  - treasury
+ai_capabilities:
+  - skill-to-opportunity matching
+  - consular demand forecasting
+  - multilingual request summarisation
+iot_capabilities:
+  - consular queue occupancy
+digital_twin_capabilities:
+  - consular post twin
+  - country cohort twin
+data:
+  synthetic_only: true
+  owns_collection: consulates
+  seeded_rows: 16
