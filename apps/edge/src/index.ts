@@ -19,9 +19,14 @@ import { welcomePage, type WelcomeFact } from '../../api-gateway/src/welcome.ts'
  * is DECLARED — the theme and the host map from `domains.ts`, the relations
  * from `ARCHITECTURE_RELATIONS`, the contracts from the registry — so rendering
  * is string work measured in microseconds, well inside the free plan's 10 ms of
- * CPU. What it deliberately does NOT do is pretend: the portal, the live event
- * feed and `/me/…` need a running platform, so on a path that would need one it
- * says so and points at the repository instead of timing out.
+ * CPU.
+ *
+ * EVERY OTHER PATH IS RELAYED to the engine at `platform.tukhnanutha.com`, so
+ * the subdomains are whole again the moment an instance exists: the portal, the
+ * live feed, `/me/…`, all of it. When no instance answers, the relay fails and
+ * the Worker says which and how to get one, rather than timing out. The two
+ * halves are deliberately different in kind — the front door is rendered here
+ * and can never fall over; the working platform is borrowed and may be absent.
  *
  * The same `welcomePage()` renders here and in the Node gateway. One template,
  * so the public page and the working one can never drift apart; the difference
@@ -109,54 +114,139 @@ personne.</footer>
   );
 }
 
+/** L'adresse du moteur. Pas un ministere : aucune route du Worker ne la couvre. */
+const ORIGIN = 'https://platform.tukhnanutha.com';
+
+/**
+ * Ces codes ne viennent pas de la plateforme, ils viennent de Cloudflare quand
+ * il n'y a personne au bout : tunnel arrete, connexion refusee, delai depasse.
+ * Un 503 emis par la plateforme elle-meme, lui, doit passer tel quel.
+ */
+const ORIGIN_DOWN = new Set([502, 504, 521, 522, 523, 524, 530]);
+
+/**
+ * Le moteur repond-il ? La question est posee au plus une fois toutes les
+ * trente secondes et par colo, parce que la reponse sert a peindre une pastille
+ * — pas a decider d'un routage. Sans ce cache, chaque ouverture de page
+ * paierait un aller-retour vers l'origine.
+ */
+async function originAlive(ctx: ExecutionContext): Promise<boolean> {
+  const key = 'https://edge.tukhnanutha.internal/origin-health';
+  const cached = await caches.default.match(key);
+  if (cached) return (await cached.text()) === 'up';
+
+  let up = false;
+  try {
+    const probe = await fetch(`${ORIGIN}/__platform/health`, { signal: AbortSignal.timeout(1500) });
+    up = probe.ok;
+  } catch {
+    up = false;
+  }
+
+  ctx.waitUntil(
+    caches.default.put(key, new Response(up ? 'up' : 'down', { headers: { 'cache-control': 'max-age=30' } })),
+  );
+  return up;
+}
+
+/** Ce que le Worker repond quand il n'y a aucun moteur a joindre. */
+function noInstance(url: URL, ministry: { service: string; slug: string; label: string }): Response {
+  return new Response(
+    JSON.stringify(
+      {
+        error: 'no_running_instance',
+        hostname: url.hostname,
+        path: url.pathname,
+        ministry,
+        message:
+          'Cette adresse sert la page du ministère, et elle répond toujours. Le portail, ' +
+          "les API et le flux d'événements demandent une plateforme en marche : il n'y en " +
+          'a aucune de joignable en ce moment.',
+        whatToDo:
+          'git clone https://github.com/rayenbenamorr/hackathon-national && pnpm install && pnpm start',
+        then: `http://localhost:4000/api/${ministry.service}/health`,
+      },
+      null,
+      2,
+    ),
+    { status: 503, headers: { 'content-type': 'application/json; charset=utf-8' } },
+  );
+}
+
 export default {
-  async fetch(request: Request): Promise<Response> {
+  async fetch(request: Request, _env: unknown, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
     const ministry = resolveMinistryHost(url.hostname);
 
     if (!ministry) return index('tukhnanutha.com');
 
     const entry = SERVICE_DIRECTORY[ministry.service as keyof typeof SERVICE_DIRECTORY];
+    const identity = { service: ministry.service, slug: ministry.slug, label: ministry.label };
 
+    // La facade reste rendue ici, jamais relayee : c'est ce qui la rend
+    // increvable. Seule la pastille et la presence des boutons dependent du
+    // moteur, et cette question-la est mise en cache.
     if (url.pathname === '/' || url.pathname === '/accueil') {
+      const up = await originAlive(ctx);
       return new Response(
         welcomePage({
           ministry,
           name: entry.name,
           description: entry.description,
-          // Nothing is running behind this address, and the page says so rather
-          // than showing a green dot it cannot vouch for.
-          running: false,
+          running: up,
           baseDomain: 'tukhnanutha.com',
           facts: facts(ministry.service),
           partners: partnersOf(ministry.service),
-          portal: null,
+          portal: up ? '/portail' : null,
         }),
         { headers: HTML },
       );
     }
 
-    // Everything else would need a platform. Answering 404 would suggest the
-    // address is wrong; it is not — the address is right and the engine is
-    // elsewhere. Say which, and how to get one.
-    return new Response(
-      JSON.stringify(
-        {
-          error: 'no_running_instance',
-          hostname: url.hostname,
-          ministry: { service: ministry.service, slug: ministry.slug, label: ministry.label },
-          message:
-            'Cette adresse sert la page du ministère. Le portail, les API et le flux ' +
-            "d'événements demandent une plateforme en marche, et il n'y en a pas derrière " +
-            'cette adresse.',
-          whatToDo:
-            'git clone https://github.com/rayenbenamorr/hackathon-national && pnpm install && pnpm start',
-          then: `http://localhost:4000/api/${ministry.service}/health`,
-        },
-        null,
-        2,
-      ),
-      { status: 503, headers: { 'content-type': 'application/json; charset=utf-8' } },
-    );
+    // Tout le reste est relaye vers le moteur.
+    //
+    // `/me/...` est traduit ICI plutot que la-bas, et c'est le coeur du montage :
+    // la passerelle deduit le ministere de l'en-tete Host, or l'origine repond
+    // sur `platform.` — elle s'y verrait donc comme la racine et refuserait
+    // `/me`. Le Worker, lui, sait de quel ministere il s'agit : il ecrit
+    // `/api/<service>/...` a sa place. Aucun en-tete Host a falsifier, aucune
+    // boucle possible, et la passerelle n'a pas une ligne a changer.
+    let path = url.pathname;
+    if (path === '/me' || path.startsWith('/me/')) {
+      path = `/api/${ministry.service}${path.slice('/me'.length)}`;
+    }
+
+    let response: Response;
+    try {
+      response = await fetch(new Request(new URL(path + url.search, ORIGIN), request));
+    } catch {
+      return noInstance(url, identity);
+    }
+    if (ORIGIN_DOWN.has(response.status)) return noInstance(url, identity);
+
+    // Le portail demande « sur quel ministere suis-je ? » avant tout le reste.
+    // Vu depuis `platform.`, la reponse est « aucun » — alors que l'adresse
+    // tapee, elle, en designe un. Le Worker retablit la verite du nom d'hote.
+    if (url.pathname === '/__platform/context') {
+      try {
+        const context = (await response.json()) as Record<string, unknown>;
+        context.host = url.hostname;
+        context.ministry = {
+          ...identity,
+          name: entry.name,
+          accent: ministry.accent,
+          icon: ministry.icon,
+          tagline: ministry.tagline,
+          running: true,
+        };
+        return new Response(JSON.stringify(context, null, 2), {
+          headers: { 'content-type': 'application/json; charset=utf-8' },
+        });
+      } catch {
+        return noInstance(url, identity);
+      }
+    }
+
+    return response;
   },
 };
