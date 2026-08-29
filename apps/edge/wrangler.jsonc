@@ -1,0 +1,54 @@
+{
+  // Les vingt-quatre façades, servies par Cloudflare et par rien d'autre.
+  //
+  // `routes` liste les 24 noms explicitement plutôt qu'un joker
+  // `*.tukhnanutha.com/*` : le joker avalerait aussi `www.`, `edu.`, `cdn.` et
+  // `platform.`, c'est-à-dire le site du groupe et l'origine de la plateforme.
+  // Vingt-quatre lignes qui ne peuvent rien casser valent mieux qu'une ligne
+  // qui peut tout casser.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tukhnanutha-hackathon",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-01",
+  // node:crypto arrive par @platform/observability (les identifiants de trace).
+  // Le drapeau est la maniere prevue de le fournir ; sans lui le Worker leve a
+  // l'execution, pas au bundle.
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "observability": { "enabled": true },
+
+  // Le bundler d'esbuild ne lit pas les `paths` de tsconfig : les alias du
+  // dépôt sont redonnés ici, sinon `@platform/...` n'est pas résolu.
+  "alias": {
+    "@platform/contracts": "../../packages/contracts/src/index.ts",
+    "@platform/runtime/domains.ts": "../../packages/runtime/src/domains.ts",
+    "@platform/refs": "../../packages/refs/src/index.ts",
+  },
+
+  "routes": [
+    { "pattern": "justice.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "resilience.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "securite.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "diaspora.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "finances.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "jumeau.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "social.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "industrie.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "commerce.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "agriculture.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "emploi.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "sante.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "education.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "recherche.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "jeunesse.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "affaires-religieuses.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "numerique.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "transport.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "equipement.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "foncier.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "environnement.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "tourisme.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "famille.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+    { "pattern": "culture.tukhnanutha.com/*", "zone_name": "tukhnanutha.com" },
+  ],
+}

@@ -23,6 +23,7 @@ export default defineConfig({
       '@platform/iot': at('./packages/iot/src/index.ts'),
       '@platform/digital-twin': at('./packages/digital-twin/src/index.ts'),
       '@platform/geo': at('./packages/geo/src/index.ts'),
+      '@platform/runtime/domains.ts': at('./packages/runtime/src/domains.ts'),
       '@platform/runtime': at('./packages/runtime/src/index.ts'),
       '@platform/testing': at('./packages/testing/src/index.ts'),
       '@platform/student-tools': at('./packages/student-tools/src/index.ts'),

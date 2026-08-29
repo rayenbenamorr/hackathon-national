@@ -19,10 +19,11 @@ function pageFor(service: string, base = 'tukhnanutha.com', overrides: Partial<W
     description: entry.description,
     running: true,
     baseDomain: base,
-    routes: 7,
-    publishes: 3,
-    consumes: 5,
     partners: partnersOf(service),
+    facts: [
+      { value: partnersOf(service).length, label: 'ministeres lies', hint: 'declare' },
+      { value: 7, label: 'routes', hint: 'mesure' },
+    ],
     ...overrides,
   });
 }

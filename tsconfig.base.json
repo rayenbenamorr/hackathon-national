@@ -35,6 +35,7 @@
       "@platform/digital-twin": ["packages/digital-twin/src/index.ts"],
       "@platform/geo": ["packages/geo/src/index.ts"],
       "@platform/runtime": ["packages/runtime/src/index.ts"],
+      "@platform/runtime/*": ["packages/runtime/src/*"],
       "@platform/testing": ["packages/testing/src/index.ts"],
       "@platform/student-tools": ["packages/student-tools/src/index.ts"],
       "@platform/policies": ["packages/policies/src/index.ts"],

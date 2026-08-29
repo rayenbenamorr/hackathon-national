@@ -18,3 +18,7 @@ Thumbs.db
 .vscode/
 .idea/
 .export/
+
+# Le bundle de dry-run de wrangler
+apps/edge/.wrangler/
+apps/edge/.wrangler-dry/

@@ -1,4 +1,7 @@
-import { MINISTRY_DOMAINS, type MinistryDomain } from '@platform/runtime';
+// Deliberately the domain module, not the `@platform/runtime` barrel: that
+// barrel boots the whole platform and reads the filesystem. This page is also
+// rendered by a Cloudflare Worker (apps/edge), where neither exists.
+import { MINISTRY_DOMAINS, type MinistryDomain } from '@platform/runtime/domains.ts';
 
 /**
  * THE WELCOME PAGE — what `sante.tukhnanutha.com` shows before anything else.
@@ -20,6 +23,14 @@ import { MINISTRY_DOMAINS, type MinistryDomain } from '@platform/runtime';
  * first call.
  */
 
+/** One tile in the row of figures under the title. */
+export interface WelcomeFact {
+  value: number | string;
+  label: string;
+  /** Shown on hover: where the figure comes from. */
+  hint: string;
+}
+
 export interface WelcomeInput {
   ministry: MinistryDomain;
   /** The service's English name and description, from SERVICE_DIRECTORY. */
@@ -27,12 +38,21 @@ export interface WelcomeInput {
   description: string;
   running: boolean;
   baseDomain: string;
-  /** Counts shown as the four facts. */
-  routes: number;
-  publishes: number;
-  consumes: number;
+  /**
+   * The figures, chosen by the caller rather than fixed here — because the two
+   * callers can prove different things. The gateway has a running instance and
+   * can count its routes; the edge Worker has only the declared architecture,
+   * so it counts relations instead. Neither is allowed to display a number it
+   * cannot justify.
+   */
+  facts: WelcomeFact[];
   /** The service ids this ministry is wired to, in declaration order. */
   partners: string[];
+  /**
+   * Where the working portal lives, or `null` when there is none behind this
+   * page. The edge Worker says so plainly rather than offering a dead button.
+   */
+  portal?: string | null;
 }
 
 const esc = (value: string): string =>
@@ -58,6 +78,13 @@ export function welcomePage(input: WelcomeInput): string {
         <strong>${esc(String(value))}</strong>
         <span>${esc(label)}</span>
       </div>`;
+
+  // `portal` undefined means "the caller did not say", which only the gateway
+  // does — and the gateway always has one. An explicit null is the edge Worker
+  // stating there is no engine behind this address, so the page must not offer
+  // buttons that lead nowhere.
+  const portal = input.portal === undefined ? '/portail' : input.portal;
+  const live = Boolean(portal);
 
   const chip = (d: MinistryDomain) => `
         <a class="chip" href="https://${d.slug}.${base}" style="--c:${d.accent}">
@@ -213,9 +240,7 @@ footer p{margin:18px 0 0}
   <header class="top">
     <b>🇹🇳 Écosystème numérique national</b>
     <nav>
-      <a href="/portail">Portail</a>
-      <a href="/__platform/services">Services</a>
-      <a href="/admin">Observabilité</a>
+      ${live ? `<a href="${portal}">Portail</a>\n      <a href="/__platform/services">Services</a>\n      <a href="/admin">Observabilité</a>` : `<a href="#voisins">Ses relations</a>\n      <a href="#les-24">Les vingt-quatre</a>`}
     </nav>
   </header>
 
@@ -226,15 +251,20 @@ footer p{margin:18px 0 0}
     <p class="lead">${esc(m.tagline)}</p>
     <p class="sub">${esc(input.name)} · <code>${esc(m.service)}</code></p>
     <div class="actions">
-      <a class="btn primary" href="/portail">Entrer dans le portail</a>
-      <a class="btn" href="/me/health">Interroger l’API</a>
+      ${
+        live
+          ? `<a class="btn primary" href="${portal}">Entrer dans le portail</a>
+      <a class="btn" href="/me/health">Interroger l’API</a>`
+          : `<a class="btn primary" href="#voisins">Voir ses ${neighbours.length} relations</a>
+      <a class="btn" href="#commencer">Comment l’appeler</a>`
+      }
     </div>
   </section>
 
-  <div class="facts">${fact(neighbours.length, neighbours.length > 1 ? 'ministères liés' : 'ministère lié', "Les ministères avec lesquels ce service échange, déclarés dans l'architecture.")}${fact(input.routes, input.routes > 1 ? 'routes' : 'route', 'Les points d’entrée HTTP de ce service.')}${fact(input.publishes, 'événements publiés', 'Les contrats dont ce service est le seul propriétaire.')}${fact(input.consumes, 'événements écoutés', 'Ce que ce service reçoit des autres.')}
+  <div class="facts">${input.facts.map((f) => fact(f.value, f.label, f.hint)).join('')}
   </div>
 
-  <section class="block">
+  <section class="block" id="voisins">
     <h2>Vos voisins</h2>
     <p class="note">
       Aucun ministère ne fonctionne seul : voici ceux avec lesquels celui-ci échange.
@@ -244,11 +274,13 @@ footer p{margin:18px 0 0}
     </div>
   </section>
 
-  <section class="block">
+  <section class="block" id="commencer">
     <h2>Par où commencer</h2>
-    <p class="note">Trois portes, dans l’ordre où on les pousse d’habitude.</p>
+    <p class="note">${live ? 'Trois portes, dans l’ordre où on les pousse d’habitude.' : 'Cette adresse presente le ministere. Le moteur, lui, tourne la ou une equipe le lance — en local pendant le developpement, sur l’instance partagee pendant l’evenement.'}</p>
     <div class="cards">
-      <a class="card" href="/portail">
+      ${
+        live
+          ? `<a class="card" href="${portal}">
         <b>Le portail →</b>
         <span>Vos données, vos voisins, vos événements en direct. Il s’ouvre déjà sur ${esc(m.label)}.</span>
       </a>
@@ -259,16 +291,38 @@ footer p{margin:18px 0 0}
       <a class="card" href="/__platform/context">
         <b>Ce que sait la plateforme →</b>
         <span>Le nom d’hôte, le ministère qu’il désigne, et les vingt-quatre adresses.</span>
-      </a>
+      </a>`
+          : `<div class="card">
+        <b>Son identifiant</b>
+        <span><code>${esc(m.service)}</code> — c’est le nom que le code, le registre et le bus emploient. Le slug <code>${esc(m.slug)}</code> n’est que l’adresse.</span>
+      </div>
+      <div class="card">
+        <b>Ses relations</b>
+        <span>${neighbours.length} ministères, déclarés dans l’architecture et vérifiés à chaque poussée par les treize règles.</span>
+      </div>
+      <div class="card">
+        <b>Où il vit</b>
+        <span><code>services/${esc(m.service)}/</code> dans le dépôt. Un dossier, un service, une base à lui.</span>
+      </div>`
+      }
     </div>
-<pre><span class="c"># le premier appel, depuis n’importe quel terminal</span>
+${
+  live
+    ? `<pre><span class="c"># le premier appel, depuis n’importe quel terminal</span>
 curl https://<span class="a">${esc(host)}</span>/me/health
 
 <span class="c"># le même service, nommé, depuis n’importe quelle adresse</span>
-curl https://${esc(host)}/api/<span class="a">${esc(m.service)}</span>/health</pre>
+curl https://${esc(host)}/api/<span class="a">${esc(m.service)}</span>/health</pre>`
+    : `<pre><span class="c"># une instance, puis ce ministere repond sur /me</span>
+git clone https://github.com/rayenbenamorr/hackathon-national
+pnpm install && pnpm start
+
+<span class="c"># il porte alors ce nom-la, quelle que soit l’adresse</span>
+curl http://localhost:4000/api/<span class="a">${esc(m.service)}</span>/health</pre>`
+}
   </section>
 
-  <section class="block">
+  <section class="block" id="les-24">
     <h2>Les vingt-quatre</h2>
     <p class="note">Un ministère, une adresse. Le service répond partout, l’adresse ne fait que choisir le défaut.</p>
     <div class="index">
@@ -281,7 +335,7 @@ curl https://${esc(host)}/api/<span class="a">${esc(m.service)}</span>/health</p
 
   <footer>
     <div class="index">
-      <a href="/portail">Portail</a><a href="/admin">Observabilité</a><a href="/__platform/health">Santé de la plateforme</a><a href="/__platform/graph">Graphe</a>
+      ${live ? `<a href="${portal}">Portail</a><a href="/admin">Observabilité</a><a href="/__platform/health">Santé de la plateforme</a><a href="/__platform/graph">Graphe</a>` : `<a href="#voisins">Ses relations</a><a href="#les-24">Les vingt-quatre</a>`}
     </div>
     <p>
       Hackathon national — 24 ministères, 24 adresses, une seule plateforme.

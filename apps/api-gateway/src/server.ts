@@ -232,10 +232,36 @@ export function createGateway(platform: Platform): Server {
               description: entry.description,
               running: Boolean(runtime),
               baseDomain: baseDomain(),
-              routes: runtime?.definition.routes.length ?? 0,
-              publishes: allEventContracts().filter((c) => c.owner === ministry.service).length,
-              consumes: runtime?.definition.consumers.length ?? 0,
               partners: partnersOf(ministry.service),
+              // Here the instance is running, so the figures can be measured
+              // rather than declared. The edge Worker cannot, and says other
+              // things instead — see apps/edge.
+              facts: (() => {
+                const partners = partnersOf(ministry.service).length;
+                const routes = runtime?.definition.routes.length ?? 0;
+                return [
+                  {
+                    value: partners,
+                    label: partners > 1 ? 'ministères liés' : 'ministère lié',
+                    hint: "Les ministères avec lesquels ce service échange, déclarés dans l'architecture.",
+                  },
+                  {
+                    value: routes,
+                    label: routes > 1 ? 'routes' : 'route',
+                    hint: 'Les points d’entrée HTTP de ce service.',
+                  },
+                  {
+                    value: allEventContracts().filter((c) => c.owner === ministry.service).length,
+                    label: 'événements publiés',
+                    hint: 'Les contrats dont ce service est le seul propriétaire.',
+                  },
+                  {
+                    value: runtime?.definition.consumers.length ?? 0,
+                    label: 'événements écoutés',
+                    hint: 'Ce que ce service reçoit des autres.',
+                  },
+                ];
+              })(),
             }),
             'text/html; charset=utf-8',
           );
